@@ -25,7 +25,8 @@ jobs:
           $version = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.TrimStart('v') } else { '' }
           if ($version) { ./build.ps1 -Version $version } else { ./build.ps1 }
 
-      - name: Build integration tests (not run on CI: they change system settings)
+      # The integration tests change system settings, so CI only builds them
+      - name: Build integration tests
         run: dotnet build tests/Velox.IntegrationTests/Velox.IntegrationTests.csproj -c Release -nologo
 
       - uses: actions/upload-artifact@v4
