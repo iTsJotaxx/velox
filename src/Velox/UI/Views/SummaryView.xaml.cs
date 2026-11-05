@@ -58,13 +58,13 @@ namespace Velox.UI.Views
                 BtnApplyRec.IsEnabled = false;
                 return;
             }
-            int total = vm.AvailableCount, match = vm.MatchCount, diff = vm.RecommendedDiff;
+            int total = vm.ScoredCount, match = vm.MatchCount, diff = vm.RecommendedDiff;
             double pct = total == 0 ? 100 : Math.Round(100.0 * match / total);
             TxtPct.Text = pct + "%";
             Gauge.BeginAnimation(Infra.ArcGauge.ValueProperty, new DoubleAnimation(pct, TimeSpan.FromMilliseconds(700)) { EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut } });
             TxtHeroTitle.Text = diff == 0 ? Loc.T("ui.sum.heroDone") : Loc.F("ui.sum.heroTodo", diff);
             TxtHeroText.Text = diff == 0 ? Loc.T("ui.sum.heroDoneText") : Loc.F("ui.sum.heroTodoText", match, total);
-            TxtActive.Text = Loc.F("ui.sum.activeCount", vm.ActiveCount, total);
+            TxtActive.Text = Loc.F("ui.sum.activeCount", vm.ActiveCount, vm.AvailableCount);
             RestartBadge.Visibility = string.IsNullOrEmpty(st.RestartNotice) ? Visibility.Collapsed : Visibility.Visible;
             TxtRestartBadge.Text = st.RestartNotice;
             BtnApplyRec.Content = diff == 0 ? Loc.T("ui.sum.applyRecDone") : Loc.F("ui.sum.applyRecN", diff);

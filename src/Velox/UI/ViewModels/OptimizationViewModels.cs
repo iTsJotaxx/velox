@@ -35,6 +35,11 @@ namespace Velox.UI.ViewModels
         public bool IsApplied { get => _isApplied; set { if (Set(ref _isApplied, value)) RaiseState(); } }
         public bool IsAvailable { get => _isAvailable; set { if (Set(ref _isAvailable, value)) RaiseState(); } }
         public bool IsRecommended { get => _isRecommended; set { if (Set(ref _isRecommended, value)) RaiseState(); } }
+        bool _isPreference;
+        /// <summary>«A tu gusto»: el modo Recomendado no la toca.</summary>
+        public bool IsPreference { get => _isPreference; set { if (Set(ref _isPreference, value)) RaiseState(); } }
+        /// <summary>Cuenta para el modo Recomendado y la puntuación.</summary>
+        public bool IsScored => IsAvailable && !IsPreference;
         public bool Scanned { get => _scanned; set { if (Set(ref _scanned, value)) RaiseState(); } }
 
         public string Name => Opt.Name;
@@ -45,8 +50,9 @@ namespace Velox.UI.ViewModels
         public string RestartText => Opt.Restart == RestartNeed.Reboot ? Loc.T("ui.restart.reboot") : Opt.Restart == RestartNeed.Logoff ? Loc.T("ui.restart.logoff") : "";
 
         public bool IsPending => IsAvailable && IsChecked != IsApplied;
-        public bool ShowRecommended => Scanned && IsAvailable && IsRecommended;
-        public bool ShowNotRecommended => Scanned && IsAvailable && !IsRecommended;
+        public bool ShowRecommended => Scanned && IsScored && IsRecommended;
+        public bool ShowNotRecommended => Scanned && IsScored && !IsRecommended;
+        public bool ShowPreference => Scanned && IsAvailable && IsPreference;
 
         /// <summary>na | pending | on | off</summary>
         public string StatusKind => !IsAvailable ? "na" : IsPending ? "pending" : IsApplied ? "on" : "off";
@@ -58,7 +64,8 @@ namespace Velox.UI.ViewModels
         void RaiseState()
         {
             Raise(nameof(IsPending)); Raise(nameof(StatusKind)); Raise(nameof(StatusText));
-            Raise(nameof(ShowRecommended)); Raise(nameof(ShowNotRecommended));
+            Raise(nameof(ShowRecommended)); Raise(nameof(ShowNotRecommended)); Raise(nameof(ShowPreference));
+            Raise(nameof(IsScored));
         }
 
         public void RefreshTexts() => RaiseAll();
@@ -134,13 +141,15 @@ namespace Velox.UI.ViewModels
         public bool HasPending => PendingCount > 0;
         public int AvailableCount => AllItems.Count(i => i.IsAvailable);
         public int ActiveCount => AllItems.Count(i => i.IsAvailable && i.IsApplied);
+        /// <summary>Ajustes que cuentan para la puntuación (disponibles y no «a tu gusto»).</summary>
+        public int ScoredCount => AllItems.Count(i => i.IsScored);
         /// <summary>Ajustes cuyo estado real ya es el recomendado.</summary>
-        public int MatchCount => AllItems.Count(i => i.IsAvailable && i.IsApplied == i.IsRecommended);
-        public int RecommendedDiff => AllItems.Count(i => i.IsAvailable && i.IsApplied != i.IsRecommended);
+        public int MatchCount => AllItems.Count(i => i.IsScored && i.IsApplied == i.IsRecommended);
+        public int RecommendedDiff => AllItems.Count(i => i.IsScored && i.IsApplied != i.IsRecommended);
         public bool Scanned => _scanned;
 
-        /// <summary>Los interruptores coinciden con la configuración recomendada.</summary>
-        public bool IsRecommendedMode => _scanned && AllItems.Where(i => i.IsAvailable).All(i => i.IsChecked == i.IsRecommended);
+        /// <summary>Los interruptores coinciden con la configuración recomendada (los «a tu gusto» no cuentan).</summary>
+        public bool IsRecommendedMode => _scanned && AllItems.Where(i => i.IsScored).All(i => i.IsChecked == i.IsRecommended);
         public bool IsCustomMode => !IsRecommendedMode;
 
         public string ApplyText => PendingCount > 0 ? Loc.F("ui.opts.applyN", PendingCount) : Loc.T("ui.opts.apply");
@@ -157,6 +166,7 @@ namespace Velox.UI.ViewModels
                 Available = OptimizationEngine.IsAvailable(o, sys),
                 Applied = OptimizationEngine.IsApplied(o),
                 Recommended = OptimizationEngine.IsRecommended(o, sys),
+                Preference = OptimizationEngine.IsPreference(o, sys),
             }));
             _scanned = sys != null;
             foreach (var i in AllItems)
@@ -165,6 +175,7 @@ namespace Velox.UI.ViewModels
                 i.IsAvailable = st.Available;
                 i.IsApplied = st.Applied;
                 i.IsRecommended = st.Available && st.Recommended;
+                i.IsPreference = st.Available && st.Preference;
                 i.Scanned = _scanned;
                 i.SetCheckedSilently(st.Applied);
             }
@@ -184,11 +195,18 @@ namespace Velox.UI.ViewModels
             _customSelection = AllItems.Where(i => i.IsAvailable).ToDictionary(i => i.Opt.Id, i => i.IsChecked);
         }
 
-        /// <summary>Cada interruptor pasa a su estado recomendado (activar o desactivar). Devuelve cuántos cambios quedan pendientes.</summary>
+        /// <summary>
+        /// Cada interruptor pasa a su estado recomendado (activar o desactivar). Los «a tu gusto» se quedan como
+        /// estén ahora en Windows. Devuelve cuántos cambios quedan pendientes.
+        /// </summary>
         public int SelectRecommended()
         {
             SaveCustomSelection();
-            foreach (var i in AllItems) if (i.IsAvailable) i.SetCheckedSilently(i.IsRecommended);
+            foreach (var i in AllItems)
+            {
+                if (i.IsScored) i.SetCheckedSilently(i.IsRecommended);
+                else if (i.IsAvailable) i.SetCheckedSilently(i.IsApplied);
+            }
             foreach (var c in Categories) c.Recount();
             NotifyAll();
             return PendingCount;

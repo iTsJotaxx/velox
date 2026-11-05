@@ -28,15 +28,15 @@
 
   <!-- Power and CPU -->
   <sys:String x:Key="opt.PowerPlan.name">"Ultimate Performance" power plan</sys:String>
-  <sys:String x:Key="opt.PowerPlan.desc">Switches to the hidden Windows plan that keeps the CPU at full speed and never parks cores or puts disks and PCI Express to sleep. You get lower latency and steadier FPS in exchange for higher power use. On laptops, the "Power mode" option is a better fit.</sys:String>
+  <sys:String x:Key="opt.PowerPlan.desc">Switches to the hidden Windows plan that keeps the CPU at full speed with no power saving for disks or PCI Express. It can slightly lower latency and steady the frame rate, but on Windows 11 the Balanced plan already ramps up quickly, so the difference is usually small. Uses more power. On laptops, “Power mode” is a better fit.</sys:String>
   <sys:String x:Key="opt.PowerMode.name">Power mode: best performance</sys:String>
   <sys:String x:Key="opt.PowerMode.desc">Sets the "Power mode" control in Settings › System › Power to "Best performance". This is the right choice for a plugged-in laptop. It only works with the Balanced plan and applies to the current power source (charger or battery).</sys:String>
   <sys:String x:Key="opt.CoreParking.name">Turn off CPU core parking</sys:String>
-  <sys:String x:Key="opt.CoreParking.desc">Keeps every CPU core awake (minimum active cores at 100%) while plugged in, which avoids micro-stutter when a game suddenly asks for lots of CPU. Applies to the active power plan.</sys:String>
+  <sys:String x:Key="opt.CoreParking.desc">Keeps every CPU core awake while plugged in. It can remove the odd micro-stutter in older games, but Windows 11 already manages cores well, so the effect is usually minimal. Do not turn it on with dual-chiplet Ryzen X3D CPUs (7900X3D, 7950X3D, 9900X3D, 9950X3D): AMD deliberately parks the chiplet without V-Cache during games and this prevents it, lowering FPS.</sys:String>
   <sys:String x:Key="opt.PowerThrottling.name">Turn off Power Throttling</sys:String>
-  <sys:String x:Key="opt.PowerThrottling.desc">Stops Windows from slowing down background or minimized programs (Discord, OBS, a browser playing music...) while you game. On laptops it slightly reduces battery life.</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.desc">Stops Windows from slowing down background programs. It does not help gaming: those programs compete more with your game and, on CPUs with efficiency cores (Intel 12th gen or newer), Windows stops sending background work to those cores, which can hurt performance. With a high-performance plan Windows barely applies it anyway. It only makes sense if you need something in the background, such as recording with OBS, to run at full speed.</sys:String>
   <sys:String x:Key="opt.Hibernate.name">Turn off hibernation</sys:String>
-  <sys:String x:Key="opt.Hibernate.desc">Deletes the hibernation file (hiberfil.sys), which takes up a large share of your RAM size on disk: several GB, or tens of GB on PCs with lots of memory. It also turns off Fast Startup, so booting may take a little longer. You will no longer be able to hibernate.</sys:String>
+  <sys:String x:Key="opt.Hibernate.desc">This frees disk space; it does not improve performance. It deletes the hibernation file (hiberfil.sys), which takes several GB, or tens of GB on PCs with lots of RAM. It also turns off Fast Startup, so booting may take a little longer, and you will no longer be able to hibernate. Only recommended when you are short on space.</sys:String>
   <sys:String x:Key="opt.PciAspm.name">PCI Express without power saving</sys:String>
   <sys:String x:Key="opt.PciAspm.desc">Stops Windows from putting the link to your graphics card and NVMe drives to sleep between uses, which can add a tiny delay when they are needed again. The cost is slightly higher power use. Applies to the active power plan.</sys:String>
 
@@ -52,7 +52,7 @@
   <sys:String x:Key="opt.WindowedOpt.name">Optimizations for windowed games</sys:String>
   <sys:String x:Key="opt.WindowedOpt.desc">DirectX 10/11 games running in a window or borderless window use the modern flip presentation model: lower input latency, plus support for VRR (G-Sync/FreeSync) and Auto HDR.</sys:String>
   <sys:String x:Key="opt.MMCSS.name">Multimedia priority for games (MMCSS)</sys:String>
-  <sys:String x:Key="opt.MMCSS.desc">Raises the CPU, GPU and disk priority that the Windows multimedia scheduler gives to games, reserves less CPU for background tasks (20% down to 10%) and removes the network packet limit during media playback.</sys:String>
+  <sys:String x:Key="opt.MMCSS.desc">Raises the priority the Windows multimedia scheduler gives to the “Games” task and reserves less CPU for background work. It only affects games that register with that scheduler, which are very few, so most games see no change. Harmless; turn it on only if you want to try it.</sys:String>
 
   <!-- Mouse and keyboard -->
   <sys:String x:Key="opt.MouseAccel.name">Turn off mouse acceleration</sys:String>
@@ -66,7 +66,7 @@
 
   <!-- Network -->
   <sys:String x:Key="opt.Nagle.name">Lower TCP latency (turn off Nagle's algorithm)</sys:String>
-  <sys:String x:Key="opt.Nagle.desc">Sends small TCP packets right away instead of bundling them together. Lowers ping in games that use TCP (MMOs, some shooters and strategy games). It does not affect download speed. Applies to the adapters connected right now.</sys:String>
+  <sys:String x:Key="opt.Nagle.desc">Sends small TCP packets immediately instead of batching them. It only helps in games that use TCP without already disabling this themselves (some MMOs and strategy games); most action games use UDP and will not notice anything. Download speed is not affected.</sys:String>
   <sys:String x:Key="opt.DeliveryOpt.name">Turn off Windows Update peer-to-peer sharing</sys:String>
   <sys:String x:Key="opt.DeliveryOpt.desc">Stops Windows from using your connection to send updates to other PCs (Delivery Optimization). Frees up upload bandwidth and disk; updates still download normally.</sys:String>
 
@@ -74,7 +74,7 @@
   <sys:String x:Key="opt.BgApps.name">Block Store apps in the background</sys:String>
   <sys:String x:Key="opt.BgApps.desc">Stops Microsoft Store apps (Photos, News, Weather, Mail...) from running in the background and using RAM and CPU. Some Store apps will stop showing notifications while they are closed.</sys:String>
   <sys:String x:Key="opt.EdgeBg.name">Edge without preloading or background mode</sys:String>
-  <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge no longer preloads when Windows starts or stays running in the background after you close it. Saves 150 to 400 MB of RAM. Edge will show "Your browser is managed by your organization", which is normal when policies are used.</sys:String>
+  <sys:String x:Key="opt.EdgeBg.desc">Stops Microsoft Edge from preloading at startup and from staying open in the background after you close it. Saves 150-400 MB of RAM, but if Edge is your main browser it will take a little longer to open, so in that case it is not recommended. Edge will show “Your browser is managed by your organization”; that is normal when policies are used.</sys:String>
   <sys:String x:Key="opt.Widgets.name">Turn off Widgets</sys:String>
   <sys:String x:Key="opt.Widgets.desc">Removes the Widgets panel (news and weather) from the taskbar along with its WebView processes, which take up RAM even if you never open it. If Windows protects the policy, the button is at least hidden, which is what keeps those processes running.</sys:String>
   <sys:String x:Key="opt.Tips.name">No tips, ads or promoted apps</sys:String>
@@ -82,17 +82,17 @@
   <sys:String x:Key="opt.Telemetry.name">Turn off telemetry and its tasks</sys:String>
   <sys:String x:Key="opt.Telemetry.desc">Turns off the telemetry service (DiagTrack), the WAP push message router and the scheduled data-collection tasks, such as CompatTelRunner, which causes CPU and disk spikes. It does not affect Windows Update or the Store.</sys:String>
   <sys:String x:Key="opt.SysMain.name">Turn off SysMain (Superfetch)</sys:String>
-  <sys:String x:Key="opt.SysMain.desc">SysMain preloads your most-used apps into RAM. On an SSD it adds little and sometimes causes disk and CPU spikes. On a mechanical hard drive (HDD) it is better left on.</sys:String>
+  <sys:String x:Key="opt.SysMain.desc">SysMain preloads your most-used apps into RAM so they open faster. Turning it off gives no extra FPS and can make apps a little slower to open, so it is not recommended. It only makes sense if you see disk-usage spikes caused by it. With a hard disk drive (HDD), keep it on.</sys:String>
   <sys:String x:Key="opt.WSearch.name">Turn off the search indexer</sys:String>
   <sys:String x:Key="opt.WSearch.desc">The indexer scans your files in the background. Turning it off frees CPU and disk, but file search in Start and File Explorer gets slower (and Outlook can no longer search). Recommended only with a mechanical hard drive.</sys:String>
   <sys:String x:Key="opt.ActivityHistory.name">Turn off activity history</sys:String>
   <sys:String x:Key="opt.ActivityHistory.desc">Windows stops recording which apps and files you open and stops sending that history to Microsoft. You lose the Timeline feature and suggestions based on recent activity. Less personal data shared and a little less background work.</sys:String>
   <sys:String x:Key="opt.UnusedServices.name">Turn off services almost nobody uses</sys:String>
-  <sys:String x:Key="opt.UnusedServices.desc">Turns off four services that most people never need: offline maps (MapsBroker), fax, store demo mode (RetailDemo) and Windows Media Player network sharing. Saves a little RAM; if you use any of those features, leave this off.</sys:String>
+  <sys:String x:Key="opt.UnusedServices.desc">Turns off four services almost nobody needs: offline maps (MapsBroker), fax, retail demo mode (RetailDemo) and Windows Media Player network sharing. They are almost never running, so the saving is minimal. If you use any of those features, leave this off.</sys:String>
 
   <!-- Windows interface -->
   <sys:String x:Key="opt.Animations.name">Remove animations</sys:String>
-  <sys:String x:Key="opt.Animations.desc">Removes animations from windows, menus and the taskbar. Everything appears instantly and the system feels more responsive, especially on modest hardware.</sys:String>
+  <sys:String x:Key="opt.Animations.desc">Removes window, menu and taskbar animations so everything appears instantly. You will notice it on modest PCs (integrated graphics or little RAM); on a powerful PC it is a matter of taste.</sys:String>
   <sys:String x:Key="opt.Transparency.name">Remove transparency effects</sys:String>
   <sys:String x:Key="opt.Transparency.desc">Removes the glass effect (Mica and acrylic) from the taskbar, the Start menu and windows. Saves some GPU, especially with integrated graphics.</sys:String>
   <sys:String x:Key="opt.MenuDelay.name">Faster menus</sys:String>

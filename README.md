@@ -24,7 +24,7 @@
 
 - **Scans your PC** (CPU, GPU, RAM, displays, disks, power plan, Windows security features) and **recommends** the right settings for *your* hardware: laptop or desktop, SSD or HDD, modern or older GPU...
 - **31 optimizations in 6 collapsible sections**: power and CPU, games and FPS, mouse and keyboard, network, background and RAM, and the Windows interface.
-- **Recommended or Custom mode**: apply the recommended setup in one click, or pick each switch yourself. Switching back to *Recommended* always restores the recommended setup.
+- **Recommended or Custom mode**: apply the recommended setup in one click, or pick each switch yourself. Switching back to *Recommended* always restores the recommended setup. Settings that are a matter of taste on your PC (or have a minimal effect) are marked *Your call* and Recommended mode leaves them alone.
 - **Every switch shows the real state of Windows** and nothing changes until you press *Apply changes*.
 - **Safe by design**: Velox backs up every original value before changing it, creates a system restore point before the first change, and rolls back an optimization if it only half applies.
 - **Live monitor** for CPU, RAM, GPU and VRAM (works even when Windows performance counters are disabled).
@@ -44,7 +44,7 @@
 - It never touches Windows security: Defender, memory integrity, UAC and the firewall stay as they are. (If memory integrity costs you FPS, Velox tells you where to change it.)
 - It does not disable Windows Update or uninstall built-in apps.
 - It does not change your mouse polling rate: that is set by the mouse itself. The built-in meter tells you what you have.
-- No placebo "tweaks" (`LargeSystemCache`, mouse data queue size, etc.).
+- No placebo "tweaks" (`LargeSystemCache`, mouse data queue size, etc.), and nothing is recommended unless it actually helps on your hardware. Low-impact settings say so in their description, and some are explicitly *not* recommended (for example turning off Power Throttling, which can hurt CPUs with efficiency cores).
 
 ## Download and run
 

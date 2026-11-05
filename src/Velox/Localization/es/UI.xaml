@@ -101,8 +101,8 @@
   <sys:String x:Key="ui.opts.catCount">{0} de {1} activas</sys:String>
   <sys:String x:Key="ui.opts.catPending">{0} pendientes</sys:String>
   <sys:String x:Key="ui.opts.hintScanning">Escaneando el equipo para saber qué se recomienda...</sys:String>
-  <sys:String x:Key="ui.opts.hintRecPending">Modo recomendado: los interruptores están como se recomienda para tu equipo. Pulsa «Aplicar cambios» para aplicar los {0} cambios.</sys:String>
-  <sys:String x:Key="ui.opts.hintRecDone">Modo recomendado: tu equipo ya tiene la configuración recomendada. Toca cualquier interruptor para personalizarla.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecPending">Modo recomendado: los interruptores están como se recomienda para tu equipo (los marcados «A tu gusto» no se tocan). Pulsa «Aplicar cambios» para aplicar los {0} cambios.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecDone">Modo recomendado: tu equipo ya tiene la configuración recomendada. Los marcados «A tu gusto» dependen de ti. Toca cualquier interruptor para personalizar.</sys:String>
   <sys:String x:Key="ui.opts.hintCustom">Modo personalizado: elige tú qué activar. Pulsa «Recomendado» para volver a la configuración recomendada para tu equipo.</sys:String>
   <sys:String x:Key="ui.opts.recSelected">Configuración recomendada marcada: {0} cambios. Pulsa «Aplicar cambios».</sys:String>
   <sys:String x:Key="ui.opts.alreadyRecommended">Tu equipo ya tiene la configuración recomendada.</sys:String>
@@ -226,4 +226,6 @@
   <sys:String x:Key="ui.set.data">Copias de seguridad y registro</sys:String>
   <sys:String x:Key="ui.set.openFolder">Abrir carpeta</sys:String>
   <sys:String x:Key="ui.set.aboutText">Optimizador de Windows de código abierto. Cada cambio se guarda y se puede deshacer. Licencia MIT.</sys:String>
+  <sys:String x:Key="ui.badge.preference">A tu gusto</sys:String>
+  <sys:String x:Key="ui.badge.preferenceTip">En tu equipo es cuestión de preferencia o el efecto es mínimo. El modo Recomendado no lo toca y no cuenta para la puntuación.</sys:String>
 </ResourceDictionary>

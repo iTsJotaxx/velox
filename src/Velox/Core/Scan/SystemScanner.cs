@@ -54,6 +54,11 @@ namespace Velox.Core.Scan
             Safe("Other account", () => ReadOtherAccount(s));
             Safe("Hibernation", () => s.HibernationEnabled = PowerCfg.HibernationEnabled());
             Safe("Widgets lock", () => s.WidgetsLocked = ProbeWidgetsLocked());
+            Safe("Default browser", () =>
+            {
+                var progId = Convert.ToString(Reg.Get(@"HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice", "ProgId").Value) ?? "";
+                s.EdgeIsDefaultBrowser = progId.StartsWith("MSEdge", StringComparison.OrdinalIgnoreCase);
+            });
 
             Step(progress, "scan.step.procs");
             Safe("Processes", () => ReadProcesses(s));

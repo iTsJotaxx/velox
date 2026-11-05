@@ -28,15 +28,15 @@
 
   <!-- Energía y procesador -->
   <sys:String x:Key="opt.PowerPlan.name">Plan de energía «Máximo rendimiento»</sys:String>
-  <sys:String x:Key="opt.PowerPlan.desc">Activa el plan oculto de Windows que mantiene la CPU a plena frecuencia, sin aparcar núcleos ni dormir discos o PCI Express. Menos latencia y FPS más estables a cambio de más consumo. En portátiles es mejor la opción «Modo de energía».</sys:String>
+  <sys:String x:Key="opt.PowerPlan.desc">Activa el plan oculto de Windows que mantiene la CPU a plena frecuencia y sin ahorro en discos ni PCI Express. Puede bajar algo la latencia y estabilizar los FPS, pero en Windows 11 el plan Equilibrado ya sube rápido la frecuencia, así que la diferencia suele ser pequeña. Gasta más energía. En portátiles es mejor «Modo de energía».</sys:String>
   <sys:String x:Key="opt.PowerMode.name">Modo de energía: máximo rendimiento</sys:String>
   <sys:String x:Key="opt.PowerMode.desc">Pone el control «Modo de energía» de Configuración › Sistema › Energía en «Máximo rendimiento». Es la opción adecuada para portátiles enchufados. Solo actúa con el plan Equilibrado y se aplica a la fuente de energía actual (cargador o batería).</sys:String>
   <sys:String x:Key="opt.CoreParking.name">Desactivar el aparcamiento de núcleos</sys:String>
-  <sys:String x:Key="opt.CoreParking.desc">Mantiene todos los núcleos de la CPU despiertos (mínimo de núcleos activos al 100 %) cuando el equipo está enchufado, para evitar microtirones cuando un juego pide CPU de golpe. Se aplica al plan de energía activo.</sys:String>
+  <sys:String x:Key="opt.CoreParking.desc">Mantiene todos los núcleos despiertos con el cargador conectado. Puede quitar algún microtirón en juegos antiguos, pero Windows 11 ya gestiona bien los núcleos y el efecto suele ser mínimo. No lo actives en Ryzen X3D de dos chiplets (7900X3D, 7950X3D, 9900X3D, 9950X3D): AMD aparca a propósito el chiplet sin V-Cache durante los juegos y esto lo impide, lo que baja los FPS.</sys:String>
   <sys:String x:Key="opt.PowerThrottling.name">Desactivar Power Throttling</sys:String>
-  <sys:String x:Key="opt.PowerThrottling.desc">Impide que Windows limite la CPU de los programas en segundo plano o minimizados (Discord, OBS, el navegador con música...) mientras juegas. En portátiles reduce algo la autonomía.</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.desc">Hace que Windows deje de frenar los programas en segundo plano. Para jugar no ayuda: esos programas compiten más con el juego y, en procesadores con núcleos de eficiencia (Intel de 12.ª generación o posterior), Windows deja de mandar el trabajo de fondo a esos núcleos, lo que puede empeorar el rendimiento. Con un plan de alto rendimiento Windows ya apenas lo aplica. Solo tiene sentido si necesitas que algo de fondo, como grabar con OBS, vaya a toda velocidad.</sys:String>
   <sys:String x:Key="opt.Hibernate.name">Desactivar la hibernación</sys:String>
-  <sys:String x:Key="opt.Hibernate.desc">Elimina el archivo de hibernación (hiberfil.sys), que ocupa en el disco una parte importante de tu RAM: varios GB, o decenas en equipos con mucha memoria. También desactiva el Inicio rápido, así que el arranque puede tardar algo más. Dejarás de poder hibernar.</sys:String>
+  <sys:String x:Key="opt.Hibernate.desc">No mejora el rendimiento: libera espacio en disco. Elimina el archivo de hibernación (hiberfil.sys), que ocupa varios GB, o decenas en equipos con mucha RAM. También desactiva el Inicio rápido, así que el arranque puede tardar algo más, y dejarás de poder hibernar. Solo se recomienda si te falta espacio.</sys:String>
   <sys:String x:Key="opt.PciAspm.name">PCI Express sin ahorro de energía</sys:String>
   <sys:String x:Key="opt.PciAspm.desc">Evita que Windows ponga en reposo el enlace de la tarjeta gráfica y de los discos NVMe entre un uso y otro, lo que puede añadir una pequeña pausa al volver a necesitarlos. A cambio, el equipo gasta algo más de energía. Se aplica al plan de energía activo.</sys:String>
 
@@ -52,7 +52,7 @@
   <sys:String x:Key="opt.WindowedOpt.name">Optimizaciones para juegos en ventana</sys:String>
   <sys:String x:Key="opt.WindowedOpt.desc">Los juegos DirectX 10/11 en ventana o en ventana sin bordes usan el modelo de presentación moderno (flip): menos latencia de entrada y compatibilidad con VRR (G-Sync/FreeSync) y HDR automático.</sys:String>
   <sys:String x:Key="opt.MMCSS.name">Prioridad multimedia para juegos (MMCSS)</sys:String>
-  <sys:String x:Key="opt.MMCSS.desc">Sube la prioridad de CPU, GPU y disco que el programador multimedia de Windows da a los juegos, reserva menos CPU para tareas de fondo (del 20 % al 10 %) y quita el límite de paquetes de red durante la reproducción multimedia.</sys:String>
+  <sys:String x:Key="opt.MMCSS.desc">Sube la prioridad que el programador multimedia de Windows da a la tarea «Games» y reserva menos CPU para tareas de fondo. Solo afecta a los juegos que se registran en ese programador, que son muy pocos, así que en la mayoría no cambia nada. Es inofensivo; actívalo solo si quieres probarlo.</sys:String>
 
   <!-- Ratón y teclado -->
   <sys:String x:Key="opt.MouseAccel.name">Desactivar la aceleración del ratón</sys:String>
@@ -66,7 +66,7 @@
 
   <!-- Red -->
   <sys:String x:Key="opt.Nagle.name">Menor latencia TCP (desactivar el algoritmo de Nagle)</sys:String>
-  <sys:String x:Key="opt.Nagle.desc">Envía al momento los paquetes TCP pequeños en lugar de agruparlos. Reduce el ping en juegos que usan TCP (MMO, algunos shooters y juegos de estrategia). No afecta a la velocidad de descarga. Se aplica a los adaptadores conectados ahora.</sys:String>
+  <sys:String x:Key="opt.Nagle.desc">Envía al momento los paquetes TCP pequeños en lugar de agruparlos. Solo ayuda en juegos que usan TCP sin haberlo desactivado ellos mismos (algunos MMO y juegos de estrategia); la mayoría de juegos de acción usan UDP y no notarán nada. No afecta a la velocidad de descarga.</sys:String>
   <sys:String x:Key="opt.DeliveryOpt.name">Desactivar el P2P de Windows Update</sys:String>
   <sys:String x:Key="opt.DeliveryOpt.desc">Evita que Windows use tu conexión para enviar actualizaciones a otros equipos (Optimización de distribución). Libera subida y disco; las actualizaciones se siguen descargando con normalidad.</sys:String>
 
@@ -74,7 +74,7 @@
   <sys:String x:Key="opt.BgApps.name">Bloquear apps de la Tienda en segundo plano</sys:String>
   <sys:String x:Key="opt.BgApps.desc">Impide que las apps de Microsoft Store (Fotos, Noticias, Tiempo, Correo...) sigan ejecutándose en segundo plano gastando RAM y CPU. Algunas apps de la Tienda dejarán de mostrar notificaciones mientras estén cerradas.</sys:String>
   <sys:String x:Key="opt.EdgeBg.name">Edge sin precarga ni segundo plano</sys:String>
-  <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge deja de precargarse al iniciar Windows y de quedarse abierto en segundo plano al cerrarlo. Ahorra entre 150 y 400 MB de RAM. Edge mostrará el aviso «Tu organización administra el explorador»; es normal al usar directivas.</sys:String>
+  <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge deja de precargarse al iniciar Windows y de quedarse abierto en segundo plano al cerrarlo. Ahorra entre 150 y 400 MB de RAM, pero si Edge es tu navegador principal tardará algo más en abrirse, y por eso entonces no se recomienda. Edge mostrará el aviso «Tu organización administra el explorador»; es normal al usar directivas.</sys:String>
   <sys:String x:Key="opt.Widgets.name">Desactivar los Widgets</sys:String>
   <sys:String x:Key="opt.Widgets.desc">Quita el panel de Widgets (noticias y tiempo) de la barra de tareas y sus procesos WebView, que ocupan RAM aunque no lo abras. Si Windows protege la directiva, al menos se oculta el botón, que es lo que mantiene esos procesos abiertos.</sys:String>
   <sys:String x:Key="opt.Tips.name">Sin sugerencias, anuncios ni apps promocionadas</sys:String>
@@ -82,17 +82,17 @@
   <sys:String x:Key="opt.Telemetry.name">Desactivar la telemetría y sus tareas</sys:String>
   <sys:String x:Key="opt.Telemetry.desc">Desactiva el servicio de telemetría (DiagTrack), el enrutador de mensajes WAP y las tareas programadas de recopilación de datos, como CompatTelRunner, que provoca picos de CPU y disco. No afecta a Windows Update ni a la Tienda.</sys:String>
   <sys:String x:Key="opt.SysMain.name">Desactivar SysMain (Superfetch)</sys:String>
-  <sys:String x:Key="opt.SysMain.desc">SysMain precarga en RAM las apps que más usas. En un SSD apenas aporta y a veces causa picos de uso de disco y CPU. Con disco duro mecánico (HDD) es mejor dejarlo activo.</sys:String>
+  <sys:String x:Key="opt.SysMain.desc">SysMain precarga en RAM las apps que más usas para que se abran antes. Desactivarlo no da más FPS y puede hacer que las apps tarden algo más en abrirse, por eso no se recomienda. Solo tiene sentido si notas picos de uso de disco por su culpa. Con disco duro mecánico (HDD), déjalo activo.</sys:String>
   <sys:String x:Key="opt.WSearch.name">Desactivar el indexador de búsqueda</sys:String>
   <sys:String x:Key="opt.WSearch.desc">El indexador recorre tus archivos en segundo plano. Desactivarlo libera CPU y disco, pero la búsqueda de archivos en Inicio y en el Explorador será más lenta (Outlook no podrá buscar). Recomendado solo con disco duro mecánico.</sys:String>
   <sys:String x:Key="opt.ActivityHistory.name">Desactivar el historial de actividad</sys:String>
   <sys:String x:Key="opt.ActivityHistory.desc">Windows deja de registrar qué apps y archivos abres y de enviar ese historial a Microsoft. Pierdes la función «Línea de tiempo» y las sugerencias basadas en tu actividad reciente. Menos datos personales compartidos y algo menos de trabajo en segundo plano.</sys:String>
   <sys:String x:Key="opt.UnusedServices.name">Desactivar servicios que casi nadie usa</sys:String>
-  <sys:String x:Key="opt.UnusedServices.desc">Apaga cuatro servicios que casi nadie necesita: mapas sin conexión (MapsBroker), fax, modo demostración de tienda (RetailDemo) y uso compartido de Windows Media Player en red. Ahorra un poco de RAM; si usas alguna de esas funciones, déjala activada.</sys:String>
+  <sys:String x:Key="opt.UnusedServices.desc">Apaga cuatro servicios que casi nadie necesita: mapas sin conexión (MapsBroker), fax, modo demostración de tienda (RetailDemo) y uso compartido de Windows Media Player en red. Casi nunca están en marcha, así que el ahorro es mínimo. Si usas alguna de esas funciones, déjala activada.</sys:String>
 
   <!-- Interfaz de Windows -->
   <sys:String x:Key="opt.Animations.name">Quitar animaciones</sys:String>
-  <sys:String x:Key="opt.Animations.desc">Elimina las animaciones de ventanas, menús y barra de tareas. Todo aparece al instante y el sistema se siente más ágil, sobre todo en equipos modestos.</sys:String>
+  <sys:String x:Key="opt.Animations.desc">Elimina las animaciones de ventanas, menús y barra de tareas: todo aparece al instante. En equipos modestos (gráficos integrados o poca RAM) se nota; en un equipo potente es cuestión de gusto.</sys:String>
   <sys:String x:Key="opt.Transparency.name">Quitar los efectos de transparencia</sys:String>
   <sys:String x:Key="opt.Transparency.desc">Quita el efecto cristal (Mica y acrílico) de la barra de tareas, el menú Inicio y las ventanas. Ahorra algo de GPU, sobre todo con gráficos integrados.</sys:String>
   <sys:String x:Key="opt.MenuDelay.name">Menús más rápidos</sys:String>

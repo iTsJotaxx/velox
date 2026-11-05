@@ -35,6 +35,11 @@ namespace Velox.Core.Optimizations
         public RegItem[] Reg { get; set; } = new RegItem[0];
         /// <summary>¿Se recomienda activarla en este equipo? (si no, la configuración recomendada la deja desactivada)</summary>
         public Func<SystemInfo, bool> Recommended { get; set; } = s => true;
+        /// <summary>
+        /// «A tu gusto»: en este equipo es cuestión de preferencia (o el efecto es mínimo), así que el modo
+        /// Recomendado no la toca y no cuenta para la puntuación. null = nunca.
+        /// </summary>
+        public Func<SystemInfo, bool> Preference { get; set; }
         /// <summary>null = siempre disponible.</summary>
         public Func<SystemInfo, bool> Available { get; set; }
         /// <summary>Detección extra (además de Reg).</summary>
@@ -77,6 +82,12 @@ namespace Velox.Core.Optimizations
         {
             if (s == null || o.Recommended == null) return false;
             try { return o.Recommended(s); } catch { return false; }
+        }
+
+        public static bool IsPreference(Optimization o, SystemInfo s)
+        {
+            if (s == null || o.Preference == null) return false;
+            try { return o.Preference(s); } catch { return false; }
         }
 
         static void Sync(Optimization o)

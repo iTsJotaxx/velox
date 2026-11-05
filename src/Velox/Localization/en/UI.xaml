@@ -101,8 +101,8 @@
   <sys:String x:Key="ui.opts.catCount">{0} of {1} on</sys:String>
   <sys:String x:Key="ui.opts.catPending">{0} pending</sys:String>
   <sys:String x:Key="ui.opts.hintScanning">Scanning your PC to work out what is recommended...</sys:String>
-  <sys:String x:Key="ui.opts.hintRecPending">Recommended mode: the switches match the recommendation for your PC. Press “Apply changes” to apply the {0} changes.</sys:String>
-  <sys:String x:Key="ui.opts.hintRecDone">Recommended mode: your PC already has the recommended setup. Flip any switch to customize it.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecPending">Recommended mode: the switches match the recommendation for your PC (those marked “Your call” are left alone). Press “Apply changes” to apply the {0} changes.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecDone">Recommended mode: your PC already has the recommended setup. Those marked “Your call” are up to you. Flip any switch to customize.</sys:String>
   <sys:String x:Key="ui.opts.hintCustom">Custom mode: you choose what to turn on. Press “Recommended” to go back to the recommended setup for your PC.</sys:String>
   <sys:String x:Key="ui.opts.recSelected">Recommended setup selected: {0} changes. Press “Apply changes”.</sys:String>
   <sys:String x:Key="ui.opts.alreadyRecommended">Your PC already has the recommended setup.</sys:String>
@@ -226,4 +226,6 @@
   <sys:String x:Key="ui.set.data">Backups and activity log</sys:String>
   <sys:String x:Key="ui.set.openFolder">Open folder</sys:String>
   <sys:String x:Key="ui.set.aboutText">Open-source Windows optimizer. Every change is backed up and can be undone. MIT license.</sys:String>
+  <sys:String x:Key="ui.badge.preference">Your call</sys:String>
+  <sys:String x:Key="ui.badge.preferenceTip">On your PC this is a matter of preference or the effect is minimal. Recommended mode leaves it alone and it does not count towards the score.</sys:String>
 </ResourceDictionary>

@@ -17,7 +17,7 @@
 
 - **Escanea tu equipo** (CPU, gráfica, RAM, pantallas, discos, plan de energía, seguridad de Windows) y **recomienda** la configuración adecuada para *tu* hardware: portátil o sobremesa, SSD o disco duro, gráfica moderna o antigua...
 - **31 optimizaciones en 6 secciones desplegables**: energía y procesador, juegos y FPS, ratón y teclado, red, segundo plano y RAM, e interfaz de Windows.
-- **Modo Recomendado o Personalizado**: aplica la configuración recomendada con un clic o elige cada interruptor. Al volver a *Recomendado* siempre recuperas la configuración recomendada.
+- **Modo Recomendado o Personalizado**: aplica la configuración recomendada con un clic o elige cada interruptor. Al volver a *Recomendado* siempre recuperas la configuración recomendada. Los ajustes que en tu equipo son cuestión de gusto (o tienen un efecto mínimo) se marcan *A tu gusto* y el modo Recomendado no los toca.
 - **Cada interruptor muestra el estado real de Windows** y no cambia nada hasta que pulsas *Aplicar cambios*.
 - **Seguro**: guarda una copia de cada valor antes de cambiarlo, crea un punto de restauración antes del primer cambio y deshace una optimización si solo se aplica a medias.
 - **Monitor en vivo** de CPU, RAM, GPU y VRAM (funciona aunque los contadores de rendimiento de Windows estén desactivados).
@@ -33,7 +33,7 @@
 - No toca la seguridad de Windows: Defender, integridad de memoria, UAC y firewall se quedan como están (si la integridad de memoria te cuesta FPS, Velox te dice dónde cambiarla).
 - No desactiva Windows Update ni desinstala aplicaciones del sistema.
 - No cambia la frecuencia de sondeo del ratón: la fija el propio ratón. El medidor te dice cuánta tienes.
-- Sin «trucos» placebo (`LargeSystemCache`, tamaño de cola del ratón, etc.).
+- Sin «trucos» placebo (`LargeSystemCache`, tamaño de cola del ratón, etc.), y nada se recomienda si no ayuda de verdad en tu hardware. Los ajustes de poco impacto lo dicen en su descripción, y algunos se marcan expresamente como *no recomendados* (por ejemplo desactivar Power Throttling, que puede empeorar en procesadores con núcleos de eficiencia).
 
 ## Descargar y usar
 

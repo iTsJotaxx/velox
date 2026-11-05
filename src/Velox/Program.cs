@@ -13,7 +13,12 @@ namespace Velox
             // WPF en .NET Framework 4.8: escalado nítido al mover la ventana entre monitores con distinto DPI
             AppContext.SetSwitch("Switch.System.Windows.DoNotScaleForDpiChanges", false);
 
-            using (var mutex = new Mutex(true, @"Global\Velox_SingleInstance", out bool createdNew))
+#if UITEST
+            const string instanceName = @"Global\Velox_UiTest";   // compilación de capturas automáticas
+#else
+            const string instanceName = @"Global\Velox_SingleInstance";
+#endif
+            using (var mutex = new Mutex(true, instanceName, out bool createdNew))
             {
                 if (!createdNew)
                 {

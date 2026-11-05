@@ -52,13 +52,20 @@ namespace Velox.Core.Optimizations
         }
 
         static bool Laptop(SystemInfo s) => s != null && s.IsLaptop;
+        // Equipo modesto: gráficos integrados o poca RAM (ahí sí se notan animaciones y transparencias)
+        static bool LowEnd(SystemInfo s) => s != null && (!s.HasDedicatedGpu || s.RamTotalGB <= 8);
+        // Ryzen X3D de dos chiplets: AMD aparca a propósito el chiplet sin V-Cache durante los juegos
+        static bool DualCcdX3D(SystemInfo s) =>
+            s?.Cpu != null && s.Cpu.IndexOf("X3D", StringComparison.OrdinalIgnoreCase) >= 0 &&
+            new[] { "7900", "7950", "9900", "9950" }.Any(m => s.Cpu.Contains(m));
+        static bool LowDisk(SystemInfo s) => s != null && s.DiskFreePct < 20;
 
         // ================================================================ Energía y procesador
         static IEnumerable<Optimization> Power()
         {
             yield return new Optimization
             {
-                Id = "PowerPlan", Category = "power", Impact = Impact.High, Restart = RestartNeed.None,
+                Id = "PowerPlan", Category = "power", Impact = Impact.Medium, Restart = RestartNeed.None,
                 Recommended = s => !s.IsLaptop,
                 Detect = UltimateActive,
                 Apply = (id, s) => ApplyPowerPlan(id),
@@ -68,6 +75,8 @@ namespace Velox.Core.Optimizations
             {
                 Id = "PowerMode", Category = "power", Impact = Impact.High, Restart = RestartNeed.None,
                 Recommended = s => s.IsLaptop && !s.OnBattery,
+                // En sobremesa el plan de energía ya decide; este control no hace daño, así que queda a tu gusto
+                Preference = s => !s.IsLaptop,
                 Available = s => PowerOverlay.Get() != null,
                 Detect = () => string.Equals(PowerOverlay.Get(), PowerCfg.OverlayBestPerformance, StringComparison.OrdinalIgnoreCase),
                 Apply = (id, s) =>
@@ -79,8 +88,9 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "CoreParking", Category = "power", Impact = Impact.Medium, Restart = RestartNeed.None,
-                Recommended = s => !s.IsLaptop,
+                Id = "CoreParking", Category = "power", Impact = Impact.Low, Restart = RestartNeed.None,
+                Recommended = s => false,
+                Preference = s => !DualCcdX3D(s),
                 // Algunos planes de otros programas limitan el rango y no admiten el 100 %
                 Available = s => { var v = Active(PowerCfg.SubProcessor, PowerCfg.CpMinCores); return !(v != null && v.Max.HasValue && v.Max.Value < 100); },
                 Detect = () => Active(PowerCfg.SubProcessor, PowerCfg.CpMinCores)?.AC == 100,
@@ -89,14 +99,15 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "PowerThrottling", Category = "power", Impact = Impact.Medium, Restart = RestartNeed.Reboot,
-                Recommended = s => !s.IsLaptop,
+                Id = "PowerThrottling", Category = "power", Impact = Impact.Low, Restart = RestartNeed.Reboot,
+                Recommended = s => false,
                 Reg = new[] { Dw(@"HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling", "PowerThrottlingOff", 1, null) },
             };
             yield return new Optimization
             {
-                Id = "Hibernate", Category = "power", Impact = Impact.Medium, Restart = RestartNeed.None,
-                Recommended = s => !s.IsLaptop,
+                Id = "Hibernate", Category = "power", Impact = Impact.Low, Restart = RestartNeed.None,
+                Recommended = s => !s.IsLaptop && LowDisk(s),
+                Preference = s => s.IsLaptop || !LowDisk(s),
                 Detect = () => !PowerCfg.HibernationEnabled(),
                 Apply = (id, s) =>
                 {
@@ -107,7 +118,7 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "PciAspm", Category = "power", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Id = "PciAspm", Category = "power", Impact = Impact.Low, Restart = RestartNeed.None,
                 Recommended = s => !s.IsLaptop,
                 Available = s => PowerCfg.QueryActive(PowerCfg.SubPciExpress, PowerCfg.PciAspm) != null,
                 Detect = () => PowerCfg.QueryActive(PowerCfg.SubPciExpress, PowerCfg.PciAspm)?.AC == 0,
@@ -173,7 +184,9 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "MMCSS", Category = "games", Impact = Impact.Medium, Restart = RestartNeed.Reboot,
+                Id = "MMCSS", Category = "games", Impact = Impact.Low, Restart = RestartNeed.Reboot,
+                Recommended = s => false,
+                Preference = s => true,
                 Reg = new[]
                 {
                     Dw(MmPath, "SystemResponsiveness", 10, 20),
@@ -202,7 +215,8 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "KeyRepeat", Category = "input", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Id = "KeyRepeat", Category = "input", Impact = Impact.Low, Restart = RestartNeed.None,
+                Preference = s => true,
                 Reg = new[]
                 {
                     R(@"HKCU\Control Panel\Keyboard", "KeyboardDelay", "0", Str, "1"),
@@ -250,7 +264,8 @@ namespace Velox.Core.Optimizations
         {
             yield return new Optimization
             {
-                Id = "Nagle", Category = "network", Impact = Impact.Medium, Restart = RestartNeed.Reboot,
+                Id = "Nagle", Category = "network", Impact = Impact.Low, Restart = RestartNeed.Reboot,
+                Preference = s => true,
                 Available = s => ActiveInterfaceKeys().Count > 0,
                 Detect = () =>
                 {
@@ -289,6 +304,7 @@ namespace Velox.Core.Optimizations
             {
                 Id = "BgApps", Category = "background", Impact = Impact.Medium, Restart = RestartNeed.None,
                 Recommended = s => s.RamTotalGB <= 16,
+                Preference = s => s.RamTotalGB > 16,
                 Reg = new[]
                 {
                     Dw(@"HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications", "GlobalUserDisabled", 1, 0).WhenMissing(0),
@@ -297,8 +313,9 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "EdgeBg", Category = "background", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Id = "EdgeBg", Category = "background", Impact = Impact.Low, Restart = RestartNeed.None,
                 Available = s => s.EdgeInstalled,
+                Recommended = s => !s.EdgeIsDefaultBrowser,
                 Reg = new[]
                 {
                     Dw(@"HKLM\SOFTWARE\Policies\Microsoft\Edge", "StartupBoostEnabled", 0, null),
@@ -374,9 +391,10 @@ namespace Velox.Core.Optimizations
             };
             yield return new Optimization
             {
-                Id = "SysMain", Category = "background", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Id = "SysMain", Category = "background", Impact = Impact.Low, Restart = RestartNeed.None,
                 Available = s => Services.GetStartInfo("SysMain") != null,
-                Recommended = s => s.DiskType == "SSD",
+                Recommended = s => false,
+                Preference = s => s.DiskType != "HDD",
                 Detect = () => Services.IsDisabledOrMissing("SysMain"),
                 Apply = (id, s) => Tracked.SetService(id, "SysMain", ServiceMode.Disabled),
                 Default = s => { Services.SetStart("SysMain", ServiceMode.Auto); Services.TryStart("SysMain"); },
@@ -403,6 +421,7 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "UnusedServices", Category = "background", Impact = Impact.Low, Restart = RestartNeed.None,
+                Preference = s => true,
                 Available = s => UnusedServiceNames.Any(Services.Exists),
                 Detect = () => UnusedServiceNames.All(Services.IsDisabledOrMissing),
                 Apply = (id, s) =>
@@ -427,7 +446,9 @@ namespace Velox.Core.Optimizations
         {
             yield return new Optimization
             {
-                Id = "Animations", Category = "interface", Impact = Impact.Medium, Restart = RestartNeed.Logoff,
+                Id = "Animations", Category = "interface", Impact = Impact.Low, Restart = RestartNeed.Logoff,
+                Recommended = LowEnd,
+                Preference = s => !LowEnd(s),
                 Reg = new[]
                 {
                     R(@"HKCU\Control Panel\Desktop\WindowMetrics", "MinAnimate", "0", Str, "1").WhenMissing("1"),
@@ -445,13 +466,15 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "Transparency", Category = "interface", Impact = Impact.Low, Restart = RestartNeed.None,
-                Recommended = s => !s.HasDedicatedGpu || s.RamTotalGB <= 8,
+                Recommended = LowEnd,
+                Preference = s => !LowEnd(s),
                 Reg = new[] { Dw(@"HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "EnableTransparency", 0, 1).WhenMissing(1) },
                 Sync = () => Spi.BroadcastSettingChange("ImmersiveColorSet"),
             };
             yield return new Optimization
             {
                 Id = "MenuDelay", Category = "interface", Impact = Impact.Low, Restart = RestartNeed.None,
+                Preference = s => true,
                 Reg = new[] { R(@"HKCU\Control Panel\Desktop", "MenuShowDelay", "50", Str, "400").WhenMissing("400") },
                 Sync = SyncMenuDelay,
             };

@@ -73,6 +73,8 @@ namespace Velox.Core.Scan
         public bool Hvci { get; set; }
         public bool PerfCountersOff { get; set; }
         public bool EdgeInstalled { get; set; }
+        /// <summary>Edge es el navegador predeterminado (entonces su precarga sí es útil).</summary>
+        public bool EdgeIsDefaultBrowser { get; set; }
         public bool OtherAccount { get; set; }
         public string ShellUser { get; set; }
 
