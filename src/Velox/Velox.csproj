@@ -12,7 +12,7 @@
     <ApplicationIcon>Assets\Velox.ico</ApplicationIcon>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Product>Velox</Product>
     <Company>Velox</Company>
     <Description>Velox - Windows performance optimizer</Description>

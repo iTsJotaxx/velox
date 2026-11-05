@@ -26,6 +26,7 @@
 - **Procesos y juegos**: cierra programas, sube la prioridad u optimiza un juego para siempre (prioridad alta y GPU de alto rendimiento cada vez que se abre).
 - **Diagnósticos de Windows**: SFC, DISM, comprobación de disco, salud de discos, prueba de memoria, DirectX, informes de batería y energía, monitor de confiabilidad, ping y jitter, información de red, vaciar DNS y restablecer la red.
 - **Herramientas**: medidor de Hz del ratón, liberar memoria en espera, limpiar temporales, punto de restauración, reiniciar el Explorador y deshacer todo.
+- **Actualizador integrado** (Ajustes): comprueba la última release de GitHub, descarga `Velox.exe`, verifica su SHA-256 y que sea de verdad un Velox más nuevo, se reemplaza y se reinicia.
 - **Español e inglés**, se cambia al instante.
 - Un solo `.exe` pequeño que funciona en cualquier Windows 10/11 sin instalar nada.
 
@@ -43,6 +44,10 @@
 3. La primera vez SmartScreen puede avisar de una app sin firmar: elige *Más información → Ejecutar de todas formas*.
 
 Requisitos: Windows 10 u 11 de 64 bits. .NET Framework 4.8 ya viene con Windows.
+
+## Actualizar
+
+Abre *Ajustes → Actualizar Velox*. Velox solo descarga de las releases oficiales de este repositorio, comprueba la suma SHA-256 publicada junto al archivo, que el archivo sea Velox y más nuevo que el instalado, y entonces se reemplaza y se reinicia. Las versiones anteriores a la 1.2.0 no tienen actualizador: descarga la 1.2.0 una vez desde la página de releases.
 
 ## Cómo se deshacen los cambios
 

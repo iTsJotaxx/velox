@@ -33,6 +33,7 @@
 - **Processes & games**: end apps, raise priority, or optimize a game permanently (high CPU priority + high-performance GPU every time it starts).
 - **Windows diagnostics**: SFC, DISM, disk check, disk health, memory test, DirectX, battery and energy reports, reliability monitor, ping/jitter test, network info, DNS flush and network reset.
 - **Tools**: mouse polling-rate meter, free standby memory, clean temporary files, restore point, restart Explorer, undo everything.
+- **Built-in updater** (Settings): checks the latest GitHub release, downloads `Velox.exe`, verifies its SHA-256 and that it really is a newer Velox, replaces itself and restarts.
 - **English and Spanish**, switchable instantly.
 - A single small `.exe` that runs on any Windows 10/11 with nothing to install.
 
@@ -54,6 +55,10 @@
 3. Windows SmartScreen may warn about an unsigned app the first time: choose *More info → Run anyway*.
 
 Requirements: Windows 10 or 11 (64-bit). .NET Framework 4.8 is already part of Windows.
+
+## Updating
+
+Open *Settings → Update Velox*. Velox only downloads from the official releases of this repository, checks the SHA-256 published next to the file, checks that the file is Velox and newer than the installed version, then swaps itself and restarts. Versions before 1.2.0 have no updater: download 1.2.0 once from the releases page.
 
 ## How undo works
 

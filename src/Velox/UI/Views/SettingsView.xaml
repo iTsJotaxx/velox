@@ -78,6 +78,27 @@
         </Grid>
       </Border>
 
+      <!-- Actualización de Velox -->
+      <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE895;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+          <StackPanel Grid.Column="1" Margin="14,0,16,0" VerticalAlignment="Center">
+            <TextBlock Text="{DynamicResource ui.upd.title}" FontSize="14" FontWeight="SemiBold"/>
+            <TextBlock x:Name="TxtUpdVersion" Style="{StaticResource Caption}" Margin="0,3,0,0"/>
+            <TextBlock x:Name="TxtUpdStatus" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,6,0,0"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button x:Name="BtnUpdCheck" Style="{StaticResource BtnBase}" Content="{DynamicResource ui.upd.check}" Click="UpdCheck_Click"/>
+            <Button x:Name="BtnUpdate" Style="{StaticResource BtnPrimary}" Margin="8,0,0,0" Visibility="Collapsed" Click="Update_Click"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
       <!-- Acerca de -->
       <Border Margin="0,14,0,0" CornerRadius="14" Background="{StaticResource HeroGradient}" BorderBrush="#2A3150" BorderThickness="1" Padding="24,22">
         <Grid>

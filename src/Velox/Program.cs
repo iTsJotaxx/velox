@@ -18,8 +18,15 @@ namespace Velox
 #else
             const string instanceName = @"Global\Velox_SingleInstance";
 #endif
+            bool afterUpdate = Array.Exists(args, a => a.Equals("--after-update", StringComparison.OrdinalIgnoreCase));
             using (var mutex = new Mutex(true, instanceName, out bool createdNew))
             {
+                if (!createdNew && afterUpdate)
+                {
+                    // Tras actualizar, la versión anterior todavía se está cerrando: se espera a que suelte la instancia
+                    try { createdNew = mutex.WaitOne(20000); }
+                    catch (AbandonedMutexException) { createdNew = true; }
+                }
                 if (!createdNew)
                 {
                     NativeWindowActivator.ActivateExisting("Velox");
@@ -29,6 +36,7 @@ namespace Velox
                 AppPaths.Initialize();
                 Log.Initialize();
                 Log.Info("=== Velox " + AppInfo.Version + " ===");
+                Core.Update.Updater.CleanupOld();
 
                 // --page=optimizations abre directamente esa página (útil para atajos y capturas)
                 foreach (var a in args)

@@ -270,4 +270,32 @@
   <sys:String x:Key="ui.drv.vendorTitle">Gráfica: {0}</sys:String>
   <sys:String x:Key="ui.drv.vendorText">Para las gráficas {0} lo más seguro es su herramienta oficial, que detecta el modelo exacto. Driver instalado: {1}.</sys:String>
   <sys:String x:Key="ui.drv.vendorButton">Abrir herramienta de {0}</sys:String>
+  <!-- Actualizar Velox -->
+  <sys:String x:Key="ui.upd.title">Actualizar Velox</sys:String>
+  <sys:String x:Key="ui.upd.current">Versión instalada: {0}</sys:String>
+  <sys:String x:Key="ui.upd.checking">Buscando la última versión en GitHub...</sys:String>
+  <sys:String x:Key="ui.upd.notChecked">Pulsa «Buscar actualización» para comprobar si hay una versión nueva.</sys:String>
+  <sys:String x:Key="ui.upd.upToDate">Tienes la última versión ({0}).</sys:String>
+  <sys:String x:Key="ui.upd.available">Hay una versión nueva: {0}.</sys:String>
+  <sys:String x:Key="ui.upd.checkFailed">No se pudo comprobar: {0}</sys:String>
+  <sys:String x:Key="ui.upd.check">Buscar actualización</sys:String>
+  <sys:String x:Key="ui.upd.update">Actualizar a la {0}</sys:String>
+  <sys:String x:Key="ui.upd.confirmTitle">Actualizar a Velox {0}</sys:String>
+  <sys:String x:Key="ui.upd.confirmText">Velox descargará esa versión de las releases oficiales de GitHub, comprobará que el archivo es el correcto y se reiniciará con la versión nueva. Tus copias de seguridad y ajustes se conservan.</sys:String>
+  <sys:String x:Key="ui.upd.confirmOk">Actualizar</sys:String>
+  <sys:String x:Key="ui.upd.starting">Descargando Velox {0}...</sys:String>
+  <sys:String x:Key="ui.upd.downloading">Descargando Velox {0}: {1} %</sys:String>
+  <sys:String x:Key="ui.upd.verifying">Verificando el archivo descargado...</sys:String>
+  <sys:String x:Key="ui.upd.applying">Instalando la actualización...</sys:String>
+  <sys:String x:Key="ui.upd.failedTitle">No se pudo actualizar</sys:String>
+  <sys:String x:Key="ui.upd.err.network">No se pudo conectar con GitHub: {0}</sys:String>
+  <sys:String x:Key="ui.upd.err.noRelease">Todavía no hay ninguna versión publicada en GitHub.</sys:String>
+  <sys:String x:Key="ui.upd.err.badRelease">La última versión publicada no tiene el formato esperado.</sys:String>
+  <sys:String x:Key="ui.upd.err.badUrl">La descarga no viene de las releases oficiales de Velox en GitHub, así que se ha rechazado.</sys:String>
+  <sys:String x:Key="ui.upd.err.hash">El archivo descargado no coincide con su suma de verificación (SHA-256). Se ha descartado.</sys:String>
+  <sys:String x:Key="ui.upd.err.size">El archivo descargado tiene un tamaño inesperado o está incompleto. Se ha descartado.</sys:String>
+  <sys:String x:Key="ui.upd.err.identity">El archivo descargado no es la versión de Velox esperada. Se ha descartado.</sys:String>
+  <sys:String x:Key="ui.upd.err.notNewer">No hay una versión más nueva que instalar.</sys:String>
+  <sys:String x:Key="ui.upd.err.replace">No se pudo reemplazar Velox por la versión nueva (se ha dejado la actual): {0}</sys:String>
+  <sys:String x:Key="ui.upd.err.restart">Velox se ha actualizado, pero no se pudo abrir la versión nueva sola ({0}). Ábrela tú desde su acceso o desde el archivo Velox.exe.</sys:String>
 </ResourceDictionary>
