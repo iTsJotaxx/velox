@@ -12,7 +12,7 @@ namespace Velox.Localization
     /// </summary>
     public static class Loc
     {
-        public static readonly string[] Files = { "UI", "Opts", "Tools", "Diag", "Findings" };
+        public static readonly string[] Files = { "UI", "Opts", "Tools", "Diag", "Findings", "Drivers" };
         public static readonly string[] Supported = { "es", "en" };
 
         static Dictionary<string, string> _strings = new Dictionary<string, string>();

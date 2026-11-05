@@ -28,6 +28,8 @@ namespace Velox.UI
         public bool IsBusy { get => _busy; private set { if (Set(ref _busy, value)) Raise(nameof(IsIdle)); } }
         public bool IsIdle => !_busy;
         public string BusyText { get => _busyText; private set => Set(ref _busyText, value); }
+        /// <summary>Actualiza el texto de la tarea en curso (progreso de descargas, pasos...).</summary>
+        public void SetBusyText(string text) { if (IsBusy) BusyText = text; }
         public bool NeedsReboot { get => _needsReboot; set { if (Set(ref _needsReboot, value)) Raise(nameof(RestartNotice)); } }
         public bool NeedsLogoff { get => _needsLogoff; set { if (Set(ref _needsLogoff, value)) Raise(nameof(RestartNotice)); } }
         public string RestartNotice => NeedsReboot ? Loc.T("ui.notice.reboot") : NeedsLogoff ? Loc.T("ui.notice.logoff") : null;

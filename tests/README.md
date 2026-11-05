@@ -21,3 +21,11 @@ tests\Velox.IntegrationTests\bin\Release\net48\Velox.IntegrationTests.exe result
 Options: `--skip=Id1,Id2` skips optimizations. `RefreshRate` is always skipped because it would change your monitor's refresh rate.
 
 Exit code `0` means every optimization passed.
+
+## Driver tests
+
+`Velox.IntegrationTests.exe result.txt --drivers` runs the **real** driver update flow (search, restore point, download, signature check, install) with the same engine the UI uses, in two phases with automatic stop: Windows Update drivers first, then NVIDIA. It installs drivers for real, so only run it on your own machine, as administrator.
+
+Options: `--no-wu`, `--no-nvidia`, `--only=<text>` (only devices whose name contains the text) and `--rollback=<text>` (roll back the driver of the matching device instead of updating).
+
+Note: right after a driver change, Windows keeps reporting the old version through WMI (`Win32_PnPSignedDriver`) until the next restart. The real version is the PnP property `DEVPKEY_Device_DriverVersion`.

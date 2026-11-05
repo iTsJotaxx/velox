@@ -24,9 +24,15 @@ namespace Velox.IntegrationTests
 
         static void W(string s) { Console.WriteLine(s); Out.AppendLine(s); }
 
+        [STAThread]
         static int Main(string[] args)
         {
             string outFile = args.FirstOrDefault(a => !a.StartsWith("--"));
+            // Modo drivers: instala de verdad con el motor de la interfaz (ver DriversTest.cs)
+            if (args.Contains("--drivers"))
+                return DriversTest.Run(outFile, !args.Contains("--no-wu"), !args.Contains("--no-nvidia"),
+                    args.FirstOrDefault(a => a.StartsWith("--only="))?.Substring(7),
+                    args.FirstOrDefault(a => a.StartsWith("--rollback="))?.Substring(11));
             var skip = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "RefreshRate" };
             foreach (var a in args.Where(a => a.StartsWith("--skip=")))
                 foreach (var id in a.Substring(7).Split(',')) skip.Add(id.Trim());

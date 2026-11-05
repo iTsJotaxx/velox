@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Drivers (es) -->
+  <!-- Categorías -->
+  <sys:String x:Key="drv.cat.gpu">Gráficos</sys:String>
+  <sys:String x:Key="drv.cat.network">Red</sys:String>
+  <sys:String x:Key="drv.cat.audio">Audio</sys:String>
+  <sys:String x:Key="drv.cat.bluetooth">Bluetooth</sys:String>
+  <sys:String x:Key="drv.cat.storage">Almacenamiento</sys:String>
+  <sys:String x:Key="drv.cat.chipset">Chipset</sys:String>
+  <sys:String x:Key="drv.cat.input">Dispositivos de entrada</sys:String>
+  <sys:String x:Key="drv.cat.usb">USB</sys:String>
+  <sys:String x:Key="drv.cat.other">Otros</sys:String>
+
+  <!-- Progreso -->
+  <sys:String x:Key="drv.progress.searchWu">Buscando drivers en Windows Update...</sys:String>
+  <sys:String x:Key="drv.progress.searchNvidia">Buscando drivers en NVIDIA...</sys:String>
+  <sys:String x:Key="drv.progress.restorePoint">Creando punto de restauración...</sys:String>
+  <sys:String x:Key="drv.progress.wuDownload">Descargando {0} driver(s) de Windows Update...</sys:String>
+  <sys:String x:Key="drv.progress.wuInstall">Instalando {0} driver(s) de Windows Update...</sys:String>
+
+  <!-- Avisos de la búsqueda -->
+  <sys:String x:Key="drv.warn.wuFailed">No se pudo consultar Windows Update: {0}</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaFailed">No se pudo consultar NVIDIA: {0}</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaNoExactMatch">No se encontró en el catálogo de NVIDIA una coincidencia exacta y única para «{0}». Para evitar instalar un driver equivocado, no se ofrece ninguna actualización de NVIDIA.</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaVersionUnreadable">No se pudo leer la versión del driver instalado de «{0}». No se ofrece ninguna actualización de NVIDIA.</sys:String>
+
+  <!-- Errores -->
+  <sys:String x:Key="drv.err.badResponse">La respuesta o el enlace de descarga de NVIDIA no tiene el formato esperado.</sys:String>
+  <sys:String x:Key="drv.err.badHost">Descarga rechazada: «{0}» no es un servidor oficial de descargas de NVIDIA.</sys:String>
+  <sys:String x:Key="drv.err.incomplete">La descarga quedó incompleta ({0} de {1} MB).</sys:String>
+
+  <!-- Motivos de fallo (van dentro de drv.msg.failed) -->
+  <sys:String x:Key="drv.reason.noPayload">faltan los datos internos de la actualización</sys:String>
+  <sys:String x:Key="drv.reason.firmware">parece un firmware o BIOS y Velox nunca los instala</sys:String>
+  <sys:String x:Key="drv.reason.downloadCode">la descarga falló (código {0}, {1})</sys:String>
+  <sys:String x:Key="drv.reason.installCode">la instalación falló (código {0}, {1})</sys:String>
+
+  <!-- Resultados -->
+  <sys:String x:Key="drv.msg.installed">Instalado: {0} (versión {1})</sys:String>
+  <sys:String x:Key="drv.msg.failed">No se pudo instalar {0}: {1}</sys:String>
+  <sys:String x:Key="drv.msg.busy">Ya hay una instalación de drivers en curso.</sys:String>
+  <sys:String x:Key="drv.msg.cancelled">Instalación cancelada.</sys:String>
+  <sys:String x:Key="drv.msg.restorePointFailed">No se pudo crear el punto de restauración. La instalación continúa sin él.</sys:String>
+  <sys:String x:Key="drv.msg.signatureInvalid">La firma digital del instalador no es válida. Se ha borrado el archivo y no se ha instalado nada.</sys:String>
+  <sys:String x:Key="drv.msg.signerWrong">El instalador no está firmado por NVIDIA Corporation. Se ha borrado el archivo y no se ha instalado nada.</sys:String>
+  <sys:String x:Key="drv.msg.verifying">Verificando la firma digital del instalador...</sys:String>
+  <sys:String x:Key="drv.msg.downloading">Descargando {0}: {1} % ({2})</sys:String>
+  <sys:String x:Key="drv.msg.noSpace">No hay espacio libre suficiente para el instalador (hacen falta unos {0} GB).</sys:String>
+  <sys:String x:Key="drv.msg.installingNvidia">Instalando el driver de NVIDIA (puede tardar varios minutos; la pantalla puede parpadear)...</sys:String>
+  <sys:String x:Key="drv.msg.nvidiaExit">el instalador de NVIDIA terminó con el código {0}. El archivo sigue en «{1}» por si quieres abrirlo a mano.</sys:String>
+  <sys:String x:Key="drv.msg.nvidiaTimeout">el instalador de NVIDIA tardó demasiado y se dejó de esperar.</sys:String>
+  <sys:String x:Key="drv.msg.fileKept">El instalador descargado sigue en «{0}» por si quieres abrirlo a mano.</sys:String>
+
+  <!-- Volver al driver anterior -->
+  <sys:String x:Key="drv.msg.rollbackDone">«{0}» ha vuelto a su driver anterior.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackDoneReboot">«{0}» ha vuelto a su driver anterior. Reinicia el equipo para terminar.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackNone">«{0}» no tiene un driver anterior guardado al que volver.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackFailed">No se pudo volver al driver anterior de «{0}» (error de Windows {1}).</sys:String>
+  <sys:String x:Key="drv.msg.rollbackNoDevice">No se ha indicado qué dispositivo revertir.</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Drivers (en) -->
+  <!-- Categories -->
+  <sys:String x:Key="drv.cat.gpu">Graphics</sys:String>
+  <sys:String x:Key="drv.cat.network">Network</sys:String>
+  <sys:String x:Key="drv.cat.audio">Audio</sys:String>
+  <sys:String x:Key="drv.cat.bluetooth">Bluetooth</sys:String>
+  <sys:String x:Key="drv.cat.storage">Storage</sys:String>
+  <sys:String x:Key="drv.cat.chipset">Chipset</sys:String>
+  <sys:String x:Key="drv.cat.input">Input devices</sys:String>
+  <sys:String x:Key="drv.cat.usb">USB</sys:String>
+  <sys:String x:Key="drv.cat.other">Other</sys:String>
+
+  <!-- Progress -->
+  <sys:String x:Key="drv.progress.searchWu">Searching Windows Update for drivers...</sys:String>
+  <sys:String x:Key="drv.progress.searchNvidia">Searching NVIDIA for drivers...</sys:String>
+  <sys:String x:Key="drv.progress.restorePoint">Creating a restore point...</sys:String>
+  <sys:String x:Key="drv.progress.wuDownload">Downloading {0} driver(s) from Windows Update...</sys:String>
+  <sys:String x:Key="drv.progress.wuInstall">Installing {0} driver(s) from Windows Update...</sys:String>
+
+  <!-- Search warnings -->
+  <sys:String x:Key="drv.warn.wuFailed">Could not check Windows Update: {0}</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaFailed">Could not check NVIDIA: {0}</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaNoExactMatch">NVIDIA's catalog has no single exact match for "{0}". To avoid installing the wrong driver, no NVIDIA update is offered.</sys:String>
+  <sys:String x:Key="drv.warn.nvidiaVersionUnreadable">Could not read the installed driver version of "{0}". No NVIDIA update is offered.</sys:String>
+
+  <!-- Errors -->
+  <sys:String x:Key="drv.err.badResponse">NVIDIA's response or download link is not in the expected format.</sys:String>
+  <sys:String x:Key="drv.err.badHost">Download rejected: "{0}" is not an official NVIDIA download server.</sys:String>
+  <sys:String x:Key="drv.err.incomplete">The download is incomplete ({0} of {1} MB).</sys:String>
+
+  <!-- Failure reasons (used inside drv.msg.failed) -->
+  <sys:String x:Key="drv.reason.noPayload">the update's internal data is missing</sys:String>
+  <sys:String x:Key="drv.reason.firmware">it looks like firmware or BIOS, which Velox never installs</sys:String>
+  <sys:String x:Key="drv.reason.downloadCode">the download failed (code {0}, {1})</sys:String>
+  <sys:String x:Key="drv.reason.installCode">the installation failed (code {0}, {1})</sys:String>
+
+  <!-- Results -->
+  <sys:String x:Key="drv.msg.installed">Installed: {0} (version {1})</sys:String>
+  <sys:String x:Key="drv.msg.failed">Could not install {0}: {1}</sys:String>
+  <sys:String x:Key="drv.msg.busy">A driver installation is already in progress.</sys:String>
+  <sys:String x:Key="drv.msg.cancelled">Installation cancelled.</sys:String>
+  <sys:String x:Key="drv.msg.restorePointFailed">Could not create a restore point. The installation continues without one.</sys:String>
+  <sys:String x:Key="drv.msg.signatureInvalid">The installer's digital signature is not valid. The file was deleted and nothing was installed.</sys:String>
+  <sys:String x:Key="drv.msg.signerWrong">The installer is not signed by NVIDIA Corporation. The file was deleted and nothing was installed.</sys:String>
+  <sys:String x:Key="drv.msg.verifying">Verifying the installer's digital signature...</sys:String>
+  <sys:String x:Key="drv.msg.downloading">Downloading {0}: {1}% ({2})</sys:String>
+  <sys:String x:Key="drv.msg.noSpace">Not enough free disk space for the installer (about {0} GB needed).</sys:String>
+  <sys:String x:Key="drv.msg.installingNvidia">Installing the NVIDIA driver (this can take several minutes and the screen may flicker)...</sys:String>
+  <sys:String x:Key="drv.msg.nvidiaExit">the NVIDIA installer exited with code {0}. The file is still at "{1}" in case you want to run it manually.</sys:String>
+  <sys:String x:Key="drv.msg.nvidiaTimeout">the NVIDIA installer took too long and Velox stopped waiting.</sys:String>
+  <sys:String x:Key="drv.msg.fileKept">The downloaded installer is still at "{0}" in case you want to run it manually.</sys:String>
+
+  <!-- Roll back to the previous driver -->
+  <sys:String x:Key="drv.msg.rollbackDone">"{0}" is back on its previous driver.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackDoneReboot">"{0}" is back on its previous driver. Restart the PC to finish.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackNone">"{0}" has no previous driver saved to go back to.</sys:String>
+  <sys:String x:Key="drv.msg.rollbackFailed">Could not roll back the driver of "{0}" (Windows error {1}).</sys:String>
+  <sys:String x:Key="drv.msg.rollbackNoDevice">No device was specified for the rollback.</sys:String>
+</ResourceDictionary>

@@ -68,6 +68,7 @@
             <RadioButton x:Name="NavOptimizations" Style="{StaticResource NavItem}" Tag="&#xE945;" Content="{DynamicResource ui.nav.optimizations}" Click="Nav_Click" CommandParameter="optimizations"/>
             <RadioButton x:Name="NavStartup" Style="{StaticResource NavItem}" Tag="&#xE7E8;" Content="{DynamicResource ui.nav.startup}" Click="Nav_Click" CommandParameter="startup"/>
             <RadioButton x:Name="NavProcesses" Style="{StaticResource NavItem}" Tag="&#xE7FC;" Content="{DynamicResource ui.nav.processes}" Click="Nav_Click" CommandParameter="processes"/>
+            <RadioButton x:Name="NavDrivers" Style="{StaticResource NavItem}" Tag="&#xE772;" Content="{DynamicResource ui.nav.drivers}" Click="Nav_Click" CommandParameter="drivers"/>
             <RadioButton x:Name="NavDiagnostics" Style="{StaticResource NavItem}" Tag="&#xE9D9;" Content="{DynamicResource ui.nav.diagnostics}" Click="Nav_Click" CommandParameter="diagnostics"/>
             <RadioButton x:Name="NavTools" Style="{StaticResource NavItem}" Tag="&#xE90F;" Content="{DynamicResource ui.nav.tools}" Click="Nav_Click" CommandParameter="tools"/>
             <TextBlock Text="{DynamicResource ui.nav.section2}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,16,0,8"/>

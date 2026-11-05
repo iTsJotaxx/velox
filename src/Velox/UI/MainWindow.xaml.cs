@@ -74,6 +74,7 @@ namespace Velox.UI
                 case "optimizations": return new OptimizationsView();
                 case "startup": return new StartupView();
                 case "processes": return new ProcessesView();
+                case "drivers": return new DriversView();
                 case "diagnostics": return new DiagnosticsView();
                 case "tools": return new ToolsView();
                 case "log": return new LogView();
@@ -89,6 +90,7 @@ namespace Velox.UI
                 case "optimizations": return NavOptimizations;
                 case "startup": return NavStartup;
                 case "processes": return NavProcesses;
+                case "drivers": return NavDrivers;
                 case "diagnostics": return NavDiagnostics;
                 case "tools": return NavTools;
                 case "log": return NavLog;
