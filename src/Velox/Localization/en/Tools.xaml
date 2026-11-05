@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Tools (en) -->
+  <!-- Scan steps -->
+  <sys:String x:Key="scan.step.os">Reading operating system and memory...</sys:String>
+  <sys:String x:Key="scan.step.cpu">Reading processor...</sys:String>
+  <sys:String x:Key="scan.step.gpu">Reading graphics card and displays...</sys:String>
+  <sys:String x:Key="scan.step.disk">Detecting device type and disks...</sys:String>
+  <sys:String x:Key="scan.step.power">Reading power and security settings...</sys:String>
+  <sys:String x:Key="scan.step.procs">Checking background programs...</sys:String>
+
+  <!-- Startup program sources -->
+  <sys:String x:Key="startup.source.user">User</sys:String>
+  <sys:String x:Key="startup.source.all">All users</sys:String>
+  <sys:String x:Key="startup.source.all32">All users (32-bit)</sys:String>
+  <sys:String x:Key="startup.source.folderUser">Startup folder (user)</sys:String>
+  <sys:String x:Key="startup.source.folderAll">Startup folder (all users)</sys:String>
+
+  <!-- Process priorities -->
+  <sys:String x:Key="prio.normal">Normal</sys:String>
+  <sys:String x:Key="prio.high">High</sys:String>
+  <sys:String x:Key="prio.abovenormal">Above normal</sys:String>
+  <sys:String x:Key="prio.belownormal">Below normal</sys:String>
+  <sys:String x:Key="prio.idle">Low</sys:String>
+  <sys:String x:Key="prio.realtime">Real time</sys:String>
+
+  <!-- Tool messages and errors -->
+  <sys:String x:Key="tools.err.protectedKill">“{0}” is a system process and cannot be closed from here.</sys:String>
+  <sys:String x:Key="tools.err.protectedPriority">“{0}” is a system process and its priority cannot be changed from here.</sys:String>
+  <sys:String x:Key="tools.err.gamePath">The path of this process's executable cannot be read.</sys:String>
+  <sys:String x:Key="tools.err.memRejected">Windows rejected the operation (NTSTATUS 0x{0}).</sys:String>
+  <sys:String x:Key="tools.restore.created">Restore point created.</sys:String>
+  <sys:String x:Key="tools.restore.skipped">Windows did not create a new restore point because one from the last 24 hours already exists. That one will serve as your starting point.</sys:String>
+  <sys:String x:Key="tools.restore.failed">The restore point could not be created: {0}</sys:String>
+  <sys:String x:Key="tools.restore.disabled">System Protection is turned off by a Windows policy.</sys:String>
+  <sys:String x:Key="tools.restore.timeout">Windows took more than 4 minutes to create the restore point; Velox stopped waiting.</sys:String>
+  <sys:String x:Key="tools.restore.errCode">Windows returned error {0}. Check that System Protection is turned on for the system drive.</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,102 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Opts (es) -->
+
+  <!-- Categorías -->
+  <sys:String x:Key="cat.power">Energía y procesador</sys:String>
+  <sys:String x:Key="cat.power.desc">Planes de energía y ajustes de la CPU para que el equipo rinda sin frenarse.</sys:String>
+  <sys:String x:Key="cat.games">Juegos y FPS</sys:String>
+  <sys:String x:Key="cat.games.desc">Ajustes de pantalla, GPU y prioridades pensados para ganar fluidez en los juegos.</sys:String>
+  <sys:String x:Key="cat.input">Ratón y teclado</sys:String>
+  <sys:String x:Key="cat.input.desc">Respuesta más directa de los periféricos y menos interrupciones mientras juegas.</sys:String>
+  <sys:String x:Key="cat.network">Red</sys:String>
+  <sys:String x:Key="cat.network.desc">Menor latencia y menos tráfico innecesario en tu conexión.</sys:String>
+  <sys:String x:Key="cat.background">Segundo plano y RAM</sys:String>
+  <sys:String x:Key="cat.background.desc">Servicios, tareas y apps que consumen memoria, CPU o disco sin que lo notes.</sys:String>
+  <sys:String x:Key="cat.interface">Interfaz de Windows</sys:String>
+  <sys:String x:Key="cat.interface.desc">Efectos visuales, animaciones y menús para que Windows se sienta más ágil.</sys:String>
+
+  <!-- Mensajes de error -->
+  <sys:String x:Key="err.powerRange">El plan de energía «{0}» no permite este valor: su rango va de {1} a {2}. No se ha cambiado nada.</sys:String>
+  <sys:String x:Key="err.powerPlanCreate">Windows no permite crear el plan Máximo rendimiento en este equipo (suele pasar con «Modern Standby»). Usa «Modo de energía: máximo rendimiento».</sys:String>
+  <sys:String x:Key="err.powerPlanActivate">No se pudo activar el plan Máximo rendimiento.</sys:String>
+  <sys:String x:Key="err.powerMode">Windows rechazó el cambio de modo de energía (¿está activo otro plan distinto de Equilibrado?).</sys:String>
+  <sys:String x:Key="err.refresh">No se pudo poner {0} a {1} Hz (código {2}).</sys:String>
+  <sys:String x:Key="err.widgets">Windows protege este ajuste frente a programas externos. Quita los Widgets a mano en Configuración › Personalización › Barra de tareas › Widgets.</sys:String>
+  <sys:String x:Key="err.widgetsRevert">Windows protege este ajuste frente a programas externos. Vuelve a activar los Widgets en Configuración › Personalización › Barra de tareas › Widgets.</sys:String>
+
+  <!-- Energía y procesador -->
+  <sys:String x:Key="opt.PowerPlan.name">Plan de energía «Máximo rendimiento»</sys:String>
+  <sys:String x:Key="opt.PowerPlan.desc">Activa el plan oculto de Windows que mantiene la CPU a plena frecuencia, sin aparcar núcleos ni dormir discos o PCI Express. Menos latencia y FPS más estables a cambio de más consumo. En portátiles es mejor la opción «Modo de energía».</sys:String>
+  <sys:String x:Key="opt.PowerMode.name">Modo de energía: máximo rendimiento</sys:String>
+  <sys:String x:Key="opt.PowerMode.desc">Pone el control «Modo de energía» de Configuración › Sistema › Energía en «Máximo rendimiento». Es la opción adecuada para portátiles enchufados. Solo actúa con el plan Equilibrado y se aplica a la fuente de energía actual (cargador o batería).</sys:String>
+  <sys:String x:Key="opt.CoreParking.name">Desactivar el aparcamiento de núcleos</sys:String>
+  <sys:String x:Key="opt.CoreParking.desc">Mantiene todos los núcleos de la CPU despiertos (mínimo de núcleos activos al 100 %) cuando el equipo está enchufado, para evitar microtirones cuando un juego pide CPU de golpe. Se aplica al plan de energía activo.</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.name">Desactivar Power Throttling</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.desc">Impide que Windows limite la CPU de los programas en segundo plano o minimizados (Discord, OBS, el navegador con música...) mientras juegas. En portátiles reduce algo la autonomía.</sys:String>
+  <sys:String x:Key="opt.Hibernate.name">Desactivar la hibernación</sys:String>
+  <sys:String x:Key="opt.Hibernate.desc">Elimina el archivo de hibernación (hiberfil.sys), que ocupa en el disco una parte importante de tu RAM: varios GB, o decenas en equipos con mucha memoria. También desactiva el Inicio rápido, así que el arranque puede tardar algo más. Dejarás de poder hibernar.</sys:String>
+  <sys:String x:Key="opt.PciAspm.name">PCI Express sin ahorro de energía</sys:String>
+  <sys:String x:Key="opt.PciAspm.desc">Evita que Windows ponga en reposo el enlace de la tarjeta gráfica y de los discos NVMe entre un uso y otro, lo que puede añadir una pequeña pausa al volver a necesitarlos. A cambio, el equipo gasta algo más de energía. Se aplica al plan de energía activo.</sys:String>
+
+  <!-- Juegos y FPS -->
+  <sys:String x:Key="opt.RefreshRate.name">Monitor a su frecuencia máxima (Hz)</sys:String>
+  <sys:String x:Key="opt.RefreshRate.desc">Muchos monitores de 120, 144 o 165 Hz vienen configurados a 60 Hz. Pone cada pantalla a la frecuencia más alta que admite en su resolución actual: más fotogramas visibles y menos latencia.</sys:String>
+  <sys:String x:Key="opt.GameMode.name">Modo de juego de Windows</sys:String>
+  <sys:String x:Key="opt.GameMode.desc">Windows da prioridad al juego en primer plano y evita que Windows Update instale controladores o reinicie mientras juegas.</sys:String>
+  <sys:String x:Key="opt.GameDVR.name">Desactivar la grabación en segundo plano (Game DVR)</sys:String>
+  <sys:String x:Key="opt.GameDVR.desc">Apaga la captura de la Xbox Game Bar, que puede grabar continuamente en segundo plano gastando GPU y disco. Si grabas clips con Win+Alt+R o Win+Alt+G, deja esta opción desactivada.</sys:String>
+  <sys:String x:Key="opt.HAGS.name">Programación de GPU acelerada por hardware</sys:String>
+  <sys:String x:Key="opt.HAGS.desc">La propia GPU gestiona su memoria de vídeo: menos carga de CPU y menos latencia. Es obligatoria para la generación de fotogramas de DLSS 3. Requiere una GPU moderna (NVIDIA GTX 10xx o superior, AMD RX 5000 o superior, Intel Arc). Si tras activarla notas tirones, desactívala.</sys:String>
+  <sys:String x:Key="opt.WindowedOpt.name">Optimizaciones para juegos en ventana</sys:String>
+  <sys:String x:Key="opt.WindowedOpt.desc">Los juegos DirectX 10/11 en ventana o en ventana sin bordes usan el modelo de presentación moderno (flip): menos latencia de entrada y compatibilidad con VRR (G-Sync/FreeSync) y HDR automático.</sys:String>
+  <sys:String x:Key="opt.MMCSS.name">Prioridad multimedia para juegos (MMCSS)</sys:String>
+  <sys:String x:Key="opt.MMCSS.desc">Sube la prioridad de CPU, GPU y disco que el programador multimedia de Windows da a los juegos, reserva menos CPU para tareas de fondo (del 20 % al 10 %) y quita el límite de paquetes de red durante la reproducción multimedia.</sys:String>
+
+  <!-- Ratón y teclado -->
+  <sys:String x:Key="opt.MouseAccel.name">Desactivar la aceleración del ratón</sys:String>
+  <sys:String x:Key="opt.MouseAccel.desc">Quita «Mejorar la precisión del puntero». El cursor se mueve exactamente lo que mueves el ratón, sin aceleración: puntería consistente y memoria muscular fiable. Si solo usas el touchpad quizá prefieras dejarla. Se aplica al instante.</sys:String>
+  <sys:String x:Key="opt.KeyRepeat.name">Respuesta de teclado más rápida</sys:String>
+  <sys:String x:Key="opt.KeyRepeat.desc">Retraso de repetición mínimo (250 ms en vez de 500 ms) y velocidad de repetición máxima (unas 30 por segundo): al mantener una tecla responde antes y repite más rápido. Se aplica al instante.</sys:String>
+  <sys:String x:Key="opt.AccessKeys.name">Desactivar Teclas de filtro y atajos de accesibilidad</sys:String>
+  <sys:String x:Key="opt.AccessKeys.desc">Apaga las Teclas de filtro (pueden ignorar o retrasar pulsaciones rápidas) y los atajos de Teclas especiales (Mayús 5 veces) y Teclas de alternancia, que interrumpen las partidas con ventanas emergentes. Si usas Teclas especiales a propósito, siguen funcionando: solo se quita el atajo.</sys:String>
+  <sys:String x:Key="opt.UsbSuspend.name">Desactivar la suspensión selectiva de USB</sys:String>
+  <sys:String x:Key="opt.UsbSuspend.desc">Evita que Windows ponga en reposo los puertos USB del ratón, el teclado o los auriculares, lo que puede causar retrasos al «despertar» o desconexiones. En portátiles solo se aplica con el cargador conectado.</sys:String>
+
+  <!-- Red -->
+  <sys:String x:Key="opt.Nagle.name">Menor latencia TCP (desactivar el algoritmo de Nagle)</sys:String>
+  <sys:String x:Key="opt.Nagle.desc">Envía al momento los paquetes TCP pequeños en lugar de agruparlos. Reduce el ping en juegos que usan TCP (MMO, algunos shooters y juegos de estrategia). No afecta a la velocidad de descarga. Se aplica a los adaptadores conectados ahora.</sys:String>
+  <sys:String x:Key="opt.DeliveryOpt.name">Desactivar el P2P de Windows Update</sys:String>
+  <sys:String x:Key="opt.DeliveryOpt.desc">Evita que Windows use tu conexión para enviar actualizaciones a otros equipos (Optimización de distribución). Libera subida y disco; las actualizaciones se siguen descargando con normalidad.</sys:String>
+
+  <!-- Segundo plano y RAM -->
+  <sys:String x:Key="opt.BgApps.name">Bloquear apps de la Tienda en segundo plano</sys:String>
+  <sys:String x:Key="opt.BgApps.desc">Impide que las apps de Microsoft Store (Fotos, Noticias, Tiempo, Correo...) sigan ejecutándose en segundo plano gastando RAM y CPU. Algunas apps de la Tienda dejarán de mostrar notificaciones mientras estén cerradas.</sys:String>
+  <sys:String x:Key="opt.EdgeBg.name">Edge sin precarga ni segundo plano</sys:String>
+  <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge deja de precargarse al iniciar Windows y de quedarse abierto en segundo plano al cerrarlo. Ahorra entre 150 y 400 MB de RAM. Edge mostrará el aviso «Tu organización administra el explorador»; es normal al usar directivas.</sys:String>
+  <sys:String x:Key="opt.Widgets.name">Desactivar los Widgets</sys:String>
+  <sys:String x:Key="opt.Widgets.desc">Quita el panel de Widgets (noticias y tiempo) de la barra de tareas y sus procesos WebView, que ocupan RAM aunque no lo abras. Si Windows protege la directiva, al menos se oculta el botón, que es lo que mantiene esos procesos abiertos.</sys:String>
+  <sys:String x:Key="opt.Tips.name">Sin sugerencias, anuncios ni apps promocionadas</sys:String>
+  <sys:String x:Key="opt.Tips.desc">Desactiva consejos, sugerencias del menú Inicio, anuncios y la instalación silenciosa de apps promocionadas. Menos descargas y procesos en segundo plano.</sys:String>
+  <sys:String x:Key="opt.Telemetry.name">Desactivar la telemetría y sus tareas</sys:String>
+  <sys:String x:Key="opt.Telemetry.desc">Desactiva el servicio de telemetría (DiagTrack), el enrutador de mensajes WAP y las tareas programadas de recopilación de datos, como CompatTelRunner, que provoca picos de CPU y disco. No afecta a Windows Update ni a la Tienda.</sys:String>
+  <sys:String x:Key="opt.SysMain.name">Desactivar SysMain (Superfetch)</sys:String>
+  <sys:String x:Key="opt.SysMain.desc">SysMain precarga en RAM las apps que más usas. En un SSD apenas aporta y a veces causa picos de uso de disco y CPU. Con disco duro mecánico (HDD) es mejor dejarlo activo.</sys:String>
+  <sys:String x:Key="opt.WSearch.name">Desactivar el indexador de búsqueda</sys:String>
+  <sys:String x:Key="opt.WSearch.desc">El indexador recorre tus archivos en segundo plano. Desactivarlo libera CPU y disco, pero la búsqueda de archivos en Inicio y en el Explorador será más lenta (Outlook no podrá buscar). Recomendado solo con disco duro mecánico.</sys:String>
+  <sys:String x:Key="opt.ActivityHistory.name">Desactivar el historial de actividad</sys:String>
+  <sys:String x:Key="opt.ActivityHistory.desc">Windows deja de registrar qué apps y archivos abres y de enviar ese historial a Microsoft. Pierdes la función «Línea de tiempo» y las sugerencias basadas en tu actividad reciente. Menos datos personales compartidos y algo menos de trabajo en segundo plano.</sys:String>
+  <sys:String x:Key="opt.UnusedServices.name">Desactivar servicios que casi nadie usa</sys:String>
+  <sys:String x:Key="opt.UnusedServices.desc">Apaga cuatro servicios que casi nadie necesita: mapas sin conexión (MapsBroker), fax, modo demostración de tienda (RetailDemo) y uso compartido de Windows Media Player en red. Ahorra un poco de RAM; si usas alguna de esas funciones, déjala activada.</sys:String>
+
+  <!-- Interfaz de Windows -->
+  <sys:String x:Key="opt.Animations.name">Quitar animaciones</sys:String>
+  <sys:String x:Key="opt.Animations.desc">Elimina las animaciones de ventanas, menús y barra de tareas. Todo aparece al instante y el sistema se siente más ágil, sobre todo en equipos modestos.</sys:String>
+  <sys:String x:Key="opt.Transparency.name">Quitar los efectos de transparencia</sys:String>
+  <sys:String x:Key="opt.Transparency.desc">Quita el efecto cristal (Mica y acrílico) de la barra de tareas, el menú Inicio y las ventanas. Ahorra algo de GPU, sobre todo con gráficos integrados.</sys:String>
+  <sys:String x:Key="opt.MenuDelay.name">Menús más rápidos</sys:String>
+  <sys:String x:Key="opt.MenuDelay.desc">Los submenús se abren a los 50 ms en vez de a los 400 ms al pasar el ratón por encima.</sys:String>
+  <sys:String x:Key="opt.SearchWeb.name">Búsqueda de Inicio sin resultados de internet</sys:String>
+  <sys:String x:Key="opt.SearchWeb.desc">Quita las sugerencias y los resultados web de Bing al buscar en el menú Inicio, de modo que las búsquedas son más rápidas y solo muestran tus apps y archivos. Se aplica al volver a iniciar sesión.</sys:String>
+</ResourceDictionary>

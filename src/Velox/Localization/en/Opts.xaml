@@ -1,0 +1,102 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Opts (en) -->
+
+  <!-- Categories -->
+  <sys:String x:Key="cat.power">Power and CPU</sys:String>
+  <sys:String x:Key="cat.power.desc">Power plans and CPU settings that keep your PC running at full speed.</sys:String>
+  <sys:String x:Key="cat.games">Games and FPS</sys:String>
+  <sys:String x:Key="cat.games.desc">Display, GPU and priority tweaks that make games run smoother.</sys:String>
+  <sys:String x:Key="cat.input">Mouse and keyboard</sys:String>
+  <sys:String x:Key="cat.input.desc">More direct input response and fewer interruptions while you play.</sys:String>
+  <sys:String x:Key="cat.network">Network</sys:String>
+  <sys:String x:Key="cat.network.desc">Lower latency and less needless traffic on your connection.</sys:String>
+  <sys:String x:Key="cat.background">Background and RAM</sys:String>
+  <sys:String x:Key="cat.background.desc">Services, tasks and apps that quietly use memory, CPU or disk.</sys:String>
+  <sys:String x:Key="cat.interface">Windows interface</sys:String>
+  <sys:String x:Key="cat.interface.desc">Visual effects, animations and menus, tuned so Windows feels snappier.</sys:String>
+
+  <!-- Error messages -->
+  <sys:String x:Key="err.powerRange">The power plan "{0}" does not allow this value: its range is {1} to {2}. Nothing was changed.</sys:String>
+  <sys:String x:Key="err.powerPlanCreate">Windows cannot create the Ultimate Performance plan on this PC (this usually happens with Modern Standby). Use "Power mode: best performance" instead.</sys:String>
+  <sys:String x:Key="err.powerPlanActivate">The Ultimate Performance plan could not be activated.</sys:String>
+  <sys:String x:Key="err.powerMode">Windows refused to change the power mode (is a plan other than Balanced active?).</sys:String>
+  <sys:String x:Key="err.refresh">Could not set {0} to {1} Hz (code {2}).</sys:String>
+  <sys:String x:Key="err.widgets">Windows protects this setting from external programs. Turn Widgets off manually in Settings › Personalization › Taskbar › Widgets.</sys:String>
+  <sys:String x:Key="err.widgetsRevert">Windows protects this setting from external programs. Turn Widgets back on in Settings › Personalization › Taskbar › Widgets.</sys:String>
+
+  <!-- Power and CPU -->
+  <sys:String x:Key="opt.PowerPlan.name">"Ultimate Performance" power plan</sys:String>
+  <sys:String x:Key="opt.PowerPlan.desc">Switches to the hidden Windows plan that keeps the CPU at full speed and never parks cores or puts disks and PCI Express to sleep. You get lower latency and steadier FPS in exchange for higher power use. On laptops, the "Power mode" option is a better fit.</sys:String>
+  <sys:String x:Key="opt.PowerMode.name">Power mode: best performance</sys:String>
+  <sys:String x:Key="opt.PowerMode.desc">Sets the "Power mode" control in Settings › System › Power to "Best performance". This is the right choice for a plugged-in laptop. It only works with the Balanced plan and applies to the current power source (charger or battery).</sys:String>
+  <sys:String x:Key="opt.CoreParking.name">Turn off CPU core parking</sys:String>
+  <sys:String x:Key="opt.CoreParking.desc">Keeps every CPU core awake (minimum active cores at 100%) while plugged in, which avoids micro-stutter when a game suddenly asks for lots of CPU. Applies to the active power plan.</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.name">Turn off Power Throttling</sys:String>
+  <sys:String x:Key="opt.PowerThrottling.desc">Stops Windows from slowing down background or minimized programs (Discord, OBS, a browser playing music...) while you game. On laptops it slightly reduces battery life.</sys:String>
+  <sys:String x:Key="opt.Hibernate.name">Turn off hibernation</sys:String>
+  <sys:String x:Key="opt.Hibernate.desc">Deletes the hibernation file (hiberfil.sys), which takes up a large share of your RAM size on disk: several GB, or tens of GB on PCs with lots of memory. It also turns off Fast Startup, so booting may take a little longer. You will no longer be able to hibernate.</sys:String>
+  <sys:String x:Key="opt.PciAspm.name">PCI Express without power saving</sys:String>
+  <sys:String x:Key="opt.PciAspm.desc">Stops Windows from putting the link to your graphics card and NVMe drives to sleep between uses, which can add a tiny delay when they are needed again. The cost is slightly higher power use. Applies to the active power plan.</sys:String>
+
+  <!-- Games and FPS -->
+  <sys:String x:Key="opt.RefreshRate.name">Monitor at its maximum refresh rate (Hz)</sys:String>
+  <sys:String x:Key="opt.RefreshRate.desc">Many 120, 144 or 165 Hz monitors are left running at 60 Hz. This sets each display to the highest rate it supports at its current resolution: more visible frames and lower latency.</sys:String>
+  <sys:String x:Key="opt.GameMode.name">Windows Game Mode</sys:String>
+  <sys:String x:Key="opt.GameMode.desc">Windows prioritizes the game in the foreground and keeps Windows Update from installing drivers or restarting while you play.</sys:String>
+  <sys:String x:Key="opt.GameDVR.name">Turn off background recording (Game DVR)</sys:String>
+  <sys:String x:Key="opt.GameDVR.desc">Turns off Xbox Game Bar capture, which can record in the background and use up GPU and disk. If you record clips with Win+Alt+R or Win+Alt+G, leave this one off.</sys:String>
+  <sys:String x:Key="opt.HAGS.name">Hardware-accelerated GPU scheduling</sys:String>
+  <sys:String x:Key="opt.HAGS.desc">The GPU manages its own video memory: less CPU load and lower latency. It is required for DLSS 3 frame generation. Needs a modern GPU (NVIDIA GTX 10-series or newer, AMD RX 5000 or newer, Intel Arc). If you notice stutter after enabling it, turn it off.</sys:String>
+  <sys:String x:Key="opt.WindowedOpt.name">Optimizations for windowed games</sys:String>
+  <sys:String x:Key="opt.WindowedOpt.desc">DirectX 10/11 games running in a window or borderless window use the modern flip presentation model: lower input latency, plus support for VRR (G-Sync/FreeSync) and Auto HDR.</sys:String>
+  <sys:String x:Key="opt.MMCSS.name">Multimedia priority for games (MMCSS)</sys:String>
+  <sys:String x:Key="opt.MMCSS.desc">Raises the CPU, GPU and disk priority that the Windows multimedia scheduler gives to games, reserves less CPU for background tasks (20% down to 10%) and removes the network packet limit during media playback.</sys:String>
+
+  <!-- Mouse and keyboard -->
+  <sys:String x:Key="opt.MouseAccel.name">Turn off mouse acceleration</sys:String>
+  <sys:String x:Key="opt.MouseAccel.desc">Turns off "Enhance pointer precision". The cursor moves exactly as far as your hand does, with no acceleration, so aim stays consistent and muscle memory stays reliable. If you only use a touchpad, you may prefer to leave it on. Takes effect immediately.</sys:String>
+  <sys:String x:Key="opt.KeyRepeat.name">Faster keyboard response</sys:String>
+  <sys:String x:Key="opt.KeyRepeat.desc">Shortest repeat delay (250 ms instead of 500 ms) and fastest repeat rate (about 30 per second): a held key starts repeating sooner and repeats faster. Takes effect immediately.</sys:String>
+  <sys:String x:Key="opt.AccessKeys.name">Turn off Filter Keys and accessibility shortcuts</sys:String>
+  <sys:String x:Key="opt.AccessKeys.desc">Turns off Filter Keys (which can ignore or delay quick key presses) and the Sticky Keys (Shift pressed 5 times) and Toggle Keys shortcuts, whose pop-ups interrupt games. If you use Sticky Keys on purpose, it keeps working: only the shortcut is removed.</sys:String>
+  <sys:String x:Key="opt.UsbSuspend.name">Turn off USB selective suspend</sys:String>
+  <sys:String x:Key="opt.UsbSuspend.desc">Stops Windows from putting the USB ports used by your mouse, keyboard or headset to sleep, which can cause lag on wake-up or random disconnects. On laptops it only applies while plugged in.</sys:String>
+
+  <!-- Network -->
+  <sys:String x:Key="opt.Nagle.name">Lower TCP latency (turn off Nagle's algorithm)</sys:String>
+  <sys:String x:Key="opt.Nagle.desc">Sends small TCP packets right away instead of bundling them together. Lowers ping in games that use TCP (MMOs, some shooters and strategy games). It does not affect download speed. Applies to the adapters connected right now.</sys:String>
+  <sys:String x:Key="opt.DeliveryOpt.name">Turn off Windows Update peer-to-peer sharing</sys:String>
+  <sys:String x:Key="opt.DeliveryOpt.desc">Stops Windows from using your connection to send updates to other PCs (Delivery Optimization). Frees up upload bandwidth and disk; updates still download normally.</sys:String>
+
+  <!-- Background and RAM -->
+  <sys:String x:Key="opt.BgApps.name">Block Store apps in the background</sys:String>
+  <sys:String x:Key="opt.BgApps.desc">Stops Microsoft Store apps (Photos, News, Weather, Mail...) from running in the background and using RAM and CPU. Some Store apps will stop showing notifications while they are closed.</sys:String>
+  <sys:String x:Key="opt.EdgeBg.name">Edge without preloading or background mode</sys:String>
+  <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge no longer preloads when Windows starts or stays running in the background after you close it. Saves 150 to 400 MB of RAM. Edge will show "Your browser is managed by your organization", which is normal when policies are used.</sys:String>
+  <sys:String x:Key="opt.Widgets.name">Turn off Widgets</sys:String>
+  <sys:String x:Key="opt.Widgets.desc">Removes the Widgets panel (news and weather) from the taskbar along with its WebView processes, which take up RAM even if you never open it. If Windows protects the policy, the button is at least hidden, which is what keeps those processes running.</sys:String>
+  <sys:String x:Key="opt.Tips.name">No tips, ads or promoted apps</sys:String>
+  <sys:String x:Key="opt.Tips.desc">Turns off tips, Start menu suggestions, ads and the silent installation of promoted apps. Fewer downloads and background processes.</sys:String>
+  <sys:String x:Key="opt.Telemetry.name">Turn off telemetry and its tasks</sys:String>
+  <sys:String x:Key="opt.Telemetry.desc">Turns off the telemetry service (DiagTrack), the WAP push message router and the scheduled data-collection tasks, such as CompatTelRunner, which causes CPU and disk spikes. It does not affect Windows Update or the Store.</sys:String>
+  <sys:String x:Key="opt.SysMain.name">Turn off SysMain (Superfetch)</sys:String>
+  <sys:String x:Key="opt.SysMain.desc">SysMain preloads your most-used apps into RAM. On an SSD it adds little and sometimes causes disk and CPU spikes. On a mechanical hard drive (HDD) it is better left on.</sys:String>
+  <sys:String x:Key="opt.WSearch.name">Turn off the search indexer</sys:String>
+  <sys:String x:Key="opt.WSearch.desc">The indexer scans your files in the background. Turning it off frees CPU and disk, but file search in Start and File Explorer gets slower (and Outlook can no longer search). Recommended only with a mechanical hard drive.</sys:String>
+  <sys:String x:Key="opt.ActivityHistory.name">Turn off activity history</sys:String>
+  <sys:String x:Key="opt.ActivityHistory.desc">Windows stops recording which apps and files you open and stops sending that history to Microsoft. You lose the Timeline feature and suggestions based on recent activity. Less personal data shared and a little less background work.</sys:String>
+  <sys:String x:Key="opt.UnusedServices.name">Turn off services almost nobody uses</sys:String>
+  <sys:String x:Key="opt.UnusedServices.desc">Turns off four services that most people never need: offline maps (MapsBroker), fax, store demo mode (RetailDemo) and Windows Media Player network sharing. Saves a little RAM; if you use any of those features, leave this off.</sys:String>
+
+  <!-- Windows interface -->
+  <sys:String x:Key="opt.Animations.name">Remove animations</sys:String>
+  <sys:String x:Key="opt.Animations.desc">Removes animations from windows, menus and the taskbar. Everything appears instantly and the system feels more responsive, especially on modest hardware.</sys:String>
+  <sys:String x:Key="opt.Transparency.name">Remove transparency effects</sys:String>
+  <sys:String x:Key="opt.Transparency.desc">Removes the glass effect (Mica and acrylic) from the taskbar, the Start menu and windows. Saves some GPU, especially with integrated graphics.</sys:String>
+  <sys:String x:Key="opt.MenuDelay.name">Faster menus</sys:String>
+  <sys:String x:Key="opt.MenuDelay.desc">Submenus open after 50 ms instead of 400 ms when you hover over them.</sys:String>
+  <sys:String x:Key="opt.SearchWeb.name">Start search without web results</sys:String>
+  <sys:String x:Key="opt.SearchWeb.desc">Removes Bing suggestions and web results from Start menu search, so searches are faster and only show your apps and files. Takes effect the next time you sign in.</sys:String>
+</ResourceDictionary>

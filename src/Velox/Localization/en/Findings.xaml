@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Findings (en) -->
+  <sys:String x:Key="find.otherAccount">Velox was opened with the account “{0}”, but the signed-in session belongs to “{1}”. Mouse, keyboard, startup and game settings would be applied to the other account: open it from your own account (it must be an administrator).</sys:String>
+  <sys:String x:Key="find.displayHz">The display {0} is running at {1} Hz but supports {2} Hz. Turn on “Monitor at its maximum refresh rate”.</sys:String>
+  <sys:String x:Key="find.battery">You are running on battery: plug in the charger before gaming, as Windows heavily limits the CPU and GPU on battery.</sys:String>
+  <sys:String x:Key="find.ramHigh">RAM usage is at {0}%. Close heavy programs or check the “Processes &amp; games” tab.</sys:String>
+  <sys:String x:Key="find.ramLow">There is only {0} GB of RAM: 16 GB is recommended for current games.</sys:String>
+  <sys:String x:Key="find.singleChannel">There is a single RAM module (single channel). With two identical modules (dual channel) minimum FPS improves noticeably.</sys:String>
+  <sys:String x:Key="find.xmp">Your RAM ({0}) is running at {1} MT/s. If your modules are rated faster, enable the XMP/EXPO profile in the BIOS: it usually gives 5 to 15% more FPS.</sys:String>
+  <sys:String x:Key="find.hvci">Memory integrity (core isolation) is on. It protects against malware but can cost 5-10% of FPS. Velox does not touch it: it is changed in Windows Security › Device security.</sys:String>
+  <sys:String x:Key="find.perfCounters">Windows performance counters are turned off (probably by another optimizer). It saves almost nothing and some monitoring tools stop showing data; Velox measures by other means.</sys:String>
+  <sys:String x:Key="find.hdd">Windows is installed on a mechanical hard drive. Moving to an SSD is the most noticeable upgrade you can make.</sys:String>
+  <sys:String x:Key="find.diskLow">Low disk space on {0} ({1} GB free, {2}%). Below 15% the system slows down.</sys:String>
+  <sys:String x:Key="find.diskHealth">The disk “{0}” reports its health status as: {1}. Back up your important data and check the disk with the manufacturer's tools.</sys:String>
+  <sys:String x:Key="find.health.warning">warning</sys:String>
+  <sys:String x:Key="find.health.unhealthy">unhealthy</sys:String>
+  <sys:String x:Key="find.health.unknown">unknown</sys:String>
+  <sys:String x:Key="find.hibernateLow">Hibernation is on and {0} has only {1}% free: the hibernation file (hiberfil.sys) takes several GB. If you do not use it, you can turn it off to get that space back.</sys:String>
+  <sys:String x:Key="find.uptime">The PC has gone {0} days without a restart. Use “Restart”, not “Shut down” (fast startup does not clean the system on shutdown).</sys:String>
+  <sys:String x:Key="find.driverOld">The driver for {0} is from {1}. Update it from the manufacturer's website to get better performance in recent games.</sys:String>
+  <sys:String x:Key="find.startupMany">{0} programs start with Windows. Check the “Startup apps” tab.</sys:String>
+  <sys:String x:Key="find.none">No hardware or configuration problems were detected.</sys:String>
+</ResourceDictionary>

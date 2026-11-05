@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Findings (es) -->
+  <sys:String x:Key="find.otherAccount">Velox se abrió con la cuenta «{0}», pero la sesión es de «{1}». Los ajustes de ratón, teclado, inicio y juegos se aplicarían a la otra cuenta: ábrelo desde tu propia cuenta (debe ser administradora).</sys:String>
+  <sys:String x:Key="find.displayHz">La pantalla {0} funciona a {1} Hz pero admite {2} Hz. Activa «Monitor a su frecuencia máxima».</sys:String>
+  <sys:String x:Key="find.battery">Estás usando la batería: conecta el cargador para jugar, Windows limita mucho la CPU y la GPU con batería.</sys:String>
+  <sys:String x:Key="find.ramHigh">La RAM está al {0} %. Cierra programas pesados o revisa la pestaña «Procesos y juegos».</sys:String>
+  <sys:String x:Key="find.ramLow">Solo hay {0} GB de RAM: para juegos actuales se recomiendan 16 GB.</sys:String>
+  <sys:String x:Key="find.singleChannel">Hay un solo módulo de RAM (canal simple). Con dos módulos iguales (doble canal) los FPS mínimos suben notablemente.</sys:String>
+  <sys:String x:Key="find.xmp">La RAM ({0}) funciona a {1} MT/s. Si tus módulos son más rápidos, activa el perfil XMP/EXPO en la BIOS: suele dar entre un 5 y un 15 % más de FPS.</sys:String>
+  <sys:String x:Key="find.hvci">La integridad de memoria (aislamiento del núcleo) está activada. Protege contra malware, pero puede costar un 5-10 % de FPS. Velox no la toca: se cambia en Seguridad de Windows › Seguridad del dispositivo.</sys:String>
+  <sys:String x:Key="find.perfCounters">Los contadores de rendimiento de Windows están desactivados (probablemente por otro programa optimizador). Apenas ahorra nada y algunas herramientas de monitorización dejan de mostrar datos; Velox mide por otras vías.</sys:String>
+  <sys:String x:Key="find.hdd">Windows está instalado en un disco duro mecánico. Pasar a un SSD es la mejora más notable que puedes hacer.</sys:String>
+  <sys:String x:Key="find.diskLow">Queda poco espacio en {0} ({1} GB libres, {2} %). Por debajo del 15 % el sistema se ralentiza.</sys:String>
+  <sys:String x:Key="find.diskHealth">El disco «{0}» informa de que su estado de salud es: {1}. Haz una copia de seguridad de tus datos importantes y revisa el disco con las herramientas de su fabricante.</sys:String>
+  <sys:String x:Key="find.health.warning">advertencia</sys:String>
+  <sys:String x:Key="find.health.unhealthy">en mal estado</sys:String>
+  <sys:String x:Key="find.health.unknown">desconocido</sys:String>
+  <sys:String x:Key="find.hibernateLow">La hibernación está activada y {0} tiene solo un {1} % libre: el archivo de hibernación (hiberfil.sys) ocupa varios GB. Si no la usas, puedes desactivarla para recuperar ese espacio.</sys:String>
+  <sys:String x:Key="find.uptime">El equipo lleva {0} días sin reiniciarse. Usa «Reiniciar», no «Apagar» (el inicio rápido no limpia el sistema al apagar).</sys:String>
+  <sys:String x:Key="find.driverOld">El controlador de {0} es del {1}. Actualízalo desde la web del fabricante para ganar rendimiento en juegos recientes.</sys:String>
+  <sys:String x:Key="find.startupMany">Hay {0} programas que se abren al iniciar Windows. Revisa la pestaña «Inicio de Windows».</sys:String>
+  <sys:String x:Key="find.none">No se ha detectado ningún problema de hardware o configuración.</sys:String>
+</ResourceDictionary>

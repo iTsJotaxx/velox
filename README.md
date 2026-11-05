@@ -1,0 +1,90 @@
+<p align="center">
+  <img src="docs/logo.png" width="96" alt="Velox logo">
+</p>
+
+<h1 align="center">Velox</h1>
+
+<p align="center">
+  <b>A fast, safe and reversible Windows optimizer for gaming and everyday performance.</b><br>
+  Every change is backed up and can be undone with one click.
+</p>
+
+<p align="center">
+  <a href="https://github.com/iTsJotaxx/velox/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/iTsJotaxx/velox?label=download&color=5B7BFF"></a>
+  <img alt="Windows 10/11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4">
+  <img alt=".NET Framework 4.8" src="https://img.shields.io/badge/.NET%20Framework-4.8-8B5CF6">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-34D399"></a>
+</p>
+
+<p align="center"><a href="README.es.md">Leer en español</a></p>
+
+![Velox overview](docs/screenshots/overview.png)
+
+## Features
+
+- **Scans your PC** (CPU, GPU, RAM, displays, disks, power plan, Windows security features) and **recommends** the right settings for *your* hardware: laptop or desktop, SSD or HDD, modern or older GPU...
+- **31 optimizations in 6 collapsible sections**: power and CPU, games and FPS, mouse and keyboard, network, background and RAM, and the Windows interface.
+- **Recommended or Custom mode**: apply the recommended setup in one click, or pick each switch yourself. Switching back to *Recommended* always restores the recommended setup.
+- **Every switch shows the real state of Windows** and nothing changes until you press *Apply changes*.
+- **Safe by design**: Velox backs up every original value before changing it, creates a system restore point before the first change, and rolls back an optimization if it only half applies.
+- **Live monitor** for CPU, RAM, GPU and VRAM (works even when Windows performance counters are disabled).
+- **Startup apps** manager (same mechanism as Task Manager).
+- **Processes & games**: end apps, raise priority, or optimize a game permanently (high CPU priority + high-performance GPU every time it starts).
+- **Windows diagnostics**: SFC, DISM, disk check, disk health, memory test, DirectX, battery and energy reports, reliability monitor, ping/jitter test, network info, DNS flush and network reset.
+- **Tools**: mouse polling-rate meter, free standby memory, clean temporary files, restore point, restart Explorer, undo everything.
+- **English and Spanish**, switchable instantly.
+- A single small `.exe` that runs on any Windows 10/11 with nothing to install.
+
+| Optimizations | Diagnostics | Tools |
+|---|---|---|
+| ![Optimizations](docs/screenshots/optimizations.png) | ![Diagnostics](docs/screenshots/diagnostics.png) | ![Tools](docs/screenshots/tools.png) |
+
+## What Velox will *not* do
+
+- It never touches Windows security: Defender, memory integrity, UAC and the firewall stay as they are. (If memory integrity costs you FPS, Velox tells you where to change it.)
+- It does not disable Windows Update or uninstall built-in apps.
+- It does not change your mouse polling rate: that is set by the mouse itself. The built-in meter tells you what you have.
+- No placebo "tweaks" (`LargeSystemCache`, mouse data queue size, etc.).
+
+## Download and run
+
+1. Download `Velox.exe` from the [latest release](https://github.com/iTsJotaxx/velox/releases/latest).
+2. Run it and accept the administrator prompt (Velox changes system settings, so it always runs elevated).
+3. Windows SmartScreen may warn about an unsigned app the first time: choose *More info → Run anyway*.
+
+Requirements: Windows 10 or 11 (64-bit). .NET Framework 4.8 is already part of Windows.
+
+## How undo works
+
+Before changing anything Velox stores the original value in `C:\ProgramData\Velox\backup.xml`: registry values (including values that did not exist), service start types, scheduled tasks, power plan settings, display refresh rate and more. Turning a switch off restores exactly what you had. *Tools → Undo everything* restores every saved value at once. Everything Velox does is written to `C:\ProgramData\Velox\velox.log`.
+
+## Build from source
+
+```powershell
+git clone https://github.com/iTsJotaxx/velox.git
+cd velox
+.\build.ps1            # Release build -> dist\Velox.exe
+```
+
+You need the [.NET SDK](https://dotnet.microsoft.com/download) (8 or later). The app itself targets .NET Framework 4.8, so the result needs no runtime.
+
+### Project layout
+
+```
+src/Velox
+  Core/          engine: registry, backups, services, power plans, scanner, optimizations, tools, diagnostics
+  Native/        Win32 interop (SystemParametersInfo, displays, raw mouse input, memory lists, NVML, PDH)
+  UI/            WPF interface (theme, views, view models)
+  Localization/  es / en string dictionaries
+tests/Velox.IntegrationTests   applies and reverts every optimization and checks Windows is left identical
+```
+
+The integration test really changes (and restores) system settings, so it must be run manually as administrator. See [tests/README.md](tests/README.md).
+
+## Contributing
+
+Issues and pull requests are welcome. New optimizations must be reversible, documented in both languages, and pass the integration test.
+
+## License
+
+[MIT](LICENSE)

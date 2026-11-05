@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build
+        shell: pwsh
+        run: |
+          $version = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.TrimStart('v') } else { '' }
+          if ($version) { ./build.ps1 -Version $version } else { ./build.ps1 }
+
+      - name: Build integration tests (not run on CI: they change system settings)
+        run: dotnet build tests/Velox.IntegrationTests/Velox.IntegrationTests.csproj -c Release -nologo
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Velox
+          path: |
+            dist/Velox.exe
+            dist/Velox.exe.sha256
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/Velox.exe
+            dist/Velox.exe.sha256
+          generate_release_notes: true

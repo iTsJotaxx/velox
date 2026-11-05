@@ -1,0 +1,14 @@
+# Compilación
+bin/
+obj/
+dist/
+*.user
+*.suo
+.vs/
+.idea/
+
+# Pruebas locales (capturas y compilación sin elevación)
+tools/test/*.manifest
+
+# Prototipo PowerShell anterior (no forma parte del proyecto)
+OptimizadorPC/

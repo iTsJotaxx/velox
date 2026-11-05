@@ -1,0 +1,50 @@
+<UserControl x:Class="Velox.UI.Views.LogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid Margin="32,4,32,26">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid>
+      <StackPanel>
+        <TextBlock Text="{DynamicResource ui.log.title}" Style="{StaticResource H1}"/>
+        <TextBlock Text="{DynamicResource ui.log.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <Button Style="{StaticResource BtnBase}" Content="{DynamicResource ui.log.openFile}" Click="OpenFile_Click"/>
+        <Button Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Content="{DynamicResource ui.log.openFolder}" Click="OpenFolder_Click"/>
+      </StackPanel>
+    </Grid>
+    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,22,0,0" Padding="18,14">
+      <ScrollViewer x:Name="Scroll" VerticalScrollBarVisibility="Auto">
+        <ItemsControl x:Name="Lines">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="0,3">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="16"/>
+                  <ColumnDefinition Width="150"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse x:Name="Dot" Width="6" Height="6" Fill="{StaticResource Info}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding TimeText}" Foreground="{StaticResource TextDim}" FontFamily="Cascadia Mono, Consolas" FontSize="12"/>
+                <TextBlock x:Name="Msg" Grid.Column="2" Text="{Binding Message}" TextWrapping="Wrap" FontSize="12.5"/>
+              </Grid>
+              <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Level}" Value="WARN">
+                  <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Warning}"/>
+                  <Setter TargetName="Msg" Property="Foreground" Value="#F7D47A"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Level}" Value="ERROR">
+                  <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Danger}"/>
+                  <Setter TargetName="Msg" Property="Foreground" Value="#FFA3A3"/>
+                </DataTrigger>
+              </DataTemplate.Triggers>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </Border>
+  </Grid>
+</UserControl>

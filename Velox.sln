@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{26D9E02D-BF56-4501-A63F-A0C052A14F76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velox", "src\Velox\Velox.csproj", "{88DCD716-3E57-4569-897B-3F92A12247DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FAFBBBCB-88A6-4A25-9983-60E233D3BBAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velox.IntegrationTests", "tests\Velox.IntegrationTests\Velox.IntegrationTests.csproj", "{D9EF056F-F73B-4449-874D-D115657C06C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88DCD716-3E57-4569-897B-3F92A12247DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88DCD716-3E57-4569-897B-3F92A12247DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88DCD716-3E57-4569-897B-3F92A12247DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88DCD716-3E57-4569-897B-3F92A12247DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EF056F-F73B-4449-874D-D115657C06C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EF056F-F73B-4449-874D-D115657C06C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EF056F-F73B-4449-874D-D115657C06C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EF056F-F73B-4449-874D-D115657C06C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{88DCD716-3E57-4569-897B-3F92A12247DA} = {26D9E02D-BF56-4501-A63F-A0C052A14F76}
+		{D9EF056F-F73B-4449-874D-D115657C06C1} = {FAFBBBCB-88A6-4A25-9983-60E233D3BBAF}
+	EndGlobalSection
+EndGlobal

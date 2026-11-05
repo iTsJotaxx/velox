@@ -1,0 +1,124 @@
+<UserControl x:Class="Velox.UI.Views.ToolsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:Velox.UI.Infra">
+  <UserControl.Resources>
+    <Style x:Key="ToolCard" TargetType="Border" BasedOn="{StaticResource Card}">
+      <Setter Property="Width" Value="420"/>
+      <Setter Property="Margin" Value="0,0,16,16"/>
+    </Style>
+  </UserControl.Resources>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32,4,32,30">
+      <TextBlock Text="{DynamicResource ui.tools.title}" Style="{StaticResource H1}"/>
+      <TextBlock Text="{DynamicResource ui.tools.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
+      <WrapPanel Margin="0,22,0,0">
+
+        <!-- Medidor de Hz del ratón -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE962;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.hzTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.hzText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <Grid Margin="0,16,0,6">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Grid Width="104" Height="104">
+                <infra:ArcGauge x:Name="HzGauge" Thickness="9" FillBrush="{StaticResource AccentGradient}"/>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                  <TextBlock x:Name="TxtHz" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                  <TextBlock Text="Hz" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+                </StackPanel>
+              </Grid>
+              <StackPanel Grid.Column="1" Margin="18,0,0,0" VerticalAlignment="Center">
+                <TextBlock x:Name="TxtHzPeak" Style="{StaticResource Caption}"/>
+                <TextBlock x:Name="TxtHzInfo" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,4,0,10"/>
+                <Button x:Name="BtnHz" Style="{StaticResource BtnPrimary}" HorizontalAlignment="Left" Click="Hz_Click"/>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <!-- Memoria en espera -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xEEA0;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.memTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.memText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <UniformGrid Columns="2" Margin="0,16,0,0">
+              <StackPanel>
+                <TextBlock Text="{DynamicResource ui.tools.memStandby}" Style="{StaticResource Caption}"/>
+                <TextBlock x:Name="TxtStandby" Text="--" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0"/>
+              </StackPanel>
+              <StackPanel>
+                <TextBlock Text="{DynamicResource ui.tools.memFree}" Style="{StaticResource Caption}"/>
+                <TextBlock x:Name="TxtFree" Text="--" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0"/>
+              </StackPanel>
+            </UniformGrid>
+            <Button x:Name="BtnPurge" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.memButton}" Click="Purge_Click"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Temporales -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE74D;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.tempTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.tempText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <TextBlock x:Name="TxtTemp" FontWeight="SemiBold" Margin="0,12,0,0" Visibility="Collapsed"/>
+            <Button x:Name="BtnTemp" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.tempButton}" Click="Temp_Click"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Punto de restauración -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE81C;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.rpTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.rpText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <TextBlock x:Name="TxtRp" Style="{StaticResource Body}" FontSize="12.5" Margin="0,12,0,0" Visibility="Collapsed"/>
+            <Button x:Name="BtnRp" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.rpButton}" Click="Rp_Click"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Explorador -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xEC50;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.explorerTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.explorerText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <Button x:Name="BtnExplorer" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.explorerButton}" Click="Explorer_Click"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Deshacer todo -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}" Background="{StaticResource DangerSoft}"><TextBlock Text="&#xE7A7;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource Danger}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource ui.tools.undoTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource ui.tools.undoText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+            <TextBlock x:Name="TxtBackups" Style="{StaticResource Caption}" Margin="0,10,0,0"/>
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+              <Button x:Name="BtnUndo" Style="{StaticResource BtnDanger}" Content="{DynamicResource ui.tools.undoButton}" Click="Undo_Click"/>
+              <Button Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Content="{DynamicResource ui.tools.openData}" Click="OpenData_Click"/>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </WrapPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

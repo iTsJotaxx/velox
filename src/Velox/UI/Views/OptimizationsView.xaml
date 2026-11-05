@@ -1,0 +1,164 @@
+<UserControl x:Class="Velox.UI.Views.OptimizationsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+
+    <!-- Fila de una optimización -->
+    <DataTemplate x:Key="OptRow">
+      <Border x:Name="Row" Padding="16,14,16,14" CornerRadius="10" Background="Transparent"
+              Visibility="{Binding IsVisible, Converter={StaticResource BoolVis}}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsEnabled="{Binding IsAvailable}"
+                    VerticalAlignment="Top" Margin="0,1,18,0"/>
+          <StackPanel Grid.Column="1">
+            <WrapPanel>
+              <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,0,2"/>
+              <Border Style="{StaticResource Badge}" Background="{StaticResource AccentSoft}" Visibility="{Binding ShowRecommended, Converter={StaticResource BoolVis}}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="&#xE735;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource AccentText}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource AccentText}" Text="{DynamicResource ui.badge.recommended}"/>
+                </StackPanel>
+              </Border>
+              <Border Style="{StaticResource Badge}" Background="#1A1E27" Visibility="{Binding ShowNotRecommended, Converter={StaticResource BoolVis}}">
+                <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource TextDim}" Text="{DynamicResource ui.badge.notRecommended}"/>
+              </Border>
+              <Border x:Name="ImpactBadge" Style="{StaticResource Badge}" Background="#20252F">
+                <TextBlock x:Name="ImpactTxt" Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{Binding ImpactText}"/>
+              </Border>
+              <Border Style="{StaticResource Badge}" Background="{StaticResource WarningSoft}" Visibility="{Binding HasRestart, Converter={StaticResource BoolVis}}">
+                <TextBlock Style="{StaticResource BadgeText}" Foreground="#F7CF6F" Text="{Binding RestartText}"/>
+              </Border>
+            </WrapPanel>
+            <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,6,0,0"/>
+          </StackPanel>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="18,3,0,0">
+            <Ellipse x:Name="Dot" Width="7" Height="7" Fill="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBlock x:Name="Status" Text="{Binding StatusText}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextDim}" MinWidth="96"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+      <DataTemplate.Triggers>
+        <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
+          <Setter TargetName="Row" Property="Background" Value="#181C26"/>
+        </Trigger>
+        <DataTrigger Binding="{Binding StatusKind}" Value="on">
+          <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Success}"/>
+          <Setter TargetName="Status" Property="Foreground" Value="{StaticResource Success}"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding StatusKind}" Value="pending">
+          <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Warning}"/>
+          <Setter TargetName="Status" Property="Foreground" Value="{StaticResource Warning}"/>
+          <Setter TargetName="Row" Property="Background" Value="#1C1A14"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding StatusKind}" Value="na">
+          <Setter TargetName="Dot" Property="Fill" Value="#3A4050"/>
+          <Setter TargetName="Status" Property="Foreground" Value="#545B6B"/>
+        </DataTrigger>
+        <DataTrigger Binding="{Binding ImpactKind}" Value="High">
+          <Setter TargetName="ImpactBadge" Property="Background" Value="{StaticResource SuccessSoft}"/>
+          <Setter TargetName="ImpactTxt" Property="Foreground" Value="#5EE0AE"/>
+        </DataTrigger>
+      </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- Cabecera de categoría -->
+    <DataTemplate x:Key="CategoryHeader">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Border Width="42" Height="42" CornerRadius="11" Background="{StaticResource AccentSoft}" VerticalAlignment="Center">
+          <TextBlock Text="{Binding Icon}" FontFamily="{StaticResource Icons}" FontSize="18" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+        <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center">
+          <TextBlock Text="{Binding Name}" Style="{StaticResource H2}"/>
+          <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,2,0,0"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+          <Border Style="{StaticResource Badge}" Background="{StaticResource WarningSoft}" Visibility="{Binding HasPending, Converter={StaticResource BoolVis}}">
+            <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Warning}" Text="{Binding PendingText}"/>
+          </Border>
+          <StackPanel Margin="12,0,0,0" Width="96">
+            <TextBlock Text="{Binding CountText}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right"/>
+            <ProgressBar Value="{Binding ActivePct, Mode=OneWay}" Height="4" Margin="0,6,0,0"/>
+          </StackPanel>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <Grid Margin="32,4,32,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid>
+      <StackPanel>
+        <TextBlock Text="{DynamicResource ui.opts.title}" Style="{StaticResource H1}"/>
+        <TextBlock Text="{DynamicResource ui.opts.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0" MaxWidth="720" HorizontalAlignment="Left"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <CheckBox x:Name="ChkRestore" Style="{StaticResource Switch}" VerticalAlignment="Center" Click="ChkRestore_Click"/>
+        <TextBlock Text="{DynamicResource ui.opts.restorePoint}" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" Margin="10,0,18,0"/>
+        <Button x:Name="BtnApply" Style="{StaticResource BtnPrimary}" Padding="20,10" Click="Apply_Click"/>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Row="1" Margin="0,22,0,0">
+      <StackPanel Orientation="Horizontal">
+        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="10" Padding="3">
+          <StackPanel Orientation="Horizontal">
+            <RadioButton x:Name="RbRec" Style="{StaticResource Segment}" GroupName="Mode" Click="Recommended_Click">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE735;" FontFamily="{StaticResource Icons}" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource ui.opts.modeRecommended}"/>
+              </StackPanel>
+            </RadioButton>
+            <RadioButton x:Name="RbCustom" Style="{StaticResource Segment}" GroupName="Mode" Click="Custom_Click">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE70F;" FontFamily="{StaticResource Icons}" FontSize="12" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource ui.opts.modeCustom}"/>
+              </StackPanel>
+            </RadioButton>
+          </StackPanel>
+        </Border>
+        <Button x:Name="BtnDiscard" Style="{StaticResource BtnBase}" Content="{DynamicResource ui.opts.discard}" Margin="10,0,0,0" Click="Discard_Click"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="10" Width="260" Padding="12,0">
+          <Grid>
+            <TextBlock Text="&#xE721;" FontFamily="{StaticResource Icons}" FontSize="13" Foreground="{StaticResource TextDim}" VerticalAlignment="Center"/>
+            <TextBlock x:Name="SearchHint" Text="{DynamicResource ui.opts.search}" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="24,0,0,0" IsHitTestVisible="False"/>
+            <TextBox x:Name="TxtSearch" VerticalAlignment="Center" Margin="22,0,0,0" Padding="0,8" TextChanged="Search_Changed"/>
+          </Grid>
+        </Border>
+        <Button x:Name="BtnExpand" Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Click="Expand_Click"/>
+      </StackPanel>
+    </Grid>
+
+    <TextBlock x:Name="TxtHint" Grid.Row="2" Style="{StaticResource Muted}" FontSize="12.5" Margin="2,14,0,14"/>
+
+    <ScrollViewer x:Name="ListScroll" Grid.Row="3" VerticalScrollBarVisibility="Auto" Padding="0,0,6,0">
+      <ItemsControl x:Name="CategoryList" Margin="0,0,0,30">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Expander Style="{StaticResource CategoryExpander}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Header="{Binding}"
+                      HeaderTemplate="{StaticResource CategoryHeader}" Visibility="{Binding HasVisible, Converter={StaticResource BoolVis}}">
+              <ItemsControl ItemsSource="{Binding Items}" ItemTemplate="{StaticResource OptRow}"/>
+            </Expander>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

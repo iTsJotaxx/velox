@@ -1,0 +1,95 @@
+<UserControl x:Class="Velox.UI.Views.SummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:Velox.UI.Infra">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32,4,32,30">
+      <Grid>
+        <StackPanel>
+          <TextBlock Text="{DynamicResource ui.sum.title}" Style="{StaticResource H1}"/>
+          <TextBlock x:Name="TxtScanTime" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
+        </StackPanel>
+        <Button x:Name="BtnScan" Style="{StaticResource BtnBase}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Scan_Click">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="&#xE72C;" FontFamily="{StaticResource Icons}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBlock Text="{DynamicResource ui.sum.rescan}"/>
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <!-- Panel destacado -->
+      <Border Margin="0,22,0,0" CornerRadius="18" Background="{StaticResource HeroGradient}" BorderBrush="#2A3150" BorderThickness="1" Padding="30,26">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Grid Width="132" Height="132">
+            <infra:ArcGauge x:Name="Gauge" Thickness="11" FillBrush="{StaticResource AccentGradient}" TrackBrush="#262C40"/>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+              <TextBlock x:Name="TxtPct" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="32" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+              <TextBlock Text="{DynamicResource ui.sum.optimized}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+            </StackPanel>
+          </Grid>
+          <StackPanel Grid.Column="1" Margin="30,0,20,0" VerticalAlignment="Center">
+            <TextBlock x:Name="TxtHeroTitle" Style="{StaticResource H2}" FontSize="21"/>
+            <TextBlock x:Name="TxtHeroText" Style="{StaticResource Muted}" Margin="0,8,0,0" MaxWidth="560" HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+              <Border Style="{StaticResource Badge}" Margin="0" Background="#1F2742">
+                <TextBlock x:Name="TxtActive" Style="{StaticResource BadgeText}" Foreground="{StaticResource AccentText}"/>
+              </Border>
+              <Border x:Name="RestartBadge" Style="{StaticResource Badge}" Background="{StaticResource WarningSoft}" Visibility="Collapsed">
+                <TextBlock x:Name="TxtRestartBadge" Style="{StaticResource BadgeText}" Foreground="{StaticResource Warning}"/>
+              </Border>
+            </StackPanel>
+          </StackPanel>
+          <StackPanel Grid.Column="2" VerticalAlignment="Center">
+            <Button x:Name="BtnApplyRec" Style="{StaticResource BtnPrimary}" Padding="24,13" FontSize="13.5" Click="ApplyRec_Click"/>
+            <Button Style="{StaticResource BtnGhost}" Margin="0,8,0,0" Click="SeeAll_Click" Content="{DynamicResource ui.sum.customize}"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- Fichas del equipo -->
+      <UniformGrid x:Name="SpecTiles" Columns="4" Margin="0,16,-12,0"/>
+
+      <Grid Margin="0,16,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*"/>
+          <ColumnDefinition Width="16"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource Card}" VerticalAlignment="Top">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+              <TextBlock Text="&#xE9D9;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
+              <TextBlock Text="{DynamicResource ui.sum.findings}" Style="{StaticResource H2}"/>
+            </StackPanel>
+            <StackPanel x:Name="PanelFindings"/>
+          </StackPanel>
+        </Border>
+        <StackPanel Grid.Column="2">
+          <Border Style="{StaticResource Card}">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                <TextBlock Text="&#xE7F4;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
+                <TextBlock Text="{DynamicResource ui.sum.system}" Style="{StaticResource H2}"/>
+              </StackPanel>
+              <StackPanel x:Name="PanelSystem"/>
+            </StackPanel>
+          </Border>
+          <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                <TextBlock Text="&#xE7B8;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
+                <TextBlock Text="{DynamicResource ui.sum.topApps}" Style="{StaticResource H2}"/>
+              </StackPanel>
+              <StackPanel x:Name="PanelTopApps"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

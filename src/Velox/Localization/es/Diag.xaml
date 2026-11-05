@@ -1,0 +1,127 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Diag (es) -->
+
+  <!-- Grupos -->
+  <sys:String x:Key="diaggroup.repair">Reparación de Windows</sys:String>
+  <sys:String x:Key="diaggroup.hardware">Hardware e informes</sys:String>
+  <sys:String x:Key="diaggroup.network">Red</sys:String>
+
+  <!-- Mensajes generales -->
+  <sys:String x:Key="diag.msg.error">No se pudo ejecutar el diagnóstico.</sys:String>
+  <sys:String x:Key="diag.msg.exception">No se pudo ejecutar el diagnóstico: {0}</sys:String>
+  <sys:String x:Key="diag.msg.timeout">El diagnóstico tardó demasiado y se canceló.</sys:String>
+  <sys:String x:Key="diag.msg.console">Se abrió en una ventana aparte. Déjala abierta hasta que termine.</sys:String>
+  <sys:String x:Key="diag.msg.opened">Se abrió la herramienta de Windows.</sys:String>
+
+  <!-- Reparación -->
+  <sys:String x:Key="diag.sfc.name">Comprobar archivos del sistema (SFC)</sys:String>
+  <sys:String x:Key="diag.sfc.desc">Busca archivos de Windows dañados o modificados y los repara. Puede tardar varios minutos; úsalo si Windows se comporta de forma extraña o da errores.</sys:String>
+
+  <sys:String x:Key="diag.dism.name">Reparar imagen de Windows (DISM)</sys:String>
+  <sys:String x:Key="diag.dism.desc">Repara el almacén de componentes de Windows descargando lo que falte desde Windows Update. Puede tardar bastante y necesita conexión; úsalo si SFC no consigue arreglar los errores.</sys:String>
+
+  <sys:String x:Key="diag.chkdsk.name">Analizar el disco del sistema</sys:String>
+  <sys:String x:Key="diag.chkdsk.desc">Comprueba en línea si hay errores en el sistema de archivos, sin reiniciar ni bloquear el disco. Puede tardar unos minutos; úsalo si hay archivos corruptos o cierres inesperados.</sys:String>
+
+  <sys:String x:Key="diag.troubleshoot.name">Solucionador de problemas</sys:String>
+  <sys:String x:Key="diag.troubleshoot.desc">Abre los solucionadores de problemas de Windows (audio, red, impresora, actualizaciones...). Úsalo cuando una función concreta deje de funcionar.</sys:String>
+
+  <sys:String x:Key="diag.windowsupdate.name">Windows Update</sys:String>
+  <sys:String x:Key="diag.windowsupdate.desc">Abre la página de actualizaciones de Windows para buscar e instalar las pendientes. Úsalo para comprobar que el sistema y los controladores están al día.</sys:String>
+
+  <!-- Hardware -->
+  <sys:String x:Key="diag.diskhealth.name">Estado de los discos</sys:String>
+  <sys:String x:Key="diag.diskhealth.desc">Muestra el tipo, el tamaño y la salud de cada disco según Windows. Úsalo si sospechas que un disco está fallando.</sys:String>
+
+  <sys:String x:Key="diag.memdiag.name">Diagnóstico de memoria RAM</sys:String>
+  <sys:String x:Key="diag.memdiag.desc">Abre el Diagnóstico de memoria de Windows, que busca errores en la RAM al reiniciar. Úsalo si tienes pantallazos azules o cierres inesperados.</sys:String>
+  <sys:String x:Key="diag.memdiag.confirm">Windows te propondrá reiniciar el equipo para comprobar la memoria RAM. Guarda tu trabajo antes de continuar. ¿Quieres abrir la herramienta?</sys:String>
+  <sys:String x:Key="diag.memdiag.result">Se abrió el Diagnóstico de memoria. Windows propone reiniciar para comprobar la RAM.</sys:String>
+
+  <sys:String x:Key="diag.dxdiag.name">Diagnóstico de DirectX</sys:String>
+  <sys:String x:Key="diag.dxdiag.desc">Abre dxdiag con información de la tarjeta gráfica, el sonido y DirectX. Útil para revisar controladores o problemas en juegos.</sys:String>
+
+  <sys:String x:Key="diag.battery.name">Informe de la batería</sys:String>
+  <sys:String x:Key="diag.battery.desc">Genera un informe con la capacidad original y actual de la batería y su historial de uso. Úsalo si el portátil dura menos de lo normal.</sys:String>
+  <sys:String x:Key="diag.battery.result.ok">Informe de batería generado y abierto.</sys:String>
+  <sys:String x:Key="diag.battery.result.fail">No se pudo generar el informe de batería.</sys:String>
+
+  <sys:String x:Key="diag.energy.name">Informe de eficiencia energética</sys:String>
+  <sys:String x:Key="diag.energy.desc">Analiza durante 60 segundos la configuración de energía y detecta problemas que gastan batería o impiden suspender. Cierra los programas que no uses para que el resultado sea fiable.</sys:String>
+  <sys:String x:Key="diag.energy.confirm">El análisis dura unos 60 segundos. Durante ese tiempo no uses el equipo para que el resultado sea fiable. ¿Quieres continuar?</sys:String>
+  <sys:String x:Key="diag.energy.result.ok">Informe de energía generado y abierto.</sys:String>
+  <sys:String x:Key="diag.energy.result.findings">Informe de energía generado y abierto. Contiene errores o avisos que conviene revisar.</sys:String>
+  <sys:String x:Key="diag.energy.result.fail">No se pudo generar el informe de energía.</sys:String>
+
+  <sys:String x:Key="diag.perfreport.name">Informe de rendimiento (60 s)</sys:String>
+  <sys:String x:Key="diag.perfreport.desc">Recoge datos del sistema durante 60 segundos y genera un informe con los problemas detectados. Úsalo si el equipo va lento sin causa clara.</sys:String>
+  <sys:String x:Key="diag.perfreport.result">Se abrió el Monitor de rendimiento y se está recopilando el informe; tardará unos 60 segundos.</sys:String>
+
+  <sys:String x:Key="diag.reliability.name">Historial de confiabilidad</sys:String>
+  <sys:String x:Key="diag.reliability.desc">Muestra una línea de tiempo con fallos de aplicaciones, errores de Windows e instalaciones. Úsalo para saber cuándo empezó un problema.</sys:String>
+
+  <sys:String x:Key="diag.msinfo.name">Información del sistema</sys:String>
+  <sys:String x:Key="diag.msinfo.desc">Abre msinfo32 con el detalle del hardware, los controladores y la configuración de Windows. Útil para consultar datos exactos del equipo.</sys:String>
+
+  <sys:String x:Key="diag.events.name">Visor de eventos</sys:String>
+  <sys:String x:Key="diag.events.desc">Abre el registro de eventos de Windows, donde quedan anotados errores y avisos del sistema. Úsalo para investigar cierres inesperados o fallos de controladores.</sys:String>
+
+  <!-- Discos: resultados -->
+  <sys:String x:Key="diag.diskhealth.type.unknown">Tipo desconocido</sys:String>
+  <sys:String x:Key="diag.diskhealth.health.ok">Saludable</sys:String>
+  <sys:String x:Key="diag.diskhealth.health.warning">Advertencia</sys:String>
+  <sys:String x:Key="diag.diskhealth.health.unhealthy">Dañado</sys:String>
+  <sys:String x:Key="diag.diskhealth.health.unknown">Desconocido</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.unknown">Estado operativo desconocido</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.2">Correcto</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.3">Degradado</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.4">Sobrecargado</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.5">Fallo previsto</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.6">Error</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.7">Error irrecuperable</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.12">Sin contacto</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.13">Comunicación perdida</sys:String>
+  <sys:String x:Key="diag.diskhealth.op.other">Otro ({0})</sys:String>
+  <sys:String x:Key="diag.diskhealth.result.line">{0} - {1}, {2}, salud: {3}, estado: {4}</sys:String>
+  <sys:String x:Key="diag.diskhealth.result.none">Windows no devolvió información de ningún disco.</sys:String>
+  <sys:String x:Key="diag.diskhealth.result.ok">Todos los discos están en buen estado ({0}).</sys:String>
+  <sys:String x:Key="diag.diskhealth.result.bad">{0} de {1} discos no están saludables. Haz una copia de seguridad cuanto antes.</sys:String>
+
+  <!-- Red -->
+  <sys:String x:Key="diag.ping.name">Latencia y estabilidad de la conexión</sys:String>
+  <sys:String x:Key="diag.ping.desc">Hace 10 pings a 1.1.1.1 y otros 10 a 8.8.8.8 y mide latencia, jitter y pérdida de paquetes. Úsalo si notas lag en juegos o cortes en videollamadas.</sys:String>
+  <sys:String x:Key="diag.ping.result.line">{0}: media {1} ms, mín. {2} ms, máx. {3} ms, jitter {4} ms, pérdida {5} %</sys:String>
+  <sys:String x:Key="diag.ping.result.line.lost">{0}: sin respuesta (pérdida 100 %)</sys:String>
+  <sys:String x:Key="diag.ping.result.none">No hubo respuesta a ningún ping. Revisa tu conexión a internet.</sys:String>
+  <sys:String x:Key="diag.ping.result.ok">Ping medio {0} ms, jitter {1} ms, sin pérdidas.</sys:String>
+  <sys:String x:Key="diag.ping.result.slow">Ping medio {0} ms (alto), jitter {1} ms, sin pérdidas.</sys:String>
+  <sys:String x:Key="diag.ping.result.loss">Ping medio {0} ms, jitter {1} ms, pérdida de paquetes del {2} %.</sys:String>
+
+  <sys:String x:Key="diag.netinfo.name">Adaptadores de red</sys:String>
+  <sys:String x:Key="diag.netinfo.desc">Lista los adaptadores activos con su velocidad de enlace, IP, puerta de enlace y DNS. Úsalo para comprobar a qué velocidad real te conectas.</sys:String>
+  <sys:String x:Key="diag.netinfo.type.ethernet">Ethernet</sys:String>
+  <sys:String x:Key="diag.netinfo.type.wifi">Wi-Fi</sys:String>
+  <sys:String x:Key="diag.netinfo.none">ninguno</sys:String>
+  <sys:String x:Key="diag.netinfo.speed.unknown">velocidad desconocida</sys:String>
+  <sys:String x:Key="diag.netinfo.adapter">{0} ({1}, {2})</sys:String>
+  <sys:String x:Key="diag.netinfo.ipv4">IPv4: {0}</sys:String>
+  <sys:String x:Key="diag.netinfo.gateway">Puerta de enlace: {0}</sys:String>
+  <sys:String x:Key="diag.netinfo.dns">DNS: {0}</sys:String>
+  <sys:String x:Key="diag.netinfo.note">Nota: el enlace va a {0}, menos de 1 Gbps. Puede haber un cable en mal estado o un puerto del router o del equipo limitado.</sys:String>
+  <sys:String x:Key="diag.netinfo.result.none">No hay ningún adaptador de red activo.</sys:String>
+  <sys:String x:Key="diag.netinfo.result.ok">Adaptadores activos: {0}.</sys:String>
+  <sys:String x:Key="diag.netinfo.result.notes">Adaptadores activos: {0}. Hay notas sobre la velocidad del enlace.</sys:String>
+
+  <sys:String x:Key="diag.flushdns.name">Vaciar caché DNS</sys:String>
+  <sys:String x:Key="diag.flushdns.desc">Borra la caché de nombres de dominio guardada por Windows. Úsalo si una web no carga o apunta a una dirección antigua.</sys:String>
+  <sys:String x:Key="diag.flushdns.result.ok">Caché DNS vaciada.</sys:String>
+  <sys:String x:Key="diag.flushdns.result.fail">No se pudo vaciar la caché DNS (código {0}).</sys:String>
+
+  <sys:String x:Key="diag.netreset.name">Restablecer la red</sys:String>
+  <sys:String x:Key="diag.netreset.desc">Restablece Winsock y la pila TCP/IP a sus valores por defecto. Úsalo cuando fallan las conexiones y nada más lo arregla; requiere reiniciar.</sys:String>
+  <sys:String x:Key="diag.netreset.confirm">Se restablecerán Winsock y la pila TCP/IP, y tendrás que reiniciar el equipo. Puede que debas volver a configurar una IP fija o una VPN. ¿Quieres continuar?</sys:String>
+  <sys:String x:Key="diag.netreset.result.ok">Red restablecida. Reinicia el equipo para aplicar los cambios.</sys:String>
+  <sys:String x:Key="diag.netreset.result.fail">No se pudo restablecer la red por completo. Revisa el detalle.</sys:String>
+</ResourceDictionary>

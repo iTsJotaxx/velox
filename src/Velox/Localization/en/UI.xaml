@@ -1,0 +1,229 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Navigation and window -->
+  <sys:String x:Key="ui.nav.section">GENERAL</sys:String>
+  <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
+  <sys:String x:Key="ui.nav.summary">Overview</sys:String>
+  <sys:String x:Key="ui.nav.optimizations">Optimizations</sys:String>
+  <sys:String x:Key="ui.nav.startup">Startup apps</sys:String>
+  <sys:String x:Key="ui.nav.processes">Processes &amp; games</sys:String>
+  <sys:String x:Key="ui.nav.diagnostics">Diagnostics</sys:String>
+  <sys:String x:Key="ui.nav.tools">Tools</sys:String>
+  <sys:String x:Key="ui.nav.log">Activity log</sys:String>
+  <sys:String x:Key="ui.nav.settings">Settings</sys:String>
+  <sys:String x:Key="ui.monitor.title">LIVE</sys:String>
+  <sys:String x:Key="ui.notice.reboot">Restart your PC to finish some changes</sys:String>
+  <sys:String x:Key="ui.notice.logoff">Sign out or restart Explorer to see some changes</sys:String>
+
+  <!-- Common buttons and messages -->
+  <sys:String x:Key="ui.btn.apply">Apply</sys:String>
+  <sys:String x:Key="ui.btn.cancel">Cancel</sys:String>
+  <sys:String x:Key="ui.btn.continue">Continue</sys:String>
+  <sys:String x:Key="ui.btn.ok">OK</sys:String>
+  <sys:String x:Key="ui.btn.refresh">Refresh</sys:String>
+  <sys:String x:Key="ui.msg.busy">Please wait for the current task to finish.</sys:String>
+  <sys:String x:Key="ui.msg.waitBusy">Please wait for the current task to finish before closing.</sys:String>
+  <sys:String x:Key="ui.msg.cancelled">Cancelled. Nothing was changed.</sys:String>
+  <sys:String x:Key="ui.msg.unexpectedError">Unexpected error:</sys:String>
+  <sys:String x:Key="ui.busy.scanning">Scanning your PC...</sys:String>
+  <sys:String x:Key="ui.busy.applying">Applying changes...</sys:String>
+  <sys:String x:Key="ui.busy.restorePoint">Creating a restore point (this can take a minute)...</sys:String>
+  <sys:String x:Key="ui.busy.enabling">Enabling:</sys:String>
+  <sys:String x:Key="ui.busy.disabling">Disabling:</sys:String>
+  <sys:String x:Key="ui.busy.checking">Checking the result...</sys:String>
+  <sys:String x:Key="ui.rp.failedTitle">The restore point could not be created</sys:String>
+  <sys:String x:Key="ui.rp.continue">Velox still keeps a backup of every value it changes, so everything can be undone from the app itself. Continue?</sys:String>
+
+  <!-- States and badges -->
+  <sys:String x:Key="ui.status.on">On</sys:String>
+  <sys:String x:Key="ui.status.off">Off</sys:String>
+  <sys:String x:Key="ui.status.na">Not applicable</sys:String>
+  <sys:String x:Key="ui.status.willEnable">Will turn on</sys:String>
+  <sys:String x:Key="ui.status.willDisable">Will turn off</sys:String>
+  <sys:String x:Key="ui.badge.recommended">Recommended</sys:String>
+  <sys:String x:Key="ui.badge.notRecommended">Not recommended for your PC</sys:String>
+  <sys:String x:Key="ui.impact.high">High impact</sys:String>
+  <sys:String x:Key="ui.impact.medium">Medium impact</sys:String>
+  <sys:String x:Key="ui.impact.low">Low impact</sys:String>
+  <sys:String x:Key="ui.restart.reboot">Restart required</sys:String>
+  <sys:String x:Key="ui.restart.logoff">Sign-out required</sys:String>
+
+  <!-- Overview -->
+  <sys:String x:Key="ui.sum.title">Overview</sys:String>
+  <sys:String x:Key="ui.sum.rescan">Scan again</sys:String>
+  <sys:String x:Key="ui.sum.scanning">Scanning your PC...</sys:String>
+  <sys:String x:Key="ui.sum.lastScan">Last scan at {0}</sys:String>
+  <sys:String x:Key="ui.sum.optimized">optimized</sys:String>
+  <sys:String x:Key="ui.sum.heroScanning">Analyzing your PC</sys:String>
+  <sys:String x:Key="ui.sum.heroScanningText">Velox is reading your hardware and Windows settings to work out what suits your PC.</sys:String>
+  <sys:String x:Key="ui.sum.heroDone">Your PC has the recommended setup</sys:String>
+  <sys:String x:Key="ui.sum.heroDoneText">Every setting matches the recommendation for your hardware. You can customize them any time.</sys:String>
+  <sys:String x:Key="ui.sum.heroTodo">{0} settings to optimize</sys:String>
+  <sys:String x:Key="ui.sum.heroTodoText">{0} of {1} settings already match the recommendation for your hardware. Apply the rest in one click; every change can be undone.</sys:String>
+  <sys:String x:Key="ui.sum.activeCount">{0} of {1} optimizations on</sys:String>
+  <sys:String x:Key="ui.sum.applyRec">Apply recommended</sys:String>
+  <sys:String x:Key="ui.sum.applyRecN">Apply recommended ({0})</sys:String>
+  <sys:String x:Key="ui.sum.applyRecDone">Everything is as recommended</sys:String>
+  <sys:String x:Key="ui.sum.customize">Choose settings myself</sys:String>
+  <sys:String x:Key="ui.sum.tileCpu">PROCESSOR</sys:String>
+  <sys:String x:Key="ui.sum.tileCpuSub">{0} cores · {1} threads</sys:String>
+  <sys:String x:Key="ui.sum.tileGpu">GRAPHICS</sys:String>
+  <sys:String x:Key="ui.sum.tileRam">MEMORY</sys:String>
+  <sys:String x:Key="ui.sum.tileRamModules">{0} module(s)</sys:String>
+  <sys:String x:Key="ui.sum.tileDisk">SYSTEM DRIVE</sys:String>
+  <sys:String x:Key="ui.sum.tileDiskFree">{0} GB free of {1} GB</sys:String>
+  <sys:String x:Key="ui.sum.findings">Findings</sys:String>
+  <sys:String x:Key="ui.sum.system">System</sys:String>
+  <sys:String x:Key="ui.sum.topApps">Top memory users</sys:String>
+  <sys:String x:Key="ui.sum.os">Windows</sys:String>
+  <sys:String x:Key="ui.sum.display">Display</sys:String>
+  <sys:String x:Key="ui.sum.maxHz">supports {0} Hz</sys:String>
+  <sys:String x:Key="ui.sum.powerPlan">Power plan</sys:String>
+  <sys:String x:Key="ui.sum.type">Device type</sys:String>
+  <sys:String x:Key="ui.sum.laptop">Laptop</sys:String>
+  <sys:String x:Key="ui.sum.desktop">Desktop</sys:String>
+  <sys:String x:Key="ui.sum.uptime">Uptime</sys:String>
+  <sys:String x:Key="ui.sum.uptimeDays">{0} days</sys:String>
+
+  <!-- Optimizations -->
+  <sys:String x:Key="ui.opts.title">Optimizations</sys:String>
+  <sys:String x:Key="ui.opts.subtitle">Each switch shows the real state of Windows. Nothing changes until you press “Apply changes”, and turning an optimization off restores exactly the value you had before.</sys:String>
+  <sys:String x:Key="ui.opts.restorePoint">Restore point</sys:String>
+  <sys:String x:Key="ui.opts.apply">Apply changes</sys:String>
+  <sys:String x:Key="ui.opts.applyN">Apply changes ({0})</sys:String>
+  <sys:String x:Key="ui.opts.modeRecommended">Recommended</sys:String>
+  <sys:String x:Key="ui.opts.modeCustom">Custom</sys:String>
+  <sys:String x:Key="ui.opts.discard">Discard changes</sys:String>
+  <sys:String x:Key="ui.opts.search">Search settings...</sys:String>
+  <sys:String x:Key="ui.opts.expandAll">Expand all</sys:String>
+  <sys:String x:Key="ui.opts.collapseAll">Collapse all</sys:String>
+  <sys:String x:Key="ui.opts.catCount">{0} of {1} on</sys:String>
+  <sys:String x:Key="ui.opts.catPending">{0} pending</sys:String>
+  <sys:String x:Key="ui.opts.hintScanning">Scanning your PC to work out what is recommended...</sys:String>
+  <sys:String x:Key="ui.opts.hintRecPending">Recommended mode: the switches match the recommendation for your PC. Press “Apply changes” to apply the {0} changes.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecDone">Recommended mode: your PC already has the recommended setup. Flip any switch to customize it.</sys:String>
+  <sys:String x:Key="ui.opts.hintCustom">Custom mode: you choose what to turn on. Press “Recommended” to go back to the recommended setup for your PC.</sys:String>
+  <sys:String x:Key="ui.opts.recSelected">Recommended setup selected: {0} changes. Press “Apply changes”.</sys:String>
+  <sys:String x:Key="ui.opts.alreadyRecommended">Your PC already has the recommended setup.</sys:String>
+  <sys:String x:Key="ui.opts.nothingPending">There are no pending changes.</sys:String>
+  <sys:String x:Key="ui.opts.confirmTitle">Apply {0} changes</sys:String>
+  <sys:String x:Key="ui.opts.confirmText">Velox backs up every value before changing it. You can undo any change by turning its switch off.</sys:String>
+  <sys:String x:Key="ui.opts.lineEnable">Turn on:</sys:String>
+  <sys:String x:Key="ui.opts.lineDisable">Turn off:</sys:String>
+  <sys:String x:Key="ui.opts.appliedOk">Done: {0} changes applied.</sys:String>
+  <sys:String x:Key="ui.opts.appliedSome">{0} changes applied, {1} failed</sys:String>
+  <sys:String x:Key="ui.opts.failedText">These changes could not be applied. Anything they had already changed has been rolled back.</sys:String>
+
+  <!-- Startup -->
+  <sys:String x:Key="ui.startup.title">Startup apps</sys:String>
+  <sys:String x:Key="ui.startup.summary">{0} of {1} apps open when Windows starts. Turn off whatever you don't need right after boot: it works exactly like Task Manager and can be turned back on.</sys:String>
+  <sys:String x:Key="ui.startup.colActive">On</sys:String>
+  <sys:String x:Key="ui.startup.colName">App</sys:String>
+  <sys:String x:Key="ui.startup.colSource">Source</sys:String>
+  <sys:String x:Key="ui.startup.colCommand">Command</sys:String>
+  <sys:String x:Key="ui.startup.enabled">“{0}” will open when Windows starts.</sys:String>
+  <sys:String x:Key="ui.startup.disabled">“{0}” will no longer open when Windows starts.</sys:String>
+  <sys:String x:Key="ui.startup.error">“{0}” could not be changed: {1}</sys:String>
+
+  <!-- Processes -->
+  <sys:String x:Key="ui.proc.title">Processes &amp; games</sys:String>
+  <sys:String x:Key="ui.proc.measuring">Measuring process usage...</sys:String>
+  <sys:String x:Key="ui.proc.summary">{0} apps running, using {1} GB of RAM. Close what you don't need before playing, raise a game's priority or optimize it permanently.</sys:String>
+  <sys:String x:Key="ui.proc.high">High priority</sys:String>
+  <sys:String x:Key="ui.proc.normal">Normal priority</sys:String>
+  <sys:String x:Key="ui.proc.game">Optimize as game</sys:String>
+  <sys:String x:Key="ui.proc.kill">End process</sys:String>
+  <sys:String x:Key="ui.proc.colName">Process</sys:String>
+  <sys:String x:Key="ui.proc.colCount">Instances</sys:String>
+  <sys:String x:Key="ui.proc.colPriority">Priority</sys:String>
+  <sys:String x:Key="ui.proc.colDesc">Description</sys:String>
+  <sys:String x:Key="ui.proc.priorityDone">Priority of “{0}” changed ({1} processes). It lasts until it closes.</sys:String>
+  <sys:String x:Key="ui.proc.gameConfirmTitle">Optimize “{0}” permanently?</sys:String>
+  <sys:String x:Key="ui.proc.gameConfirmText">Every time it starts it will get high CPU priority and use the high-performance GPU (useful on laptops with two GPUs). You can remove it any time.</sys:String>
+  <sys:String x:Key="ui.proc.gameConfirmOk">Optimize</sys:String>
+  <sys:String x:Key="ui.proc.gameDone">“{0}” optimized. The GPU choice applies the next time it starts.</sys:String>
+  <sys:String x:Key="ui.proc.gameRemoved">Optimization removed from “{0}”.</sys:String>
+  <sys:String x:Key="ui.proc.gamesTitle">Permanently optimized games</sys:String>
+  <sys:String x:Key="ui.proc.noGames">None yet. Start a game, select it in the list and press “Optimize as game”.</sys:String>
+  <sys:String x:Key="ui.proc.removeGame">Remove optimization</sys:String>
+  <sys:String x:Key="ui.proc.selectGame">Select a game in the list first.</sys:String>
+  <sys:String x:Key="ui.proc.killTitle">End “{0}” ({1} processes)?</sys:String>
+  <sys:String x:Key="ui.proc.killText">Anything unsaved in that app will be lost.</sys:String>
+  <sys:String x:Key="ui.proc.killDone">“{0}” ended ({1} processes).</sys:String>
+
+  <!-- Diagnostics -->
+  <sys:String x:Key="ui.diag.title">Diagnostics</sys:String>
+  <sys:String x:Key="ui.diag.subtitle">Windows tools to check and repair the system, the hardware and the network. Long-running ones open in a separate window so you can follow the progress.</sys:String>
+  <sys:String x:Key="ui.diag.run">Run</sys:String>
+  <sys:String x:Key="ui.diag.open">Open</sys:String>
+  <sys:String x:Key="ui.diag.running">Running: {0}...</sys:String>
+  <sys:String x:Key="ui.diag.kindInApp">Result shown in Velox</sys:String>
+  <sys:String x:Key="ui.diag.kindConsole">Opens in a console</sys:String>
+  <sys:String x:Key="ui.diag.kindExternal">Windows tool</sys:String>
+
+  <!-- Tools -->
+  <sys:String x:Key="ui.tools.title">Tools</sys:String>
+  <sys:String x:Key="ui.tools.subtitle">One-off actions: they only run when you press the button.</sys:String>
+  <sys:String x:Key="ui.tools.hzTitle">Mouse polling rate</sys:String>
+  <sys:String x:Key="ui.tools.hzText">Press “Measure” and move your mouse in fast circles for a few seconds. The rate is set by the mouse itself: if it's low, raise it in its software (G HUB, Synapse...). 1000 Hz or more is ideal.</sys:String>
+  <sys:String x:Key="ui.tools.hzStart">Measure</sys:String>
+  <sys:String x:Key="ui.tools.hzStop">Stop</sys:String>
+  <sys:String x:Key="ui.tools.hzIdle">Press “Measure” to start.</sys:String>
+  <sys:String x:Key="ui.tools.hzMove">Move your mouse in fast circles...</sys:String>
+  <sys:String x:Key="ui.tools.hzPeak">Peak: {0} Hz</sys:String>
+  <sys:String x:Key="ui.tools.hzUnstable">Keep moving the mouse quickly for a stable reading.</sys:String>
+  <sys:String x:Key="ui.tools.hz125">About 125 Hz: the basic USB rate. If it's a gaming mouse, raise it to 1000 Hz in its software.</sys:String>
+  <sys:String x:Key="ui.tools.hzLow">About {0} Hz. If your mouse supports it, raise it to 1000 Hz for lower latency.</sys:String>
+  <sys:String x:Key="ui.tools.hzGood">About {0} Hz: perfect for gaming.</sys:String>
+  <sys:String x:Key="ui.tools.memTitle">Free standby memory</sys:String>
+  <sys:String x:Key="ui.tools.memText">Empties Windows' standby memory cache. Useful if a game stutters with RAM almost full; Windows fills it up again with use, which is normal.</sys:String>
+  <sys:String x:Key="ui.tools.memStandby">Standby</sys:String>
+  <sys:String x:Key="ui.tools.memFree">Free</sys:String>
+  <sys:String x:Key="ui.tools.memButton">Free now</sys:String>
+  <sys:String x:Key="ui.tools.memBusy">Freeing standby memory...</sys:String>
+  <sys:String x:Key="ui.tools.memDone">Memory freed: {0} GB more free.</sys:String>
+  <sys:String x:Key="ui.tools.tempTitle">Clean temporary files</sys:String>
+  <sys:String x:Key="ui.tools.tempText">Deletes your user's and Windows' temporary files older than 24 hours. Files in use are skipped.</sys:String>
+  <sys:String x:Key="ui.tools.tempButton">Clean</sys:String>
+  <sys:String x:Key="ui.tools.tempBusy">Cleaning temporary files...</sys:String>
+  <sys:String x:Key="ui.tools.tempDone">{0} MB freed.</sys:String>
+  <sys:String x:Key="ui.tools.rpTitle">Restore point</sys:String>
+  <sys:String x:Key="ui.tools.rpText">Creates a system restore point now. Windows only allows one every 24 hours.</sys:String>
+  <sys:String x:Key="ui.tools.rpButton">Create now</sys:String>
+  <sys:String x:Key="ui.tools.explorerTitle">Restart Explorer</sys:String>
+  <sys:String x:Key="ui.tools.explorerText">Applies taskbar, animation and Widgets changes without signing out. The taskbar disappears for a moment.</sys:String>
+  <sys:String x:Key="ui.tools.explorerButton">Restart Explorer</sys:String>
+  <sys:String x:Key="ui.tools.explorerConfirm">The taskbar and Explorer windows will close and reopen. Continue?</sys:String>
+  <sys:String x:Key="ui.tools.explorerBusy">Restarting Explorer...</sys:String>
+  <sys:String x:Key="ui.tools.explorerDone">Explorer restarted.</sys:String>
+  <sys:String x:Key="ui.tools.explorerManual">Windows didn't reopen Explorer by itself. Press Ctrl+Shift+Esc, choose “Run new task”, type explorer and press OK (leave the administrator box unchecked).</sys:String>
+  <sys:String x:Key="ui.tools.undoTitle">Undo all changes</sys:String>
+  <sys:String x:Key="ui.tools.undoText">Restores every original value Velox saved, including optimized games.</sys:String>
+  <sys:String x:Key="ui.tools.undoButton">Undo everything</sys:String>
+  <sys:String x:Key="ui.tools.undoConfirm">The original values of {0} change groups will be restored. Continue?</sys:String>
+  <sys:String x:Key="ui.tools.undoBusy">Undoing all changes...</sys:String>
+  <sys:String x:Key="ui.tools.undoDone">{0} change groups restored. Restart so everything returns to its original state.</sys:String>
+  <sys:String x:Key="ui.tools.undoNothing">There are no saved changes to undo.</sys:String>
+  <sys:String x:Key="ui.tools.backupCount">Saved backups: {0} change groups.</sys:String>
+  <sys:String x:Key="ui.tools.openData">Open backups</sys:String>
+
+  <!-- Activity log -->
+  <sys:String x:Key="ui.log.title">Activity log</sys:String>
+  <sys:String x:Key="ui.log.subtitle">Everything Velox does is recorded here and in the velox.log file.</sys:String>
+  <sys:String x:Key="ui.log.openFile">Open file</sys:String>
+  <sys:String x:Key="ui.log.openFolder">Open folder</sys:String>
+
+  <!-- Settings -->
+  <sys:String x:Key="ui.set.title">Settings</sys:String>
+  <sys:String x:Key="ui.set.subtitle">Velox preferences.</sys:String>
+  <sys:String x:Key="ui.set.language">Language</sys:String>
+  <sys:String x:Key="ui.set.languageText">Changes instantly.</sys:String>
+  <sys:String x:Key="ui.set.restorePoint">Restore point before applying</sys:String>
+  <sys:String x:Key="ui.set.restorePointText">Creates a Windows restore point the first time you apply changes in each session.</sys:String>
+  <sys:String x:Key="ui.set.expand">Expand all sections</sys:String>
+  <sys:String x:Key="ui.set.expandText">When opening Optimizations, show every category expanded.</sys:String>
+  <sys:String x:Key="ui.set.data">Backups and activity log</sys:String>
+  <sys:String x:Key="ui.set.openFolder">Open folder</sys:String>
+  <sys:String x:Key="ui.set.aboutText">Open-source Windows optimizer. Every change is backed up and can be undone. MIT license.</sys:String>
+</ResourceDictionary>

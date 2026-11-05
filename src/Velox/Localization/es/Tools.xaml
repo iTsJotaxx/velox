@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Tools (es) -->
+  <!-- Pasos del escaneo -->
+  <sys:String x:Key="scan.step.os">Leyendo sistema operativo y memoria...</sys:String>
+  <sys:String x:Key="scan.step.cpu">Leyendo procesador...</sys:String>
+  <sys:String x:Key="scan.step.gpu">Leyendo tarjeta gráfica y pantallas...</sys:String>
+  <sys:String x:Key="scan.step.disk">Detectando tipo de equipo y discos...</sys:String>
+  <sys:String x:Key="scan.step.power">Leyendo energía y seguridad...</sys:String>
+  <sys:String x:Key="scan.step.procs">Revisando programas en segundo plano...</sys:String>
+
+  <!-- Origen de los programas de inicio -->
+  <sys:String x:Key="startup.source.user">Usuario</sys:String>
+  <sys:String x:Key="startup.source.all">Todos los usuarios</sys:String>
+  <sys:String x:Key="startup.source.all32">Todos los usuarios (32 bits)</sys:String>
+  <sys:String x:Key="startup.source.folderUser">Carpeta Inicio (usuario)</sys:String>
+  <sys:String x:Key="startup.source.folderAll">Carpeta Inicio (todos)</sys:String>
+
+  <!-- Prioridades de proceso -->
+  <sys:String x:Key="prio.normal">Normal</sys:String>
+  <sys:String x:Key="prio.high">Alta</sys:String>
+  <sys:String x:Key="prio.abovenormal">Superior a normal</sys:String>
+  <sys:String x:Key="prio.belownormal">Inferior a normal</sys:String>
+  <sys:String x:Key="prio.idle">Baja</sys:String>
+  <sys:String x:Key="prio.realtime">Tiempo real</sys:String>
+
+  <!-- Mensajes y errores de las herramientas -->
+  <sys:String x:Key="tools.err.protectedKill">«{0}» es un proceso del sistema y no se puede cerrar desde aquí.</sys:String>
+  <sys:String x:Key="tools.err.protectedPriority">«{0}» es un proceso del sistema y no se puede cambiar su prioridad desde aquí.</sys:String>
+  <sys:String x:Key="tools.err.gamePath">No se puede leer la ruta del ejecutable de este proceso.</sys:String>
+  <sys:String x:Key="tools.err.memRejected">Windows rechazó la operación (NTSTATUS 0x{0}).</sys:String>
+  <sys:String x:Key="tools.restore.created">Punto de restauración creado.</sys:String>
+  <sys:String x:Key="tools.restore.skipped">Windows no ha creado un punto nuevo porque ya existe uno de las últimas 24 horas. Ese servirá como punto de partida.</sys:String>
+  <sys:String x:Key="tools.restore.failed">No se pudo crear el punto de restauración: {0}</sys:String>
+  <sys:String x:Key="tools.restore.disabled">La Protección del sistema está desactivada por una directiva de Windows.</sys:String>
+  <sys:String x:Key="tools.restore.timeout">Windows tardó más de 4 minutos en crear el punto de restauración; se ha dejado de esperar.</sys:String>
+  <sys:String x:Key="tools.restore.errCode">Windows devolvió el error {0}. Comprueba que la Protección del sistema esté activada para la unidad del sistema.</sys:String>
+</ResourceDictionary>
