@@ -70,6 +70,9 @@ namespace Velox.Core.Drivers
                         result.Installed++;
                         result.Messages.Add(Loc.F("drv.msg.installed", update.Title, update.NewVersion));
                         keepFile = false;
+                        // Cachés de shaders del driver anterior: pueden dar cierres de GPU en juegos (visto con Fortnite)
+                        long freed = ShaderCache.Clear();
+                        result.Messages.Add(Loc.F("drv.msg.shaderCache", (freed / (1024.0 * 1024.0 * 1024.0)).ToString("0.0")));
                     }
                     else
                     {

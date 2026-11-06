@@ -59,4 +59,5 @@
   <sys:String x:Key="drv.msg.rollbackNone">«{0}» no tiene un driver anterior guardado al que volver.</sys:String>
   <sys:String x:Key="drv.msg.rollbackFailed">No se pudo volver al driver anterior de «{0}» (error de Windows {1}).</sys:String>
   <sys:String x:Key="drv.msg.rollbackNoDevice">No se ha indicado qué dispositivo revertir.</sys:String>
+  <sys:String x:Key="drv.msg.shaderCache">Cachés de shaders limpiados ({0} GB): se reconstruyen solos y evitan cierres de juegos tras cambiar de driver. La primera partida de cada juego puede dar algún tirón.</sys:String>
 </ResourceDictionary>

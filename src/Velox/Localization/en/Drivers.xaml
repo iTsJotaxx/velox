@@ -59,4 +59,5 @@
   <sys:String x:Key="drv.msg.rollbackNone">"{0}" has no previous driver saved to go back to.</sys:String>
   <sys:String x:Key="drv.msg.rollbackFailed">Could not roll back the driver of "{0}" (Windows error {1}).</sys:String>
   <sys:String x:Key="drv.msg.rollbackNoDevice">No device was specified for the rollback.</sys:String>
+  <sys:String x:Key="drv.msg.shaderCache">Shader caches cleared ({0} GB): they rebuild themselves and avoid game crashes after a driver change. The first session of each game may stutter a little.</sys:String>
 </ResourceDictionary>
