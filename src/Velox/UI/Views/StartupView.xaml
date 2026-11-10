@@ -28,19 +28,19 @@
                 <DataTemplate><CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Enabled, Mode=OneWay}" Margin="6,0,0,0" Click="Toggle_Click"/></DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="250">
+            <GridViewColumn Width="320">
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.startup.colName}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate>
-                <DataTemplate><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/></DataTemplate>
+                <DataTemplate><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding ValueName}"/></DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="200">
+            <GridViewColumn Width="170">
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.startup.colSource}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate>
                 <DataTemplate><TextBlock Text="{Binding Source}" Foreground="{StaticResource TextMuted}" TextTrimming="CharacterEllipsis"/></DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="460">
+            <GridViewColumn Width="420">
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.startup.colCommand}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate>
                 <DataTemplate><TextBlock Text="{Binding Command}" Foreground="{StaticResource TextDim}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Command}"/></DataTemplate>

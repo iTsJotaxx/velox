@@ -170,7 +170,8 @@ namespace Velox.UI.Views
                 RbSize.IsChecked == true ? rows.OrderByDescending(r => r.Program.Size).ThenBy(r => r.Name, StringComparer.CurrentCultureIgnoreCase)
                 : RbDate.IsChecked == true ? rows.OrderByDescending(r => r.Program.InstallDate ?? DateTime.MinValue).ThenBy(r => r.Name, StringComparer.CurrentCultureIgnoreCase)
                 : rows.OrderBy(r => r.Name, StringComparer.CurrentCultureIgnoreCase);
-            var visible = sorted.Where(r => r.IsVisible).ToList();
+            // Lo que no se puede desinstalar (protegido), al final: OrderBy es estable y respeta el orden elegido
+            var visible = sorted.Where(r => r.IsVisible).OrderBy(r => r.Program.IsProtected ? 1 : 0).ToList();
             List.ItemsSource = visible;
 
             bool loaded = StoreMode ? _store != null : _desktop != null;

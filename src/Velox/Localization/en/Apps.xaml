@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <!-- Apps (en) -->
-  <sys:String x:Key="ui.nav.apps">Install apps</sys:String>
+  <sys:String x:Key="ui.nav.apps">Install</sys:String>
   <sys:String x:Key="apps.title">Install apps</sys:String>
   <sys:String x:Key="apps.subtitle">Tick the ones you want and press Install: each one is downloaded from its official website, the installer is checked to be the original one and it installs by itself, with no toolbars or offers. The ones you already have get updated.</sys:String>
   <sys:String x:Key="apps.filter">Search the list</sys:String>
@@ -108,7 +108,7 @@
   <sys:String x:Key="apps.region.SG2">Singapore (SG)</sys:String>
   <sys:String x:Key="apps.region.TW2">Taiwan (TW)</sys:String>
   <sys:String x:Key="apps.region.VN2">Vietnam (VN)</sys:String>
-  <sys:String x:Key="ui.nav.uninstall">Uninstall apps</sys:String>
+  <sys:String x:Key="ui.nav.uninstall">Uninstall</sys:String>
   <sys:String x:Key="unin.title">Uninstall apps</sys:String>
   <sys:String x:Key="unin.subtitle">Simpler than the Windows one: search, tick and uninstall. Programs that allow it are removed silently; the rest open their own uninstaller. At the end, Velox looks for folders left behind.</sys:String>
   <sys:String x:Key="unin.filter">Search program</sys:String>

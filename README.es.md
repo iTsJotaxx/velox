@@ -16,7 +16,7 @@
 ## Qué hace
 
 - **Escanea tu equipo** (CPU, gráfica, RAM, pantallas, discos, plan de energía, seguridad de Windows) y **recomienda** la configuración adecuada para *tu* hardware: portátil o sobremesa, SSD o disco duro, gráfica moderna o antigua...
-- **36 optimizaciones en 6 secciones desplegables**: energía y procesador, juegos y FPS (prioridad de primer plano, optimizaciones de pantalla completa, MPO, HAGS, MMCSS...), ratón y teclado, red, segundo plano y RAM, e interfaz de Windows.
+- **36 optimizaciones en 6 secciones desplegables**: juegos y FPS (prioridad de primer plano, optimizaciones de pantalla completa, MPO, HAGS, MMCSS...), energía y procesador, segundo plano y RAM, red, ratón y teclado, e interfaz de Windows. Dentro de cada sección, lo que más se nota va arriba y lo que tiene riesgo al final.
 - **Ajustes peligrosos marcados**: los que ganan FPS a costa de seguridad o de funciones de Windows (integridad de memoria, mitigaciones de Spectre/Meltdown, Windows Search) llevan la etiqueta roja *Riesgo*, nunca entran en el modo Recomendado y al activarlos Velox explica qué pierdes y pide confirmación.
 - **Modo Recomendado o Personalizado**: aplica la configuración recomendada con un clic o elige cada interruptor. Al volver a *Recomendado* siempre recuperas la configuración recomendada. Los ajustes que en tu equipo son cuestión de gusto (o tienen un efecto mínimo) se marcan *A tu gusto* y el modo Recomendado no los toca.
 - **Cada interruptor muestra el estado real de Windows** y no cambia nada hasta que pulsas *Aplicar cambios*.

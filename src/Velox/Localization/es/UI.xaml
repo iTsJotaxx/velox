@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <!-- Navegación y ventana -->
-  <sys:String x:Key="ui.nav.section">GENERAL</sys:String>
+  <sys:String x:Key="ui.nav.sectionPerf">RENDIMIENTO</sys:String>
+  <sys:String x:Key="ui.nav.sectionApps">APLICACIONES</sys:String>
   <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
   <sys:String x:Key="ui.nav.sectionSystem">SISTEMA</sys:String>
   <sys:String x:Key="ui.nav.summary">Resumen</sys:String>
@@ -86,6 +87,19 @@
   <sys:String x:Key="ui.sum.tileDisk">DISCO DEL SISTEMA</sys:String>
   <sys:String x:Key="ui.sum.tileDiskFree">{0} GB libres de {1} GB</sys:String>
   <sys:String x:Key="ui.sum.findings">Hallazgos</sys:String>
+  <sys:String x:Key="ui.sum.quick">Accesos rápidos</sys:String>
+  <sys:String x:Key="ui.sum.qMem">Liberar RAM</sys:String>
+  <sys:String x:Key="ui.sum.qMemSub">Sin cerrar ningún programa</sys:String>
+  <sys:String x:Key="ui.sum.qTemp">Limpiar temporales</sys:String>
+  <sys:String x:Key="ui.sum.qTempSub">Archivos que ya no hacen falta</sys:String>
+  <sys:String x:Key="ui.sum.qDrv">Actualizar drivers</sys:String>
+  <sys:String x:Key="ui.sum.qDrvSub">Solo de fuentes oficiales</sys:String>
+  <sys:String x:Key="ui.sum.qDisk">Ver qué ocupa el disco</sys:String>
+  <sys:String x:Key="ui.sum.qDiskSub">Mapa visual de carpetas</sys:String>
+  <sys:String x:Key="ui.sum.qApps">Instalar aplicaciones</sys:String>
+  <sys:String x:Key="ui.sum.qAppsSub">Varias de una vez, sin asistentes</sys:String>
+  <sys:String x:Key="ui.sum.qGame">Optimizar un juego</sys:String>
+  <sys:String x:Key="ui.sum.qGameSub">Prioridad alta cada vez que se abre</sys:String>
   <sys:String x:Key="ui.sum.system">Sistema</sys:String>
   <sys:String x:Key="ui.sum.topApps">Lo que más memoria usa</sys:String>
   <sys:String x:Key="ui.sum.os">Windows</sys:String>

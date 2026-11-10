@@ -148,7 +148,9 @@ namespace Velox.UI.ViewModels
             foreach (var c in Catalog.Categories)
             {
                 var vm = new CategoryVM(c, this);
-                foreach (var o in Catalog.All.Where(o => o.Category == c.Id)) vm.Items.Add(new OptItemVM(o, vm));
+                // Dentro de cada sección: lo que más se nota arriba y lo que tiene riesgo al final
+                foreach (var o in Catalog.All.Where(o => o.Category == c.Id).OrderBy(o => o.IsRisky ? 1 : 0).ThenBy(o => (int)o.Impact))
+                    vm.Items.Add(new OptItemVM(o, vm));
                 if (vm.Items.Count > 0) Categories.Add(vm);
             }
             if (Categories.Count > 0) Categories[0].IsExpanded = true;
@@ -201,6 +203,17 @@ namespace Velox.UI.ViewModels
                 i.IsPreference = usable && st.Preference;
                 i.Scanned = _scanned;
                 i.SetCheckedSilently(st.Applied);
+            }
+            // Lo que no se puede usar en este equipo, al final de su sección (orden estable para lo demás)
+            foreach (var c in Categories)
+            {
+                var sorted = c.Items.OrderBy(i => i.IsAvailable || i.IsLocked ? 0 : 1)
+                                    .ThenBy(i => i.IsRisky ? 1 : 0).ThenBy(i => (int)i.Opt.Impact).ToList();
+                for (int n = 0; n < sorted.Count; n++)
+                {
+                    int at = c.Items.IndexOf(sorted[n]);
+                    if (at != n) c.Items.Move(at, n);
+                }
             }
             foreach (var c in Categories) c.Recount();
             NotifyAll();

@@ -35,11 +35,11 @@ namespace Velox.Core.Optimizations
         {
             Categories.AddRange(new[]
             {
-                new Category { Id = "power", Icon = "" },
                 new Category { Id = "games", Icon = "" },
-                new Category { Id = "input", Icon = "" },
-                new Category { Id = "network", Icon = "" },
+                new Category { Id = "power", Icon = "" },
                 new Category { Id = "background", Icon = "" },
+                new Category { Id = "network", Icon = "" },
+                new Category { Id = "input", Icon = "" },
                 new Category { Id = "interface", Icon = "" },
             });
 

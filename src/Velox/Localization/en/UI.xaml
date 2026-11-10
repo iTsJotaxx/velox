@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <!-- Navigation and window -->
-  <sys:String x:Key="ui.nav.section">GENERAL</sys:String>
+  <sys:String x:Key="ui.nav.sectionPerf">PERFORMANCE</sys:String>
+  <sys:String x:Key="ui.nav.sectionApps">APPS</sys:String>
   <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
   <sys:String x:Key="ui.nav.sectionSystem">SYSTEM</sys:String>
   <sys:String x:Key="ui.nav.summary">Overview</sys:String>
@@ -86,6 +87,19 @@
   <sys:String x:Key="ui.sum.tileDisk">SYSTEM DRIVE</sys:String>
   <sys:String x:Key="ui.sum.tileDiskFree">{0} GB free of {1} GB</sys:String>
   <sys:String x:Key="ui.sum.findings">Findings</sys:String>
+  <sys:String x:Key="ui.sum.quick">Quick actions</sys:String>
+  <sys:String x:Key="ui.sum.qMem">Free up RAM</sys:String>
+  <sys:String x:Key="ui.sum.qMemSub">Without closing any program</sys:String>
+  <sys:String x:Key="ui.sum.qTemp">Clean temporary files</sys:String>
+  <sys:String x:Key="ui.sum.qTempSub">Files that are no longer needed</sys:String>
+  <sys:String x:Key="ui.sum.qDrv">Update drivers</sys:String>
+  <sys:String x:Key="ui.sum.qDrvSub">Official sources only</sys:String>
+  <sys:String x:Key="ui.sum.qDisk">See what fills the disk</sys:String>
+  <sys:String x:Key="ui.sum.qDiskSub">Visual map of folders</sys:String>
+  <sys:String x:Key="ui.sum.qApps">Install apps</sys:String>
+  <sys:String x:Key="ui.sum.qAppsSub">Several at once, no wizards</sys:String>
+  <sys:String x:Key="ui.sum.qGame">Optimize a game</sys:String>
+  <sys:String x:Key="ui.sum.qGameSub">High priority every time it starts</sys:String>
   <sys:String x:Key="ui.sum.system">System</sys:String>
   <sys:String x:Key="ui.sum.topApps">Top memory users</sys:String>
   <sys:String x:Key="ui.sum.os">Windows</sys:String>

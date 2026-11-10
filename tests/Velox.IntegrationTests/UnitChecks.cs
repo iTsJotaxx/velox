@@ -242,6 +242,19 @@ namespace Velox.IntegrationTests
                 Check("security risks need a reboot", risky.Where(o => o.Risk == "security").All(o => o.Restart == Velox.Core.Optimizations.RestartNeed.Reboot));
             }
 
+            // ---------------------------------------------------------------- Inicio de Windows: nombres legibles
+            {
+                Check("startup exe: quoted", Velox.Core.Tools.StartupManager.ExePath("\"C:\\Program Files\\A B\\x.exe\" --min") == "C:\\Program Files\\A B\\x.exe");
+                Check("startup exe: unquoted with spaces", Velox.Core.Tools.StartupManager.ExePath("C:\\Program Files\\A B\\x.exe /background") == "C:\\Program Files\\A B\\x.exe");
+                Check("startup exe: empty", Velox.Core.Tools.StartupManager.ExePath("  ") == null);
+                string cmdExe = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+                Check("startup name: generic launcher keeps entry name", Velox.Core.Tools.StartupManager.FriendlyName("MyScript", "\"" + cmdExe + "\" /c x.bat") == "MyScript");
+                Check("startup name: missing file keeps entry name", Velox.Core.Tools.StartupManager.FriendlyName("Gone", "C:\\nope\\gone.exe") == "Gone");
+                string notepad = Path.Combine(Environment.SystemDirectory, "notepad.exe");
+                string fn = Velox.Core.Tools.StartupManager.FriendlyName("np_1234ABCD", notepad);
+                Check("startup name: uses file description", fn.Length > 1 && fn != "np_1234ABCD", fn);
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

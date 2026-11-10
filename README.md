@@ -23,7 +23,7 @@
 ## Features
 
 - **Scans your PC** (CPU, GPU, RAM, displays, disks, power plan, Windows security features) and **recommends** the right settings for *your* hardware: laptop or desktop, SSD or HDD, modern or older GPU...
-- **36 optimizations in 6 collapsible sections**: power and CPU, games and FPS (foreground priority, fullscreen optimizations, MPO, HAGS, MMCSS...), mouse and keyboard, network, background and RAM, and the Windows interface.
+- **36 optimizations in 6 collapsible sections**: games and FPS (foreground priority, fullscreen optimizations, MPO, HAGS, MMCSS...), power and CPU, background and RAM, network, mouse and keyboard, and the Windows interface. Within each section, the most noticeable settings come first and the risky ones last.
 - **Risky settings are labelled**: the ones that trade security or Windows features for FPS (memory integrity, Spectre/Meltdown mitigations, Windows Search) carry a red *Risk* badge, are never part of Recommended mode, and Velox explains what you give up and asks for confirmation when you turn them on.
 - **Recommended or Custom mode**: apply the recommended setup in one click, or pick each switch yourself. Switching back to *Recommended* always restores the recommended setup. Settings that are a matter of taste on your PC (or have a minimal effect) are marked *Your call* and Recommended mode leaves them alone.
 - **Every switch shows the real state of Windows** and nothing changes until you press *Apply changes*.

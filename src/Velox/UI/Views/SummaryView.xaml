@@ -60,15 +60,76 @@
           <ColumnDefinition Width="16"/>
           <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Border Style="{StaticResource Card}" VerticalAlignment="Top">
-          <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
-              <TextBlock Text="&#xE9D9;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
-              <TextBlock Text="{DynamicResource ui.sum.findings}" Style="{StaticResource H2}"/>
+        <StackPanel VerticalAlignment="Top">
+          <Border Style="{StaticResource Card}">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                <TextBlock Text="&#xE9D9;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
+                <TextBlock Text="{DynamicResource ui.sum.findings}" Style="{StaticResource H2}"/>
+              </StackPanel>
+              <StackPanel x:Name="PanelFindings"/>
             </StackPanel>
-            <StackPanel x:Name="PanelFindings"/>
-          </StackPanel>
-        </Border>
+          </Border>
+          <!-- Accesos rápidos a lo que más se usa -->
+          <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                <TextBlock Text="&#xE945;" Style="{StaticResource Icon}" Foreground="{StaticResource AccentText}" Margin="0,0,10,0"/>
+                <TextBlock Text="{DynamicResource ui.sum.quick}" Style="{StaticResource H2}"/>
+              </StackPanel>
+              <UniformGrid Columns="2" Margin="-5">
+                <UniformGrid.Resources>
+                  <Style TargetType="Button">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                          <Border x:Name="Bd" Background="#151923" BorderBrush="#222838" BorderThickness="1" CornerRadius="11" Padding="13,11">
+                            <DockPanel>
+                              <Border DockPanel.Dock="Left" Style="{StaticResource IconTile}" Width="34" Height="34" Margin="0,0,12,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource Icon}" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource AccentText}"/>
+                              </Border>
+                              <TextBlock DockPanel.Dock="Right" Text="&#xE76C;" FontFamily="{StaticResource Icons}" FontSize="10" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                              <ContentPresenter VerticalAlignment="Center"/>
+                            </DockPanel>
+                          </Border>
+                          <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                              <Setter TargetName="Bd" Property="Background" Value="#1A2032"/>
+                              <Setter TargetName="Bd" Property="BorderBrush" Value="#33406A"/>
+                            </Trigger>
+                          </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </UniformGrid.Resources>
+                <Button Tag="&#xEEA0;" Click="Quick_Click" CommandParameter="memory">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qMem}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qMemSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+                <Button Tag="&#xE74D;" Click="Quick_Click" CommandParameter="tools">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qTemp}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qTempSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+                <Button Tag="&#xE772;" Click="Quick_Click" CommandParameter="drivers">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qDrv}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qDrvSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+                <Button Tag="&#xEDA2;" Click="Quick_Click" CommandParameter="disk">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qDisk}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qDiskSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+                <Button Tag="&#xE896;" Click="Quick_Click" CommandParameter="apps">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qApps}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qAppsSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+                <Button Tag="&#xE7FC;" Click="Quick_Click" CommandParameter="processes">
+                  <StackPanel><TextBlock Text="{DynamicResource ui.sum.qGame}" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource ui.sum.qGameSub}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+                </Button>
+              </UniformGrid>
+            </StackPanel>
+          </Border>
+        </StackPanel>
         <StackPanel Grid.Column="2">
           <Border Style="{StaticResource Card}">
             <StackPanel>

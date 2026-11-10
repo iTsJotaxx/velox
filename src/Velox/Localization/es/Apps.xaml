@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <!-- Apps (es) -->
-  <sys:String x:Key="ui.nav.apps">Instalar aplicaciones</sys:String>
+  <sys:String x:Key="ui.nav.apps">Instalar</sys:String>
   <sys:String x:Key="apps.title">Instalar aplicaciones</sys:String>
   <sys:String x:Key="apps.subtitle">Marca las que quieras y pulsa Instalar: se descargan de la web oficial de cada programa, se comprueba que el instalador es el original y se instalan solas, sin barras de herramientas ni ofertas. Las que ya tienes se actualizan.</sys:String>
   <sys:String x:Key="apps.filter">Buscar en la lista</sys:String>
@@ -108,7 +108,7 @@
   <sys:String x:Key="apps.region.SG2">Singapur (SG)</sys:String>
   <sys:String x:Key="apps.region.TW2">Taiwán (TW)</sys:String>
   <sys:String x:Key="apps.region.VN2">Vietnam (VN)</sys:String>
-  <sys:String x:Key="ui.nav.uninstall">Desinstalar aplicaciones</sys:String>
+  <sys:String x:Key="ui.nav.uninstall">Desinstalar</sys:String>
   <sys:String x:Key="unin.title">Desinstalar aplicaciones</sys:String>
   <sys:String x:Key="unin.subtitle">Más sencillo que el de Windows: busca, marca y desinstala. Los programas que lo permiten se quitan en silencio; los demás abren su propio desinstalador. Al final, Velox busca las carpetas que hayan quedado.</sys:String>
   <sys:String x:Key="unin.filter">Buscar programa</sys:String>

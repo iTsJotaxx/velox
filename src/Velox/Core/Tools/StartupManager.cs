@@ -70,11 +70,48 @@ namespace Velox.Core.Tools
             return items.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase).ToList();
         }
 
+        /// <summary>
+        /// Nombre legible, como el Administrador de tareas: la descripción del ejecutable («Microsoft Edge» en vez de
+        /// «MicrosoftEdgeAutoLaunch_D74866CC...»). Si no se puede leer, el nombre de la entrada.
+        /// </summary>
+        internal static string FriendlyName(string name, string command)
+        {
+            try
+            {
+                string exe = ExePath(command);
+                if (exe != null && exe.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) && File.Exists(exe))
+                {
+                    // Lanzadores genéricos: su descripción no dice nada del programa que abren
+                    string file = Path.GetFileNameWithoutExtension(exe).ToLowerInvariant();
+                    if (Array.IndexOf(new[] { "cmd", "powershell", "pwsh", "rundll32", "wscript", "cscript", "mshta", "msiexec", "explorer", "regsvr32", "conhost", "schtasks" }, file) >= 0)
+                        return name;
+                    string d = (System.Diagnostics.FileVersionInfo.GetVersionInfo(exe).FileDescription ?? "").Trim();
+                    if (d.Length > 1) return d;
+                }
+            }
+            catch { }
+            return name;
+        }
+
+        /// <summary>Ruta del ejecutable de una línea de comandos («"C:\a b\x.exe" -arg» o «C:\a b\x.exe -arg»).</summary>
+        internal static string ExePath(string command)
+        {
+            if (string.IsNullOrWhiteSpace(command)) return null;
+            string c = Environment.ExpandEnvironmentVariables(command.Trim());
+            if (c.StartsWith("\""))
+            {
+                int end = c.IndexOf('"', 1);
+                return end > 1 ? c.Substring(1, end - 1) : null;
+            }
+            int i = c.IndexOf(".exe", StringComparison.OrdinalIgnoreCase);
+            return i > 0 ? c.Substring(0, i + 4) : c;
+        }
+
         static StartupEntry NewEntry(string name, string command, string source, string approved, string valueName)
         {
             return new StartupEntry
             {
-                Name = name,
+                Name = FriendlyName(name, command),
                 Command = command,
                 Source = source,
                 ApprovedPath = approved,

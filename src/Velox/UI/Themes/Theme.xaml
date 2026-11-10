@@ -199,7 +199,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="RadioButton">
           <Grid>
-            <Border x:Name="Bd" CornerRadius="9" Background="Transparent" Padding="14,8">
+            <Border x:Name="Bd" CornerRadius="9" Background="Transparent" Padding="14,7">
               <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="Glyph" Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" FontFamily="{StaticResource Icons}" FontSize="16" VerticalAlignment="Center" Margin="0,0,13,0"/>
                 <ContentPresenter VerticalAlignment="Center"/>

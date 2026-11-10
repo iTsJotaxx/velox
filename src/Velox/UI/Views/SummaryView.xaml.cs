@@ -186,5 +186,6 @@ namespace Velox.UI.Views
         async void Scan_Click(object sender, RoutedEventArgs e) => await AppState.Current.ScanAsync();
         async void ApplyRec_Click(object sender, RoutedEventArgs e) => await AppState.Current.ApplyRecommendedAsync();
         void SeeAll_Click(object sender, RoutedEventArgs e) => ((MainWindow)Window.GetWindow(this)).Navigate("optimizations");
+        void Quick_Click(object sender, RoutedEventArgs e) { if (sender is System.Windows.Controls.Button b && b.CommandParameter is string key) ((MainWindow)Window.GetWindow(this)).Navigate(key); }
     }
 }

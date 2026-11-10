@@ -40,14 +40,14 @@ namespace Velox.UI.Views
 
         FrameworkElement Card(DiagAction a)
         {
-            var card = new Border { Style = Res<Style>("Card"), Width = 344, Margin = new Thickness(0, 0, 14, 14), Padding = new Thickness(20, 18, 20, 18) };
+            var card = new Border { Style = Res<Style>("Card"), Width = 304, Margin = new Thickness(0, 0, 14, 14), Padding = new Thickness(20, 18, 20, 18) };
             var dp = new DockPanel();
             var head = new StackPanel { Orientation = Orientation.Horizontal };
             var tile = new Border { Style = Res<Style>("IconTile") };
             tile.Child = new TextBlock { Text = a.Icon, FontFamily = Res<FontFamily>("Icons"), FontSize = 17, Foreground = Res<Brush>("AccentText"), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
             head.Children.Add(tile);
             var titles = new StackPanel { Margin = new Thickness(12, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
-            titles.Children.Add(new TextBlock { Text = a.Name, FontSize = 14, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, MaxWidth = 250 });
+            titles.Children.Add(new TextBlock { Text = a.Name, FontSize = 14, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, MaxWidth = 212 });
             string kindKey = a.Kind == DiagKind.InApp ? "ui.diag.kindInApp" : a.Kind == DiagKind.Console ? "ui.diag.kindConsole" : "ui.diag.kindExternal";
             titles.Children.Add(new TextBlock { Text = Loc.T(kindKey), Style = Res<Style>("Caption"), Margin = new Thickness(0, 2, 0, 0) });
             head.Children.Add(titles);

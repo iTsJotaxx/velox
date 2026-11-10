@@ -73,13 +73,13 @@ namespace Velox.Core.Apps
         public static readonly List<AppCategory> Categories = new List<AppCategory>
         {
             new AppCategory { Id = "web", Icon = "" },
-            new AppCategory { Id = "ai", Icon = "" },
-            new AppCategory { Id = "aitools", Icon = "" },
+            new AppCategory { Id = "games", Icon = "" },
             new AppCategory { Id = "chat", Icon = "" },
             new AppCategory { Id = "media", Icon = "" },
+            new AppCategory { Id = "ai", Icon = "" },
+            new AppCategory { Id = "aitools", Icon = "" },
             new AppCategory { Id = "imaging", Icon = "" },
             new AppCategory { Id = "docs", Icon = "" },
-            new AppCategory { Id = "games", Icon = "" },
             new AppCategory { Id = "utils", Icon = "" },
             new AppCategory { Id = "security", Icon = "" },
             new AppCategory { Id = "dev", Icon = "" },
