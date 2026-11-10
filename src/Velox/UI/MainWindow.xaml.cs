@@ -81,6 +81,7 @@ namespace Velox.UI
                 case "optimizations": return new OptimizationsView();
                 case "startup": return new StartupView();
                 case "processes": return new ProcessesView();
+                case "apps": return new AppsView();
                 case "drivers": return new DriversView();
                 case "diagnostics": return new DiagnosticsView();
                 case "memory": return new MemoryView();
@@ -100,6 +101,7 @@ namespace Velox.UI
                 case "optimizations": return NavOptimizations;
                 case "startup": return NavStartup;
                 case "processes": return NavProcesses;
+                case "apps": return NavApps;
                 case "drivers": return NavDrivers;
                 case "diagnostics": return NavDiagnostics;
                 case "memory": return NavMemory;
@@ -152,6 +154,22 @@ namespace Velox.UI
                     await Task.Delay(500);
                     for (int i = 0; i < 240 && AppState.Current.IsBusy; i++) await Task.Delay(250);
                     await Task.Delay(1800);
+                }
+                if (_current == "apps" && App.TestAction != null && PageHost.Content is AppsView av)
+                {
+                    // --action=select:Id1,Id2 | add:texto | install:Id1,Id2;autoconfirm
+                    string act = App.TestAction.Split(';')[0];
+                    await Task.Delay(9000); // lectura de lo instalado (winget export)
+                    if (act.StartsWith("select:")) av.TestSelect(act.Substring(7).Split(','));
+                    else if (act.StartsWith("add:")) { av.TestOpenAdd(act.Substring(4)); await Task.Delay(6000); }
+                    else if (act.StartsWith("install:"))
+                    {
+                        av.TestSelect(act.Substring(8).Split(','));
+                        av.TestInstall();
+                        await Task.Delay(1500);
+                        for (int i = 0; i < 2400 && AppState.Current.IsBusy; i++) await Task.Delay(500); // hasta 20 min
+                        await Task.Delay(12000); // relectura de lo instalado
+                    }
                 }
                 if (_current == "drivers" && App.TestAction == "safety" && PageHost.Content is DriversView drv)
                 {
@@ -314,6 +332,10 @@ namespace Velox.UI
         /// <summary>Muestra un diálogo con el estilo de la app. cancelText = null → solo botón de aceptar.</summary>
         public Task<bool> ConfirmAsync(string title, string message, string details, string okText, string cancelText, bool danger = false)
         {
+#if UITEST
+            // Pruebas automáticas: acepta los diálogos sin mostrar nada
+            if (App.TestAction != null && App.TestAction.Contains("autoconfirm")) { Log.Info("UITEST autoconfirm: " + title); return Task.FromResult(true); }
+#endif
             _dialog?.TrySetResult(false);
             _dialog = new TaskCompletionSource<bool>();
             DlgTitle.Text = title;

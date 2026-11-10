@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Apps (en) -->
+  <sys:String x:Key="ui.nav.apps">Install apps</sys:String>
+  <sys:String x:Key="apps.title">Install apps</sys:String>
+  <sys:String x:Key="apps.subtitle">Tick the ones you want and press Install: each one is downloaded from its official website, the installer is checked to be the original one and it installs by itself, with no toolbars or offers. The ones you already have get updated.</sys:String>
+  <sys:String x:Key="apps.filter">Search the list</sys:String>
+  <sys:String x:Key="apps.selectInstalled">Tick installed ones</sys:String>
+  <sys:String x:Key="apps.selectInstalledTip">Ticks every app you already have so you can update them all at once</sys:String>
+  <sys:String x:Key="apps.clear">Untick all</sys:String>
+  <sys:String x:Key="apps.addApp">Add app</sys:String>
+  <sys:String x:Key="apps.count">{0}/{1}</sys:String>
+  <sys:String x:Key="apps.installNone">Install</sys:String>
+  <sys:String x:Key="apps.installN">Install ({0})</sys:String>
+  <sys:String x:Key="apps.updateN">Update ({0})</sys:String>
+  <sys:String x:Key="apps.installUpdateN">Install and update ({0})</sys:String>
+  <sys:String x:Key="apps.checkingInstalled">Checking what you already have...</sys:String>
+  <sys:String x:Key="apps.installedCount">{0} from the catalog already installed</sys:String>
+  <sys:String x:Key="apps.tip.installed">installed ({0})</sys:String>
+  <sys:String x:Key="apps.noWinget">This Windows does not have Microsoft's «App Installer» (winget), which Velox uses to download and install. It is free in the Microsoft Store.</sys:String>
+  <sys:String x:Key="apps.getWinget">Open Microsoft Store</sys:String>
+
+  <sys:String x:Key="apps.confirmTitle">Install or update {0} apps?</sys:String>
+  <sys:String x:Key="apps.confirmText">They install one after another, silently. Some may open by themselves when they finish. You can keep using the PC.</sys:String>
+  <sys:String x:Key="apps.confirmOk">Start</sys:String>
+  <sys:String x:Key="apps.line.install">Install</sys:String>
+  <sys:String x:Key="apps.line.update">Update</sys:String>
+  <sys:String x:Key="apps.busy">Installing apps...</sys:String>
+  <sys:String x:Key="apps.progressTitle">{0} of {1}: {2}</sys:String>
+  <sys:String x:Key="apps.stop">Stop after this one</sys:String>
+  <sys:String x:Key="apps.stopping">Stopping when the current app finishes...</sys:String>
+  <sys:String x:Key="apps.summary">Installed or updated: {0} · Already up to date: {1} · With errors: {2}</sys:String>
+  <sys:String x:Key="apps.summaryTitleErrors">Some apps could not be installed</sys:String>
+
+  <sys:String x:Key="apps.badge.installed">Installed</sys:String>
+  <sys:String x:Key="apps.badge.installedNow">Installed ✓</sys:String>
+  <sys:String x:Key="apps.badge.updated">Updated ✓</sys:String>
+  <sys:String x:Key="apps.badge.upToDate">Up to date ✓</sys:String>
+  <sys:String x:Key="apps.badge.reboot">Restart</sys:String>
+  <sys:String x:Key="apps.badge.failed">Error</sys:String>
+  <sys:String x:Key="apps.badge.queued">Queued</sys:String>
+  <sys:String x:Key="apps.badge.skipped">Skipped</sys:String>
+
+  <sys:String x:Key="apps.status.preparing">Preparing...</sys:String>
+  <sys:String x:Key="apps.status.downloading">Downloading...</sys:String>
+  <sys:String x:Key="apps.status.downloadingPct">Downloading {0} % of {1} MB</sys:String>
+  <sys:String x:Key="apps.status.verified">Installer verified</sys:String>
+  <sys:String x:Key="apps.status.installing">Installing...</sys:String>
+  <sys:String x:Key="apps.status.asUser">Refuses admin: installing as user...</sys:String>
+
+  <sys:String x:Key="apps.err.noWinget">winget is not available on this PC.</sys:String>
+  <sys:String x:Key="apps.err.badId">invalid identifier</sys:String>
+  <sys:String x:Key="apps.err.timeout">did not finish in {0} minutes</sys:String>
+  <sys:String x:Key="apps.err.notFound">it is no longer in the official repository</sys:String>
+  <sys:String x:Key="apps.err.hash">the downloaded installer does not match the original (it was not run)</sys:String>
+  <sys:String x:Key="apps.err.installer">the program's installer returned an error ({0})</sys:String>
+  <sys:String x:Key="apps.err.code">error {0} ({1})</sys:String>
+
+  <sys:String x:Key="apps.add.title">Add an app</sys:String>
+  <sys:String x:Key="apps.add.text">Search any program in the official Windows repository (winget, more than 10,000 apps). The ones you add show up in «My apps» and install just like the rest.</sys:String>
+  <sys:String x:Key="apps.add.search">Search</sys:String>
+  <sys:String x:Key="apps.add.searching">Searching...</sys:String>
+  <sys:String x:Key="apps.add.none">Nothing found for «{0}».</sys:String>
+  <sys:String x:Key="apps.add.found">{0} results</sys:String>
+  <sys:String x:Key="apps.add.button">Add</sys:String>
+  <sys:String x:Key="apps.add.already">{0} is already in the list: it is now ticked.</sys:String>
+  <sys:String x:Key="apps.add.added">{0} added to «My apps» and ticked.</sys:String>
+  <sys:String x:Key="apps.add.mine">My apps</sys:String>
+  <sys:String x:Key="apps.add.mineEmpty">You have not added any yet.</sys:String>
+  <sys:String x:Key="apps.add.remove">Remove</sys:String>
+  <sys:String x:Key="apps.add.done">Done</sys:String>
+
+  <sys:String x:Key="apps.cat.web">Browsers</sys:String>
+  <sys:String x:Key="apps.cat.chat">Messaging</sys:String>
+  <sys:String x:Key="apps.cat.media">Music and video</sys:String>
+  <sys:String x:Key="apps.cat.imaging">Imaging and design</sys:String>
+  <sys:String x:Key="apps.cat.docs">Documents</sys:String>
+  <sys:String x:Key="apps.cat.games">Games</sys:String>
+  <sys:String x:Key="apps.cat.utils">Utilities</sys:String>
+  <sys:String x:Key="apps.cat.security">Security</sys:String>
+  <sys:String x:Key="apps.cat.dev">Development</sys:String>
+  <sys:String x:Key="apps.cat.runtimes">Windows components</sys:String>
+  <sys:String x:Key="apps.cat.custom">My apps</sys:String>
+</ResourceDictionary>

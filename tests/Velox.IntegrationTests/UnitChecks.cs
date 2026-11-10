@@ -108,6 +108,30 @@ namespace Velox.IntegrationTests
                 Out.AppendLine("  (info) blockers now: " + string.Join(" | ", DriverSafety.Blockers()));
             }
 
+            // ---------------------------------------------------------------- Catálogo de aplicaciones y winget
+            {
+                var ids = Velox.Core.Apps.AppCatalog.BuiltIn.Select(a => a.Id).ToList();
+                Check("apps: catalog ids valid", ids.All(Velox.Core.Apps.AppCatalog.IsValidId), string.Join(", ", ids.Where(i => !Velox.Core.Apps.AppCatalog.IsValidId(i))));
+                Check("apps: catalog ids unique", ids.Distinct(StringComparer.OrdinalIgnoreCase).Count() == ids.Count);
+                var cats = Velox.Core.Apps.AppCatalog.Categories.Select(c => c.Id).ToList();
+                Check("apps: every app has a known category", Velox.Core.Apps.AppCatalog.BuiltIn.All(a => cats.Contains(a.Category)));
+                Check("apps: id with space rejected", !Velox.Core.Apps.AppCatalog.IsValidId("Evil.App --override x"));
+                Check("apps: id with quote rejected", !Velox.Core.Apps.AppCatalog.IsValidId("Evil.\"App"));
+                Check("apps: id without dot rejected", !Velox.Core.Apps.AppCatalog.IsValidId("notepad"));
+                var table = new List<string>
+                {
+                    "Name                       Id                         Version                 Match",
+                    "------------------------------------------------------------------------------------------",
+                    "VLC media player           VideoLAN.VLC               3.0.24                  Moniker: vlc",
+                    "7-Zip ZS Non Darkmode      mcmilk.7zip-zstd-ndm       26.02-v1.5.7-R2         Tag: 7zip",
+                    "Notepad++                  Notepad++.Notepad++        8.9.9",
+                };
+                var hits = Velox.Core.Apps.Winget.ParseSearch(table);
+                Check("apps: search table parsed", hits.Count == 3 && hits[0].Id == "VideoLAN.VLC" && hits[0].Name == "VLC media player" && hits[0].Version == "3.0.24"
+                                                  && hits[1].Id == "mcmilk.7zip-zstd-ndm" && hits[2].Id == "Notepad++.Notepad++",
+                      string.Join(" | ", hits.Select(h => h.Name + "/" + h.Id + "/" + h.Version)));
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");
