@@ -82,32 +82,48 @@ namespace Velox.Core.Tools
                 if (!Directory.Exists(root)) continue;
 
                 long before = FolderSize(root);
-                try
-                {
-                    foreach (var item in new DirectoryInfo(root).GetFileSystemInfos())
-                    {
-                        try
-                        {
-                            if (item.LastWriteTime > limit) continue;
-                            // Nunca seguir enlaces ni uniones (ni borrar su contenido)
-                            if ((item.Attributes & FileAttributes.ReparsePoint) != 0) continue;
-                            var dir = item as DirectoryInfo;
-                            if (dir != null) Directory.Delete(dir.FullName, true); // no entra en los enlaces de dentro
-                            else
-                            {
-                                if ((item.Attributes & FileAttributes.ReadOnly) != 0) item.Attributes = FileAttributes.Normal;
-                                item.Delete();
-                            }
-                        }
-                        catch { } // en uso o sin permiso: se salta
-                    }
-                }
+                // Se decide archivo a archivo: una carpeta vieja puede tener dentro archivos recién creados por un
+                // programa en marcha (un instalador a medias...), y esos no se tocan
+                try { CleanDir(new DirectoryInfo(root), limit, isRoot: true); }
                 catch (Exception ex) { Log.Warn("Temp folder " + root + ": " + ex.Message); }
                 freed += Math.Max(0, before - FolderSize(root));
             }
 
             Log.Info("Temp files: freed " + (freed / (1024.0 * 1024.0)).ToString("N0") + " MB.");
             return freed;
+        }
+
+        /// <summary>
+        /// Borra los archivos con más de 24 h (por fecha de modificación) y las carpetas que queden vacías y se crearon
+        /// hace más de 24 h. Nunca entra en enlaces ni uniones. Lo que esté en uso o sin permiso se salta.
+        /// </summary>
+        internal static void CleanDir(DirectoryInfo dir, DateTime limit, bool isRoot)
+        {
+            FileSystemInfo[] items;
+            try { items = dir.GetFileSystemInfos(); } catch { return; }
+            foreach (var item in items)
+            {
+                try
+                {
+                    if ((item.Attributes & FileAttributes.ReparsePoint) != 0) continue;
+                    if (item is DirectoryInfo sub)
+                    {
+                        CleanDir(sub, limit, false);
+                        continue;
+                    }
+                    if (item.LastWriteTime > limit || item.CreationTime > limit) continue;
+                    if ((item.Attributes & FileAttributes.ReadOnly) != 0) item.Attributes = FileAttributes.Normal;
+                    item.Delete();
+                }
+                catch { } // en uso o sin permiso
+            }
+            if (isRoot) return;
+            try
+            {
+                dir.Refresh();
+                if (dir.CreationTime <= limit && !dir.EnumerateFileSystemInfos().Any()) dir.Delete();
+            }
+            catch { }
         }
 
         // Suma el tamaño de los archivos sin entrar en carpetas que sean enlaces

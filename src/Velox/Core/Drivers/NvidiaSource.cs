@@ -87,6 +87,14 @@ namespace Velox.Core.Drivers
                 if (products == null) products = LoadGeForceProducts();
                 string wanted = Normalize(gpu.Name);
                 var matches = products.Where(p => Normalize(p.Name) == wanted && wanted.Length > 0).ToList();
+                // Mismo nombre en la serie de sobremesa y en la de portátiles (GTX 1650, RTX 2060...): decide el tipo de equipo
+                if (matches.Count > 1)
+                {
+                    bool laptop = IsLaptop();
+                    var bySeries = matches.Where(p => (p.SeriesName ?? "").IndexOf("Notebook", StringComparison.OrdinalIgnoreCase) >= 0 == laptop).ToList();
+                    Log.Info("NVIDIA: " + matches.Count + " catalog entries for '" + gpu.Name + "'; " + (laptop ? "laptop" : "desktop") + " series chosen (" + bySeries.Count + ").");
+                    matches = bySeries;
+                }
                 if (matches.Count != 1)
                 {
                     Log.Warn("NVIDIA: " + matches.Count + " exact catalog matches for '" + gpu.Name + "'; nothing offered.");
@@ -245,7 +253,44 @@ namespace Velox.Core.Drivers
             return all.ToList();
         }
 
-        internal static string Normalize(string s) => Regex.Replace((s ?? "").Trim(), @"\s+", " ").ToUpperInvariant();
+        /// <summary>
+        /// Nombre comparable: Windows siempre dice «NVIDIA GeForce RTX 3060», pero el catálogo de NVIDIA unas veces lleva el
+        /// prefijo («NVIDIA GeForce RTX 4070») y otras no («GeForce RTX 3060»). Se quita en los dos lados.
+        /// </summary>
+        internal static string Normalize(string s)
+        {
+            string n = Regex.Replace((s ?? "").Trim(), @"\s+", " ").ToUpperInvariant();
+            if (n.StartsWith("NVIDIA ", StringComparison.Ordinal)) n = n.Substring(7);
+            return n;
+        }
+
+        /// <summary>Portátil según el chasis (o, si el chasis no lo dice, por tener batería).</summary>
+        internal static bool IsLaptop()
+        {
+            try
+            {
+                var laptopTypes = new[] { 8, 9, 10, 11, 12, 14, 18, 21, 30, 31, 32 };
+                var desktopTypes = new[] { 3, 4, 5, 6, 7, 13, 15, 16, 24, 35, 36 };
+                bool desktop = false, laptop = false;
+                using (var s = new ManagementObjectSearcher("SELECT ChassisTypes FROM Win32_SystemEnclosure"))
+                using (var res = s.Get())
+                    foreach (ManagementBaseObject o in res)
+                        using (o)
+                            if (o["ChassisTypes"] is Array arr)
+                                foreach (var t in arr)
+                                {
+                                    int ct = Convert.ToInt32(t);
+                                    if (Array.IndexOf(laptopTypes, ct) >= 0) laptop = true;
+                                    if (Array.IndexOf(desktopTypes, ct) >= 0) desktop = true;
+                                }
+                if (laptop) return true;
+                if (desktop) return false;
+                using (var s = new ManagementObjectSearcher("SELECT Name FROM Win32_Battery"))
+                using (var res = s.Get())
+                    return res.Count > 0;
+            }
+            catch { return false; }
+        }
 
         static Dictionary<string, object> Sub(Dictionary<string, object> d, string key)
         {

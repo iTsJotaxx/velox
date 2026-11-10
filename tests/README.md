@@ -31,3 +31,7 @@ Exit code `0` means every optimization passed.
 Options: `--no-wu`, `--no-nvidia`, `--only=<text>` (only devices whose name contains the text) and `--rollback=<text>` (roll back the driver of the matching device instead of updating).
 
 Note: right after a driver change, Windows keeps reporting the old version through WMI (`Win32_PnPSignedDriver`) until the next restart. The real version is the PnP property `DEVPKEY_Device_DriverVersion`.
+
+## Unit checks
+
+`Velox.IntegrationTests.exe result.txt --unit` runs pure-logic checks that change nothing on the system: firmware filter, version rules, Windows Update device matching, NVIDIA catalog names and download URLs, Windows Update / NVIDIA duplicates for the same GPU, and the temporary files cleaner (on a scratch folder). CI runs them on every build.

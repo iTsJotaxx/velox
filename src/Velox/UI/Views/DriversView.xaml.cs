@@ -206,11 +206,17 @@ namespace Velox.UI.Views
 
         // ------------------------------------------------------------ Gráficas AMD / Intel
 
-        void RenderVendors()
+        List<GpuVendorTool> _vendors;
+
+        async void RenderVendors()
         {
+            // La consulta WMI se hace una vez y en segundo plano (antes bloqueaba la interfaz cada vez que se abría la página)
+            if (_vendors == null)
+            {
+                try { _vendors = await Task.Run(() => DriverUpdater.OtherGpuVendors()); } catch { return; }
+            }
             PanelVendors.Children.Clear();
-            List<GpuVendorTool> tools;
-            try { tools = DriverUpdater.OtherGpuVendors(); } catch { return; }
+            var tools = _vendors;
             foreach (var t in tools)
             {
                 var card = new Border { Style = Res<Style>("Card"), Margin = new Thickness(0, 16, 0, 0) };

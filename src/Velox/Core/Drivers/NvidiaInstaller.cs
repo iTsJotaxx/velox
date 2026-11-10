@@ -27,6 +27,14 @@ namespace Velox.Core.Drivers
             try
             {
                 if (payload == null) throw new InvalidOperationException(Loc.T("drv.reason.noPayload"));
+                // Si la gráfica ya tiene esta versión o una mayor (otra instalación, Windows Update...), no se toca:
+                // reinstalar o bajar de versión un driver gráfico solo puede dar problemas
+                if (InstalledVersionReached(update))
+                {
+                    Log.Info("NVIDIA: " + update.NewVersion + " or newer is already installed; nothing to do.");
+                    result.Messages.Add(Loc.F("drv.msg.alreadyInstalled", update.Title));
+                    return;
+                }
                 // Se revalida aquí aunque ya se hizo al buscar: es la última barrera antes de bajar nada
                 var url = NvidiaSource.ValidateDownloadUri(payload.Url.AbsoluteUri, payload.Version);
 

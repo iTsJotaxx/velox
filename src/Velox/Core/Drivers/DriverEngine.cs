@@ -36,11 +36,38 @@ namespace Velox.Core.Drivers
                 all.AddRange(p.Updates);
                 DriverUpdater.LastSearchWarnings.AddRange(p.Warnings);
             }
+            RemoveDuplicateGpuOffers(all);
             Log.Info("Driver search finished: " + all.Count + " update(s), " + DriverUpdater.LastSearchWarnings.Count + " warning(s).");
             return all
                 .OrderBy(u => Array.IndexOf(CategoryOrder, u.Category))
                 .ThenBy(u => u.DeviceName, StringComparer.CurrentCultureIgnoreCase)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Windows Update y NVIDIA pueden ofrecer driver para la misma gráfica. Instalar los dos seguidos podría dejar
+        /// el más viejo encima del nuevo: se queda solo el de versión mayor (a igualdad, el de NVIDIA).
+        /// </summary>
+        internal static void RemoveDuplicateGpuOffers(List<DriverUpdate> all)
+        {
+            foreach (var nv in all.Where(u => u.Source == DriverSource.Nvidia).ToList())
+            {
+                int? nvNum = DriverRules.NvidiaWebToNumber(nv.NewVersion);
+                foreach (var wu in all.Where(u => u.Source == DriverSource.WindowsUpdate &&
+                                                  string.Equals(u.DeviceId, nv.DeviceId, StringComparison.OrdinalIgnoreCase)).ToList())
+                {
+                    // La versión de Windows Update viene en formato Windows (32.0.15.6094 = 560.94)
+                    int? wuNum = DriverRules.NvidiaInstalledToNumber(wu.NewVersion);
+                    if (wuNum.HasValue && nvNum.HasValue && wuNum.Value > nvNum.Value)
+                    {
+                        all.Remove(nv);
+                        Log.Info("Driver search: '" + nv.Title + "' dropped, Windows Update offers a newer one (" + wu.NewVersion + ").");
+                        break;
+                    }
+                    all.Remove(wu);
+                    Log.Info("Driver search: Windows Update '" + wu.Title + "' dropped, NVIDIA offers " + nv.NewVersion + " for the same GPU.");
+                }
+            }
         }
 
         static Part SearchWindowsUpdate(IProgress<string> progress)

@@ -141,6 +141,8 @@ namespace Velox.Core.Drivers
             var exact = installed.Where(d => !string.IsNullOrEmpty(d.HardwareId) && string.Equals(d.HardwareId.Trim(), hwid, StringComparison.OrdinalIgnoreCase)).ToList();
             if (exact.Count > 0) return exact;
             if (hwid.IndexOf('\\') < 0) return new List<DeviceDriver>(); // un id sin bus (p. ej. "PCI") es demasiado genérico
+            // Solo fabricante («PCI\VEN_8086») encajaría con todos sus dispositivos: hace falta al menos fabricante y modelo
+            if (hwid.IndexOf('&') < 0) return new List<DeviceDriver>();
             return installed.Where(d =>
             {
                 var parts = (d.DeviceId ?? "").Split('\\');
@@ -164,6 +166,14 @@ namespace Velox.Core.Drivers
                 {
                     Log.Warn("Windows Update: refused to install firmware-like update '" + u.Title + "'.");
                     Fail(result, u, Loc.T("drv.reason.firmware"));
+                    continue;
+                }
+                bool already = false;
+                try { already = (bool)iu.IsInstalled; } catch { }
+                if (already)
+                {
+                    Log.Info("Windows Update: '" + u.Title + "' is already installed; skipped.");
+                    result.Messages.Add(Loc.F("drv.msg.alreadyInstalled", u.Title));
                     continue;
                 }
                 usable.Add(u);

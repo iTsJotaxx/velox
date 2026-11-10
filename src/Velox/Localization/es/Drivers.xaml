@@ -39,6 +39,7 @@
 
   <!-- Resultados -->
   <sys:String x:Key="drv.msg.installed">Instalado: {0} (versión {1})</sys:String>
+  <sys:String x:Key="drv.msg.alreadyInstalled">{0}: ya estaba instalado, no se ha tocado.</sys:String>
   <sys:String x:Key="drv.msg.failed">No se pudo instalar {0}: {1}</sys:String>
   <sys:String x:Key="drv.msg.busy">Ya hay una instalación de drivers en curso.</sys:String>
   <sys:String x:Key="drv.msg.cancelled">Instalación cancelada.</sys:String>

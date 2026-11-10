@@ -30,6 +30,8 @@ namespace Velox.IntegrationTests
         static int Main(string[] args)
         {
             string outFile = args.FirstOrDefault(a => !a.StartsWith("--"));
+            // Lógica pura, sin cambiar nada del sistema: se puede ejecutar sin administrador (y en CI)
+            if (args.Contains("--unit")) return UnitChecks.Run(outFile);
             // Modo drivers: instala de verdad con el motor de la interfaz (ver DriversTest.cs)
             if (args.Contains("--drivers"))
                 return DriversTest.Run(outFile, !args.Contains("--no-wu"), !args.Contains("--no-nvidia"),

@@ -29,6 +29,15 @@ jobs:
       - name: Build integration tests
         run: dotnet build tests/Velox.IntegrationTests/Velox.IntegrationTests.csproj -c Release -nologo
 
+      # Pure-logic checks (driver rules, device matching, NVIDIA names, temp cleaner): they change nothing
+      - name: Unit checks
+        shell: pwsh
+        run: |
+          & tests/Velox.IntegrationTests/bin/Release/net48/Velox.IntegrationTests.exe unit-checks.txt --unit
+          $code = $LASTEXITCODE
+          Get-Content unit-checks.txt
+          exit $code
+
       - uses: actions/upload-artifact@v5
         with:
           name: Velox
