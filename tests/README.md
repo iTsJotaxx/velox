@@ -39,3 +39,11 @@ Note: right after a driver change, Windows keeps reporting the old version throu
 ## Unit checks
 
 `Velox.IntegrationTests.exe result.txt --unit` runs pure-logic checks that change nothing on the system: firmware filter, version rules, Windows Update device matching, NVIDIA catalog names and download URLs, Windows Update / NVIDIA duplicates for the same GPU, and the temporary files cleaner (on a scratch folder). CI runs them on every build.
+
+## Version 1.5 checks
+
+`--unit` also covers profiles (round trip, validation, import plan), `winget upgrade` parsing (with real output), DNS packets, the change history, the post-restart check (with an injected boot time, no restart needed), the setup questions, laptop mode, deep clean on a sandbox folder (a junction inside must never be followed), the windowless command line and the health report.
+
+`--smoke` also runs, for real: DNS to Cloudflare and back to the original (verified per adapter), a harmless setting reverted from outside and reapplied, export and re-import on the same PC (must find nothing to change), deep clean of temp files and error reports, the health report, a real app update (installs 7-Zip 23.01, updates it with Velox's engine and uninstalls it) and the windowless mode (`Velox.exe` must return 3 while Velox is open, and an `--import` must change a setting and a second one put it back). Close Velox before running it.
+
+Not covered on a test machine: an actual restart (the post-restart check is tested with an injected boot time), a real battery (laptop mode values are tested on the desktop plan) and a Windows Update cache while no restart is pending.
