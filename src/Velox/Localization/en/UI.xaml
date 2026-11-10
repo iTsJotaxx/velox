@@ -438,4 +438,19 @@
   <sys:String x:Key="wiz.summary">Laptop: {0} · Competitive: {1} · OBS: {2}</sys:String>
   <sys:String x:Key="wiz.unanswered">not answered</sys:String>
   <sys:String x:Key="wiz.detected">as detected</sys:String>
+  <sys:String x:Key="cli.help.rec">applies the recommended setup for this PC (never risky settings)</sys:String>
+  <sys:String x:Key="cli.help.import">applies an exported configuration (apps are installed from the window)</sys:String>
+  <sys:String x:Key="cli.help.profile">applies a saved profile</sys:String>
+  <sys:String x:Key="cli.help.risky">with --import or --profile, also applies the risky settings in the file</sys:String>
+  <sys:String x:Key="cli.help.norp">does not create a restore point first</sys:String>
+  <sys:String x:Key="cli.help.codes">Exit codes: 0 ok · 1 some change failed · 2 invalid arguments or file · 3 Velox is already open.</sys:String>
+  <sys:String x:Key="cli.badArgs">Invalid arguments:</sys:String>
+  <sys:String x:Key="cli.scanning">Scanning the PC...</sys:String>
+  <sys:String x:Key="cli.recommended">Recommended setup</sys:String>
+  <sys:String x:Key="cli.plan">{0}: {1} change(s).</sys:String>
+  <sys:String x:Key="cli.riskySkipped">risky setting skipped (add --include-risky to apply it)</sys:String>
+  <sys:String x:Key="cli.appsNote">The file includes {0} apps: install them from Velox › Settings › Import.</sys:String>
+  <sys:String x:Key="cli.nothing">Nothing to change: the PC is already set up like this.</sys:String>
+  <sys:String x:Key="cli.done">Done: {0} change(s) applied.</sys:String>
+  <sys:String x:Key="cli.doneSome">{0} change(s) applied and {1} with errors (details in the log).</sys:String>
 </ResourceDictionary>

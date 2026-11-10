@@ -438,4 +438,19 @@
   <sys:String x:Key="wiz.summary">Portátil: {0} · Competitivo: {1} · OBS: {2}</sys:String>
   <sys:String x:Key="wiz.unanswered">sin responder</sys:String>
   <sys:String x:Key="wiz.detected">lo detectado</sys:String>
+  <sys:String x:Key="cli.help.rec">aplica la configuración recomendada para este equipo (nunca ajustes de riesgo)</sys:String>
+  <sys:String x:Key="cli.help.import">aplica una configuración exportada (las apps se instalan desde la ventana)</sys:String>
+  <sys:String x:Key="cli.help.profile">aplica un perfil guardado</sys:String>
+  <sys:String x:Key="cli.help.risky">con --import o --profile, aplica también los ajustes de riesgo del archivo</sys:String>
+  <sys:String x:Key="cli.help.norp">no crea punto de restauración antes</sys:String>
+  <sys:String x:Key="cli.help.codes">Códigos de salida: 0 bien · 1 algún cambio falló · 2 argumentos o archivo no válidos · 3 Velox ya está abierto.</sys:String>
+  <sys:String x:Key="cli.badArgs">Argumentos no válidos:</sys:String>
+  <sys:String x:Key="cli.scanning">Analizando el equipo...</sys:String>
+  <sys:String x:Key="cli.recommended">Configuración recomendada</sys:String>
+  <sys:String x:Key="cli.plan">{0}: {1} cambio(s).</sys:String>
+  <sys:String x:Key="cli.riskySkipped">ajuste de riesgo omitido (añade --include-risky para aplicarlo)</sys:String>
+  <sys:String x:Key="cli.appsNote">El archivo incluye {0} apps: instálalas desde Velox › Ajustes › Importar.</sys:String>
+  <sys:String x:Key="cli.nothing">No hay nada que cambiar: el equipo ya está así.</sys:String>
+  <sys:String x:Key="cli.done">Hecho: {0} cambio(s) aplicados.</sys:String>
+  <sys:String x:Key="cli.doneSome">{0} cambio(s) aplicados y {1} con errores (detalles en el registro).</sys:String>
 </ResourceDictionary>

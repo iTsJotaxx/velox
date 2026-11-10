@@ -18,6 +18,11 @@ namespace Velox
 #else
             const string instanceName = @"Global\Velox_SingleInstance";
 #endif
+            // Modo sin ventana (--apply-recommended, --import=, --profile=): antes de mirar si ya hay una ventana abierta,
+            // para que con Velox abierto devuelva un error en vez de «salir bien» sin hacer nada
+            var cli = CliOptions.Parse(args);
+            if (cli.IsHeadless) return Headless.Main(cli, instanceName);
+
             bool afterUpdate = Array.Exists(args, a => a.Equals("--after-update", StringComparison.OrdinalIgnoreCase));
             using (var mutex = new Mutex(true, instanceName, out bool createdNew))
             {
