@@ -34,7 +34,7 @@ Note: right after a driver change, Windows keeps reporting the old version throu
 
 ## Smoke test
 
-`Velox.IntegrationTests.exe result.txt --smoke` (as administrator) runs every other section for real and leaves the system as it was: system scan and findings, in-app diagnostics (ping, network info, DNS flush, disk health, battery), memory lists / free RAM / trim a process, temp files and shader cache cleaning, restore point, startup apps on/off (with a temporary entry), process priority and end task (on a copy of `PING.EXE`, and `csrss` must be refused), permanent game optimization, updater check, driver inventory/search/safety blockers, winget installed list and search, uninstall lists (desktop and Store), disk scan of the user profile and folder protection, Explorer restart and settings save/load. It never installs or uninstalls programs or drivers.
+`Velox.IntegrationTests.exe result.txt --smoke` (as administrator) runs every other section for real and leaves the system as it was: system scan and findings, in-app diagnostics (ping, network info, DNS flush, disk health, battery), memory lists / free RAM / trim a process, temp files and shader cache cleaning, restore point, startup apps on/off (with a temporary entry), process priority and end task (on a copy of `PING.EXE`, and `csrss` must be refused), permanent game optimization, updater check, driver inventory/search/safety blockers, winget installed list and search, uninstall lists (desktop and Store), disk scan of the user profile and folder protection, Explorer restart and settings save/load (restored afterwards). It never installs drivers; the only program it installs is the temporary 7-Zip of the version 1.5 checks, which it removes.
 
 ## Unit checks
 

@@ -201,7 +201,7 @@ namespace Velox.Core
                 BackupStore.Load();
                 History.Load();
                 foreach (var id in Catalog.Retired)
-                    try { if (BackupStore.Restore(id)) History.Add(id, false, "retired"); } catch { }
+                    try { if (BackupStore.Restore(id) && !BackupStore.Has(id)) History.Add(id, false, "retired"); } catch { }
                 // La app sin ventana: solo para tener los textos (diccionarios de idioma) y los recursos
                 var app = new App();
                 app.InitializeComponent();

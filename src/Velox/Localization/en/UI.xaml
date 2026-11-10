@@ -453,4 +453,5 @@
   <sys:String x:Key="cli.nothing">Nothing to change: the PC is already set up like this.</sys:String>
   <sys:String x:Key="cli.done">Done: {0} change(s) applied.</sys:String>
   <sys:String x:Key="cli.doneSome">{0} change(s) applied and {1} with errors (details in the log).</sys:String>
+  <sys:String x:Key="hist.name.PrioritySeparation">More CPU for the foreground game (retired)</sys:String>
 </ResourceDictionary>

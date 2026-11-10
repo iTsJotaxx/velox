@@ -453,4 +453,5 @@
   <sys:String x:Key="cli.nothing">No hay nada que cambiar: el equipo ya está así.</sys:String>
   <sys:String x:Key="cli.done">Hecho: {0} cambio(s) aplicados.</sys:String>
   <sys:String x:Key="cli.doneSome">{0} cambio(s) aplicados y {1} con errores (detalles en el registro).</sys:String>
+  <sys:String x:Key="hist.name.PrioritySeparation">Más CPU para el juego en primer plano (retirada)</sys:String>
 </ResourceDictionary>
