@@ -110,7 +110,10 @@
           </ItemsControl>
           <Grid x:Name="InstallBar" Margin="0,14,0,0" Visibility="Collapsed">
             <TextBlock Text="{DynamicResource ui.drv.installNote}" Style="{StaticResource Caption}" VerticalAlignment="Center" MaxWidth="560" HorizontalAlignment="Left"/>
-            <Button x:Name="BtnInstall" Style="{StaticResource BtnPrimary}" HorizontalAlignment="Right" Padding="20,10" Click="Install_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button x:Name="BtnCancelInstall" Style="{StaticResource BtnBase}" Margin="0,0,8,0" Content="{DynamicResource ui.drv.cancelDownload}" Click="CancelInstall_Click" Visibility="Collapsed"/>
+              <Button x:Name="BtnInstall" Style="{StaticResource BtnPrimary}" Padding="20,10" Click="Install_Click"/>
+            </StackPanel>
           </Grid>
         </StackPanel>
       </Border>

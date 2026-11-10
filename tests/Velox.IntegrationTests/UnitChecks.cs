@@ -87,6 +87,27 @@ namespace Velox.IntegrationTests
             DriverEngine.RemoveDuplicateGpuOffers(other);
             Check("dup: other devices untouched", other.Count == 2);
 
+            // ---------------------------------------------------------------- Protecciones de drivers (no se instala nada)
+            {
+                bool prev = DriverSafety.SessionRebootPending;
+                try
+                {
+                    DriverSafety.SessionRebootPending = true;
+                    Check("safety: session reboot blocks", DriverSafety.Blockers().Count > 0);
+                    var dummy = new List<DriverUpdate> { new DriverUpdate { Source = DriverSource.WindowsUpdate, Title = "dummy", Selected = true } };
+                    var res = DriverUpdater.InstallAsync(dummy, null, System.Threading.CancellationToken.None).GetAwaiter().GetResult();
+                    Check("safety: install blocked before doing anything", res.Blocked && res.Installed == 0 && res.Failed == 0 && res.Messages.Count > 0,
+                          "blocked=" + res.Blocked + " installed=" + res.Installed + " failed=" + res.Failed);
+                    bool threw = false;
+                    try { RollbackNative.Rollback(new DeviceDriver { DeviceId = @"PCI\DUMMY\0", DeviceName = "dummy" }); }
+                    catch (InvalidOperationException) { threw = true; }
+                    Check("safety: rollback blocked", threw);
+                }
+                finally { DriverSafety.SessionRebootPending = prev; }
+                Console.WriteLine("  (info) blockers now: " + string.Join(" | ", DriverSafety.Blockers()));
+                Out.AppendLine("  (info) blockers now: " + string.Join(" | ", DriverSafety.Blockers()));
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

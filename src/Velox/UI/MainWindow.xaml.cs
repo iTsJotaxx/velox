@@ -153,6 +153,11 @@ namespace Velox.UI
                     for (int i = 0; i < 240 && AppState.Current.IsBusy; i++) await Task.Delay(250);
                     await Task.Delay(1800);
                 }
+                if (_current == "drivers" && App.TestAction == "safety" && PageHost.Content is DriversView drv)
+                {
+                    drv.TestSafety();
+                    await Task.Delay(1500);
+                }
                 if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
                 await Task.Delay(400);
                 Log.Info("UITEST: rendering");

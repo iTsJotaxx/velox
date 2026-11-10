@@ -249,6 +249,10 @@
   <sys:String x:Key="ui.drv.foundN">Hay {0} actualizaciones de drivers disponibles.</sys:String>
   <sys:String x:Key="ui.drv.installN">Instalar seleccionadas ({0})</sys:String>
   <sys:String x:Key="ui.drv.install">Instalar</sys:String>
+  <sys:String x:Key="ui.drv.blockedTitle">Ahora no es buen momento para cambiar drivers</sys:String>
+  <sys:String x:Key="ui.drv.blockedText">Para no arriesgar tus dispositivos, Velox no instala ni cambia drivers en esta situación:</sys:String>
+  <sys:String x:Key="ui.drv.cancelDownload">Cancelar descarga</sys:String>
+  <sys:String x:Key="ui.drv.cancelling">Cancelando... (lo que ya se está instalando termina primero)</sys:String>
   <sys:String x:Key="ui.drv.installNote">Antes de instalar, Velox crea un punto de restauración. Si algo no va bien, puedes volver al driver anterior desde la lista de componentes.</sys:String>
   <sys:String x:Key="ui.drv.installing">Instalando drivers...</sys:String>
   <sys:String x:Key="ui.drv.confirmTitle">Instalar {0} drivers</sys:String>

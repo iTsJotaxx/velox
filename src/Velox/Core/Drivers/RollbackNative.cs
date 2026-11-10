@@ -50,6 +50,13 @@ namespace Velox.Core.Drivers
             string name = string.IsNullOrWhiteSpace(device.DeviceName) ? device.DeviceId : device.DeviceName;
             Log.Info("Driver rollback requested for '" + name + "' (" + device.DeviceId + ").");
 
+            var blockers = DriverSafety.Blockers();
+            if (blockers.Count > 0)
+            {
+                Log.Warn("Driver rollback blocked: " + string.Join(" | ", blockers));
+                throw new InvalidOperationException(string.Join("\n", blockers));
+            }
+
             IntPtr set = SetupDiCreateDeviceInfoList(IntPtr.Zero, IntPtr.Zero);
             if (set == InvalidHandle || set == IntPtr.Zero)
             {
@@ -79,6 +86,7 @@ namespace Velox.Core.Drivers
                 }
 
                 Log.Info("Rollback done for '" + name + "'" + (needReboot ? " (reboot required)." : "."));
+                if (needReboot) DriverSafety.SessionRebootPending = true;
                 return Loc.F(needReboot ? "drv.msg.rollbackDoneReboot" : "drv.msg.rollbackDone", name);
             }
             finally

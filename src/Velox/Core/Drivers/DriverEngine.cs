@@ -121,6 +121,16 @@ namespace Velox.Core.Drivers
                 // Solo lo marcado, y solo de las fuentes conocidas
                 var selected = (updates ?? new List<DriverUpdate>()).Where(u => u != null && u.Selected).ToList();
                 if (selected.Count == 0) return result;
+
+                // Última barrera (la interfaz ya lo comprueba antes): reinicio pendiente o portátil con batería
+                var blockers = DriverSafety.Blockers();
+                if (blockers.Count > 0)
+                {
+                    Log.Warn("Driver install blocked: " + string.Join(" | ", blockers));
+                    result.Blocked = true;
+                    result.Messages.AddRange(blockers);
+                    return result;
+                }
                 Log.Info("Driver install started: " + selected.Count + " update(s).");
 
                 ct.ThrowIfCancellationRequested();
@@ -167,6 +177,7 @@ namespace Velox.Core.Drivers
             }
             finally
             {
+                if (result.RebootRequired) DriverSafety.SessionRebootPending = true;
                 Interlocked.Exchange(ref _installing, 0);
             }
             return result;

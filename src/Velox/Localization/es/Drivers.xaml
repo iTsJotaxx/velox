@@ -36,6 +36,11 @@
   <sys:String x:Key="drv.reason.firmware">parece un firmware o BIOS y Velox nunca los instala</sys:String>
   <sys:String x:Key="drv.reason.downloadCode">la descarga falló (código {0}, {1})</sys:String>
   <sys:String x:Key="drv.reason.installCode">la instalación falló (código {0}, {1})</sys:String>
+  <sys:String x:Key="drv.reason.wuTimeout">Windows Update no respondió en {0} minutos y se ha detenido</sys:String>
+  <sys:String x:Key="drv.block.rebootWindows">Windows tiene un reinicio pendiente (de una actualización o un driver anterior). Reinicia el equipo y vuelve a intentarlo.</sys:String>
+  <sys:String x:Key="drv.block.rebootSession">Un cambio de driver que acabas de hacer necesita reiniciar. Reinicia el equipo antes de cambiar otro driver.</sys:String>
+  <sys:String x:Key="drv.block.batteryPct">El portátil está funcionando con batería ({0} %). Conecta el cargador: si se apaga a mitad de un driver, el dispositivo puede quedar inservible.</sys:String>
+  <sys:String x:Key="drv.block.battery">El portátil está funcionando con batería. Conecta el cargador: si se apaga a mitad de un driver, el dispositivo puede quedar inservible.</sys:String>
 
   <!-- Resultados -->
   <sys:String x:Key="drv.msg.installed">Instalado: {0} (versión {1})</sys:String>

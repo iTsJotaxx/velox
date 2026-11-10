@@ -97,17 +97,43 @@ namespace Velox.UI.Views
         void ShowAll_Click(object sender, RoutedEventArgs e) => RenderDevices();
         void DeviceList_SelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateButtons();
 
+#if UITEST
+        public void TestSafety() => _ = SafeToChangeDrivers();
+#endif
+
+        /// <summary>Si no es seguro tocar drivers ahora (reinicio pendiente, batería), lo explica y devuelve false.</summary>
+        async Task<bool> SafeToChangeDrivers()
+        {
+            var blockers = await Task.Run(() => DriverSafety.Blockers());
+            if (blockers.Count == 0) return true;
+            await Win.ConfirmAsync(Loc.T("ui.drv.blockedTitle"), Loc.T("ui.drv.blockedText"), string.Join("\n", blockers), Loc.T("ui.btn.ok"), null);
+            return false;
+        }
+
         async void Rollback_Click(object sender, RoutedEventArgs e)
         {
             if (!(DeviceList.SelectedItem is DeviceRow row)) return;
             var d = row.Device;
+            if (!await SafeToChangeDrivers()) return;
             if (!await Win.ConfirmAsync(Loc.F("ui.drv.rollbackTitle", d.DeviceName), Loc.T("ui.drv.rollbackText"), null, Loc.T("ui.drv.rollback"), Loc.T("ui.btn.cancel"))) return;
             string msg = null; string error = null;
+            bool cancelled = false;
             await AppState.Current.RunBusy(Loc.T("ui.drv.rollbackBusy"), async () =>
             {
+                // Punto de restauración antes de cambiar el driver (si falla, se pregunta si seguir)
+                AppState.Current.SetBusyText(Loc.T("ui.busy.restorePoint"));
+                var rp = await Core.Tools.RestorePointTool.CreateAsync("Velox - driver rollback");
+                if (rp.Result == Core.Tools.RestorePointResult.Failed &&
+                    !await Win.ConfirmAsync(Loc.T("ui.rp.failedTitle"), rp.Message + "\n\n" + Loc.T("ui.rp.continue"), null, Loc.T("ui.btn.continue"), Loc.T("ui.btn.cancel")))
+                {
+                    cancelled = true;
+                    return;
+                }
+                AppState.Current.SetBusyText(Loc.T("ui.drv.rollbackBusy"));
                 try { msg = await DriverRollback.RollbackAsync(d); }
                 catch (Exception ex) { error = ex.Message; }
             });
+            if (cancelled) { Win.ShowToast(Loc.T("ui.msg.cancelled"), ToastKind.Warning); return; }
             if (error != null) await Win.ConfirmAsync(Loc.F("ui.drv.rollbackTitle", d.DeviceName), error, null, Loc.T("ui.btn.ok"), null);
             else if (msg != null)
             {
@@ -180,18 +206,36 @@ namespace Velox.UI.Views
         {
             var selected = _updates?.Where(u => u.Selected).ToList() ?? new List<DriverUpdate>();
             if (selected.Count == 0) return;
+            if (!await SafeToChangeDrivers()) return;
             var lines = selected.Select(u => "•  " + u.DeviceName + ":  " + u.CurrentVersion + "  →  " + u.NewVersion + "  (" + u.SourceText + ")");
             string text = Loc.T("ui.drv.confirmText");
             if (selected.Any(u => u.Source == DriverSource.Nvidia)) text += "\n\n" + Loc.T("ui.drv.confirmNvidia");
             if (!await Win.ConfirmAsync(Loc.F("ui.drv.confirmTitle", selected.Count), text, string.Join("\n", lines), Loc.T("ui.drv.install"), Loc.T("ui.btn.cancel"))) return;
 
             DriverInstallResult result = null;
-            await AppState.Current.RunBusy(Loc.T("ui.drv.installing"), async () =>
+            _installCts = new CancellationTokenSource();
+            BtnCancelInstall.IsEnabled = true;
+            BtnCancelInstall.Visibility = Visibility.Visible;
+            try
             {
-                var progress = new Progress<string>(t => AppState.Current.SetBusyText(t));
-                result = await DriverUpdater.InstallAsync(selected, progress, CancellationToken.None);
-            });
+                await AppState.Current.RunBusy(Loc.T("ui.drv.installing"), async () =>
+                {
+                    var progress = new Progress<string>(t => AppState.Current.SetBusyText(t));
+                    result = await DriverUpdater.InstallAsync(selected, progress, _installCts.Token);
+                });
+            }
+            finally
+            {
+                BtnCancelInstall.Visibility = Visibility.Collapsed;
+                _installCts.Dispose();
+                _installCts = null;
+            }
             if (result == null) return;
+            if (result.Blocked)
+            {
+                await Win.ConfirmAsync(Loc.T("ui.drv.blockedTitle"), Loc.T("ui.drv.blockedText"), string.Join("\n", result.Messages), Loc.T("ui.btn.ok"), null);
+                return;
+            }
             if (result.RebootRequired) AppState.Current.NeedsReboot = true;
 
             string title = result.Failed == 0 ? Loc.F("ui.drv.doneOk", result.Installed) : Loc.F("ui.drv.doneSome", result.Installed, result.Failed);
@@ -202,6 +246,17 @@ namespace Velox.UI.Views
             if (result.Failed == 0) _updates = _updates.Except(selected).ToList();
             await LoadDevicesAsync();
             RenderUpdates();
+        }
+
+        CancellationTokenSource _installCts;
+
+        // Cancela las descargas pendientes; lo que ya se está instalando termina (un driver a medias es peor)
+        void CancelInstall_Click(object sender, RoutedEventArgs e)
+        {
+            if (_installCts == null) return;
+            _installCts.Cancel();
+            BtnCancelInstall.IsEnabled = false;
+            AppState.Current.SetBusyText(Loc.T("ui.drv.cancelling"));
         }
 
         // ------------------------------------------------------------ Gráficas AMD / Intel

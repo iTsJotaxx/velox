@@ -49,7 +49,7 @@ namespace Velox.Core.Drivers
             dynamic session = NewSession();
             dynamic searcher = session.CreateUpdateSearcher();
             searcher.ServerSelection = 2; // ssWindowsUpdate: nunca WSUS
-            dynamic found = searcher.Search(SearchCriteria);
+            dynamic found = WuaAsync.Search(searcher, SearchCriteria); // con tiempo límite
             int count = (int)found.Updates.Count;
             Log.Info("Windows Update: " + count + " driver update(s) reported.");
 
@@ -197,7 +197,7 @@ namespace Velox.Core.Drivers
                 Log.Info("Windows Update: downloading " + usable.Count + " driver(s)...");
                 dynamic downloader = session.CreateUpdateDownloader();
                 downloader.Updates = coll;
-                dynamic dres = downloader.Download();
+                dynamic dres = WuaAsync.Download(downloader, ct); // cancelable y con tiempo límite
 
                 dynamic icoll = Activator.CreateInstance(Type.GetTypeFromProgID("Microsoft.Update.UpdateColl", true));
                 var toInstall = new List<DriverUpdate>();
@@ -219,7 +219,7 @@ namespace Velox.Core.Drivers
                 installer.Updates = icoll;
                 try { installer.AllowSourcePrompts = false; } catch { }
                 try { installer.ForceQuiet = true; } catch { }
-                dynamic ires = installer.Install();
+                dynamic ires = WuaAsync.Install(installer); // con tiempo límite, sin cancelar a mitad
 
                 for (int i = 0; i < toInstall.Count; i++)
                 {

@@ -36,6 +36,11 @@
   <sys:String x:Key="drv.reason.firmware">it looks like firmware or BIOS, which Velox never installs</sys:String>
   <sys:String x:Key="drv.reason.downloadCode">the download failed (code {0}, {1})</sys:String>
   <sys:String x:Key="drv.reason.installCode">the installation failed (code {0}, {1})</sys:String>
+  <sys:String x:Key="drv.reason.wuTimeout">Windows Update did not respond in {0} minutes and was stopped</sys:String>
+  <sys:String x:Key="drv.block.rebootWindows">Windows has a pending restart (from an update or a previous driver). Restart the PC and try again.</sys:String>
+  <sys:String x:Key="drv.block.rebootSession">A driver change you just made needs a restart. Restart the PC before changing another driver.</sys:String>
+  <sys:String x:Key="drv.block.batteryPct">The laptop is running on battery ({0} %). Plug in the charger: if it shuts down in the middle of a driver, the device can stop working.</sys:String>
+  <sys:String x:Key="drv.block.battery">The laptop is running on battery. Plug in the charger: if it shuts down in the middle of a driver, the device can stop working.</sys:String>
 
   <!-- Results -->
   <sys:String x:Key="drv.msg.installed">Installed: {0} (version {1})</sys:String>

@@ -62,6 +62,8 @@ namespace Velox.Core.Drivers
         public int Installed { get; set; }
         public int Failed { get; set; }
         public bool RebootRequired { get; set; }
+        /// <summary>No se instaló nada porque no era seguro (reinicio pendiente, batería...). Los motivos van en Messages.</summary>
+        public bool Blocked { get; set; }
         /// <summary>Una línea por driver, ya traducida.</summary>
         public List<string> Messages { get; } = new List<string>();
     }
