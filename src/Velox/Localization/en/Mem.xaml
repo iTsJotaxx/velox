@@ -6,8 +6,8 @@
   <sys:String x:Key="mem.title">Memory (RAM)</sys:String>
   <sys:String x:Key="mem.subtitle">Free up RAM without closing anything: Windows keeps caches and unused pages in memory. Velox releases them so there is free RAM for your games and programs.</sys:String>
   <sys:String x:Key="mem.inUse">in use</sys:String>
-  <sys:String x:Key="mem.headline">{0} free of {1}</sys:String>
-  <sys:String x:Key="mem.subline">{0} available in total: {1} is in cache (standby) and can be freed instantly.</sys:String>
+  <sys:String x:Key="mem.headline">{0} available of {1}</sys:String>
+  <sys:String x:Key="mem.subline">{0} completely free and {1} in cache (standby), which can be freed instantly.</sys:String>
   <sys:String x:Key="mem.noLists">Without administrator rights the memory list details cannot be read.</sys:String>
   <sys:String x:Key="mem.legend.use">In use</sys:String>
   <sys:String x:Key="mem.legend.useTip">Memory programs and Windows are using right now.</sys:String>

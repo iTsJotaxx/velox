@@ -42,6 +42,12 @@ namespace Velox.Core.Optimizations
         public Func<SystemInfo, bool> Preference { get; set; }
         /// <summary>null = siempre disponible.</summary>
         public Func<SystemInfo, bool> Available { get; set; }
+        /// <summary>
+        /// Windows impide que un programa externo lo cambie (p. ej. la protección UCPD de Windows 11). Se muestra con su
+        /// estado real y el interruptor bloqueado; ManualUri abre la página de Configuración donde cambiarlo a mano.
+        /// </summary>
+        public Func<SystemInfo, bool> Locked { get; set; }
+        public string ManualUri { get; set; }
         /// <summary>Detección extra (además de Reg).</summary>
         public Func<bool> Detect { get; set; }
         /// <summary>Cambios no declarativos (id de la optimización, info del equipo). Usar Tracked.* para guardar copia.</summary>
@@ -85,6 +91,12 @@ namespace Velox.Core.Optimizations
         {
             if (o.Available == null || s == null) return true;
             try { return o.Available(s); } catch { return false; }
+        }
+
+        public static bool IsLocked(Optimization o, SystemInfo s)
+        {
+            if (o.Locked == null || s == null) return false;
+            try { return o.Locked(s); } catch { return false; }
         }
 
         public static bool IsRecommended(Optimization o, SystemInfo s)

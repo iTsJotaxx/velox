@@ -41,6 +41,10 @@ namespace Velox.UI.ViewModels
 
         public bool IsApplied { get => _isApplied; set { if (Set(ref _isApplied, value)) RaiseState(); } }
         public bool IsAvailable { get => _isAvailable; set { if (Set(ref _isAvailable, value)) RaiseState(); } }
+        bool _isLocked;
+        /// <summary>Windows no deja que Velox lo cambie: estado real, interruptor bloqueado y botón a Configuración.</summary>
+        public bool IsLocked { get => _isLocked; set { if (Set(ref _isLocked, value)) RaiseState(); } }
+        public bool ShowManual => IsLocked && Opt.ManualUri != null;
         public bool IsRecommended { get => _isRecommended; set { if (Set(ref _isRecommended, value)) RaiseState(); } }
         bool _isPreference;
         /// <summary>«A tu gusto»: el modo Recomendado no la toca.</summary>
@@ -64,8 +68,9 @@ namespace Velox.UI.ViewModels
         public bool ShowPreference => Scanned && IsAvailable && IsPreference && !IsRisky; // los de riesgo ya llevan su etiqueta
 
         /// <summary>na | pending | on | off</summary>
-        public string StatusKind => !IsAvailable ? "na" : IsPending ? "pending" : IsApplied ? "on" : "off";
+        public string StatusKind => IsLocked ? (IsApplied ? "on" : "na") : !IsAvailable ? "na" : IsPending ? "pending" : IsApplied ? "on" : "off";
         public string StatusText =>
+            IsLocked ? (IsApplied ? Loc.T("ui.status.on") : Loc.T("ui.status.locked")) :
             !IsAvailable ? Loc.T("ui.status.na") :
             IsPending ? (IsChecked ? Loc.T("ui.status.willEnable") : Loc.T("ui.status.willDisable")) :
             IsApplied ? Loc.T("ui.status.on") : Loc.T("ui.status.off");
@@ -74,7 +79,7 @@ namespace Velox.UI.ViewModels
         {
             Raise(nameof(IsPending)); Raise(nameof(StatusKind)); Raise(nameof(StatusText));
             Raise(nameof(ShowRecommended)); Raise(nameof(ShowNotRecommended)); Raise(nameof(ShowPreference));
-            Raise(nameof(IsScored));
+            Raise(nameof(IsScored)); Raise(nameof(ShowManual));
         }
 
         public void RefreshTexts() => RaiseAll();
@@ -178,6 +183,7 @@ namespace Velox.UI.ViewModels
             var states = await Task.Run(() => Catalog.All.ToDictionary(o => o.Id, o => new
             {
                 Available = OptimizationEngine.IsAvailable(o, sys),
+                Locked = OptimizationEngine.IsLocked(o, sys),
                 Applied = OptimizationEngine.IsApplied(o),
                 Recommended = OptimizationEngine.IsRecommended(o, sys),
                 Preference = OptimizationEngine.IsPreference(o, sys),
@@ -186,10 +192,13 @@ namespace Velox.UI.ViewModels
             foreach (var i in AllItems)
             {
                 var st = states[i.Opt.Id];
-                i.IsAvailable = st.Available;
+                // Bloqueado por Windows = no disponible para Velox (no cuenta, no se aplica), pero se ve su estado real
+                bool usable = st.Available && !st.Locked;
+                i.IsLocked = st.Available && st.Locked;
+                i.IsAvailable = usable;
                 i.IsApplied = st.Applied;
-                i.IsRecommended = st.Available && st.Recommended;
-                i.IsPreference = st.Available && st.Preference;
+                i.IsRecommended = usable && st.Recommended;
+                i.IsPreference = usable && st.Preference;
                 i.Scanned = _scanned;
                 i.SetCheckedSilently(st.Applied);
             }

@@ -69,16 +69,29 @@ namespace Velox.Core.Scan
         }
 
         /// <summary>
-        /// Comprueba si Windows bloquea el valor TaskbarDa escribiendo su mismo valor actual (no cambia nada).
-        /// La protección UCPD de Windows 11 lo impide a cualquier programa que no sea de Windows.
+        /// ¿Windows impide a Velox quitar los Widgets? La protección UCPD de Windows 11 bloquea a cualquier programa que no
+        /// sea de Windows tanto el valor TaskbarDa como (en versiones recientes) la directiva Dsh. Se prueba escribiendo
+        /// el valor que ya tiene (o el de fábrica, que se borra después): no cambia nada.
         /// </summary>
-        static bool ProbeWidgetsLocked()
+        static bool ProbeWidgetsLocked() =>
+            !CanWrite(@"HKLM\SOFTWARE\Policies\Microsoft\Dsh", "AllowNewsAndInterests", 1) &&
+            !CanWrite(@"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarDa", 1);
+
+        static bool CanWrite(string path, string name, int factory)
         {
-            const string path = @"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced";
-            var st = Reg.Get(path, "TaskbarDa");
-            if (!st.Existed || st.Value == null) return false;
-            try { Reg.Set(path, "TaskbarDa", st.Value, st.Kind); return false; }
-            catch { return true; }
+            var st = Reg.Get(path, name);
+            try
+            {
+                if (st.Existed && st.Value != null) Reg.Set(path, name, st.Value, st.Kind);
+                else
+                {
+                    bool keyExisted = Reg.KeyExists(path);
+                    Reg.Set(path, name, factory, Microsoft.Win32.RegistryValueKind.DWord);
+                    if (keyExisted) Reg.Remove(path, name); else Reg.DeleteKeyTree(path); // sin dejar rastro
+                }
+                return true;
+            }
+            catch { return false; }
         }
 
         static void Step(IProgress<string> progress, string key)

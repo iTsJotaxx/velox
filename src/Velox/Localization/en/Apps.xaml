@@ -74,11 +74,10 @@
   <sys:String x:Key="apps.cat.web">Browsers</sys:String>
   <sys:String x:Key="apps.cat.ai">Artificial intelligence</sys:String>
   <sys:String x:Key="apps.cat.aitools">AI add-ons</sys:String>
-  <sys:String x:Key="apps.cat.notes">Notes and knowledge</sys:String>
   <sys:String x:Key="apps.cat.chat">Messaging</sys:String>
   <sys:String x:Key="apps.cat.media">Music and video</sys:String>
   <sys:String x:Key="apps.cat.imaging">Imaging and design</sys:String>
-  <sys:String x:Key="apps.cat.docs">Documents</sys:String>
+  <sys:String x:Key="apps.cat.docs">Documents and notes</sys:String>
   <sys:String x:Key="apps.cat.games">Games</sys:String>
   <sys:String x:Key="apps.cat.utils">Utilities</sys:String>
   <sys:String x:Key="apps.cat.security">Security</sys:String>

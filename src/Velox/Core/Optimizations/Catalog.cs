@@ -396,8 +396,8 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "Widgets", Category = "background", Impact = Impact.Low, Restart = RestartNeed.Logoff,
-                // Con la protección UCPD de Windows 11 activa, ningún programa externo puede cambiarlo
-                Available = s => !s.WidgetsLocked,
+                // Con la protección UCPD de Windows 11 activa, ningún programa externo puede cambiarlo: se hace a mano
+                Locked = s => s.WidgetsLocked, ManualUri = "ms-settings:taskbar",
                 Detect = WidgetsOff,
                 Apply = (id, s) =>
                 {

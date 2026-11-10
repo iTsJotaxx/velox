@@ -76,7 +76,7 @@
   <sys:String x:Key="opt.EdgeBg.name">Edge without preloading or background mode</sys:String>
   <sys:String x:Key="opt.EdgeBg.desc">Stops Microsoft Edge from preloading at startup and from staying open in the background after you close it. Saves 150-400 MB of RAM, but if Edge is your main browser it will take a little longer to open, so in that case it is not recommended. Edge will show “Your browser is managed by your organization”; that is normal when policies are used.</sys:String>
   <sys:String x:Key="opt.Widgets.name">Turn off Widgets</sys:String>
-  <sys:String x:Key="opt.Widgets.desc">Removes the Widgets panel (news and weather) from the taskbar along with its WebView processes, which take up RAM even if you never open it. If Windows protects the policy, the button is at least hidden, which is what keeps those processes running.</sys:String>
+  <sys:String x:Key="opt.Widgets.desc">Removes the Widgets panel (news and weather) from the taskbar along with its WebView processes, which take up RAM even if you never open it. On Windows 11 versions that protect it from other programs, Velox takes you to Settings to remove it there.</sys:String>
   <sys:String x:Key="opt.Tips.name">No tips, ads or promoted apps</sys:String>
   <sys:String x:Key="opt.Tips.desc">Turns off tips, Start menu suggestions, ads and the silent installation of promoted apps. Fewer downloads and background processes.</sys:String>
   <sys:String x:Key="opt.Telemetry.name">Turn off telemetry and its tasks</sys:String>

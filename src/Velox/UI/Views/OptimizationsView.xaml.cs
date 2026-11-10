@@ -84,6 +84,16 @@ namespace Velox.UI.Views
 
         void Discard_Click(object sender, RoutedEventArgs e) => Vm.Discard();
 
+        /// <summary>Abre la página de Configuración donde se cambia a mano lo que Windows no deja cambiar a Velox.</summary>
+        void Manual_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is OptItemVM it && it.Opt.ManualUri != null)
+            {
+                try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(it.Opt.ManualUri) { UseShellExecute = true }); }
+                catch (System.Exception ex) { Log.Warn("Open " + it.Opt.ManualUri + ": " + ex.Message); }
+            }
+        }
+
         void ChkRestore_Click(object sender, RoutedEventArgs e)
         {
             Settings.Current.CreateRestorePoint = ChkRestore.IsChecked == true;

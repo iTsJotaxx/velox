@@ -94,8 +94,8 @@ namespace Velox.UI.Views
             double pct = s.UsedPct;
             TxtPct.Text = Math.Round(pct) + " %";
             Gauge.BeginAnimation(ArcGauge.ValueProperty, new DoubleAnimation(pct, TimeSpan.FromMilliseconds(450)) { EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut } });
-            TxtHeadline.Text = Loc.F("mem.headline", MemSnapshot.Gb(s.FreeOrAvailable), MemSnapshot.Gb(s.Total));
-            TxtSubline.Text = s.HasLists ? Loc.F("mem.subline", MemSnapshot.Gb(s.Available), MemSnapshot.Gb(s.Standby)) : Loc.T("mem.noLists");
+            TxtHeadline.Text = Loc.F("mem.headline", MemSnapshot.Gb(s.Available), MemSnapshot.Gb(s.Total)); // como el Administrador de tareas
+            TxtSubline.Text = s.HasLists ? Loc.F("mem.subline", MemSnapshot.Gb(s.Free), MemSnapshot.Gb(s.Standby)) : Loc.T("mem.noLists");
 
             double use = s.InUse, mod = s.HasLists ? s.Modified : 0, stb = s.HasLists ? s.Standby : 0, free = s.HasLists ? s.Free : s.Available;
             ColUse.Width = new GridLength(Math.Max(0, use), GridUnitType.Star);

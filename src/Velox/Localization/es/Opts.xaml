@@ -76,7 +76,7 @@
   <sys:String x:Key="opt.EdgeBg.name">Edge sin precarga ni segundo plano</sys:String>
   <sys:String x:Key="opt.EdgeBg.desc">Microsoft Edge deja de precargarse al iniciar Windows y de quedarse abierto en segundo plano al cerrarlo. Ahorra entre 150 y 400 MB de RAM, pero si Edge es tu navegador principal tardará algo más en abrirse, y por eso entonces no se recomienda. Edge mostrará el aviso «Tu organización administra el explorador»; es normal al usar directivas.</sys:String>
   <sys:String x:Key="opt.Widgets.name">Desactivar los Widgets</sys:String>
-  <sys:String x:Key="opt.Widgets.desc">Quita el panel de Widgets (noticias y tiempo) de la barra de tareas y sus procesos WebView, que ocupan RAM aunque no lo abras. Si Windows protege la directiva, al menos se oculta el botón, que es lo que mantiene esos procesos abiertos.</sys:String>
+  <sys:String x:Key="opt.Widgets.desc">Quita el panel de Widgets (noticias y tiempo) de la barra de tareas y sus procesos WebView, que ocupan RAM aunque no lo abras. En las versiones de Windows 11 que lo protegen frente a otros programas, Velox te lleva a Configuración para quitarlo allí.</sys:String>
   <sys:String x:Key="opt.Tips.name">Sin sugerencias, anuncios ni apps promocionadas</sys:String>
   <sys:String x:Key="opt.Tips.desc">Desactiva consejos, sugerencias del menú Inicio, anuncios y la instalación silenciosa de apps promocionadas. Menos descargas y procesos en segundo plano.</sys:String>
   <sys:String x:Key="opt.Telemetry.name">Desactivar la telemetría y sus tareas</sys:String>

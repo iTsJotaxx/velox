@@ -67,6 +67,7 @@ namespace Velox.IntegrationTests
                 {
                     if (skip.Contains(o.Id)) { W("[--] " + o.Id + ": skipped"); continue; }
                     if (!OptimizationEngine.IsAvailable(o, sys)) { W("[--] " + o.Id + ": not available on this PC"); continue; }
+                    if (OptimizationEngine.IsLocked(o, sys)) { W("[--] " + o.Id + ": locked by Windows (change it in Settings)"); continue; }
 
                     var before = Snapshot();
                     bool was = OptimizationEngine.IsApplied(o);

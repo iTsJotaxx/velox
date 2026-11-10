@@ -49,6 +49,15 @@
               </Border>
             </WrapPanel>
             <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,6,0,0"/>
+            <Border Visibility="{Binding ShowManual, Converter={StaticResource BoolVis}}" Background="#1A1E27" CornerRadius="8"
+                    Padding="12,8" Margin="0,10,0,0" HorizontalAlignment="Left">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE72E;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{DynamicResource ui.opts.lockedHint}" Style="{StaticResource Muted}" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="460"/>
+                <Button Style="{StaticResource BtnGhost}" Content="{DynamicResource ui.opts.openSettings}" Click="Manual_Click"
+                        Padding="10,4" Margin="12,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Border>
           </StackPanel>
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="18,3,0,0">
             <Ellipse x:Name="Dot" Width="7" Height="7" Fill="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>

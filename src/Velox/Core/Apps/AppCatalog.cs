@@ -75,7 +75,6 @@ namespace Velox.Core.Apps
             new AppCategory { Id = "web", Icon = "" },
             new AppCategory { Id = "ai", Icon = "" },
             new AppCategory { Id = "aitools", Icon = "" },
-            new AppCategory { Id = "notes", Icon = "" },
             new AppCategory { Id = "chat", Icon = "" },
             new AppCategory { Id = "media", Icon = "" },
             new AppCategory { Id = "imaging", Icon = "" },
@@ -98,10 +97,8 @@ namespace Velox.Core.Apps
             A("web", "Google.Chrome", "Google Chrome");
             A("web", "Mozilla.Firefox", "Firefox");
             A("web", "Brave.Brave", "Brave");
-            A("web", "Opera.Opera", "Opera");
             A("web", "Opera.OperaGX", "Opera GX");
             A("web", "Vivaldi.Vivaldi", "Vivaldi");
-            A("web", "LibreWolf.LibreWolf", "LibreWolf");
 
             // Inteligencia artificial: los asistentes (apps de chat)
             A("ai", "Anthropic.Claude", "Claude");
@@ -110,9 +107,6 @@ namespace Velox.Core.Apps
             A("ai", "GitHub.CopilotApp", "GitHub Copilot");
             A("ai", "Perplexity.Comet", "Comet (Perplexity)");
             A("ai", "ElementLabs.LMStudio", "LM Studio");
-            A("ai", "Jan.Jan", "Jan");
-            A("ai", "nomic.gpt4all", "GPT4All");
-            A("ai", "CloudStack.Msty", "Msty");
             A("ai", "Anysphere.Cursor", "Cursor");
             A("ai", "Codeium.Windsurf", "Windsurf");
 
@@ -124,15 +118,8 @@ namespace Velox.Core.Apps
             A("aitools", "Ollama.Ollama", "Ollama (modelos locales)");
             A("aitools", "Comfy.ComfyUI-Desktop", "ComfyUI (imágenes)");
             A("aitools", "Upscayl.Upscayl", "Upscayl (mejorar imágenes)");
-            A("aitools", "ChidiWilliams.Buzz", "Buzz (transcribir audio)");
-            A("aitools", "WisprFlow.WisprFlow", "Wispr Flow (dictado)");
             A("aitools", "Docker.DockerDesktop", "Docker (servidores MCP)");
-            A("aitools", "DigitalScholar.Zotero", "Zotero (investigación)");
 
-            A("notes", "Notion.Notion", "Notion");
-            A("notes", "Logseq.Logseq", "Logseq");
-            A("notes", "Joplin.Joplin", "Joplin");
-            A("notes", "Anki.Anki", "Anki");
 
             A("chat", "Discord.Discord", "Discord");
             A("chat", "Telegram.TelegramDesktop", "Telegram");
@@ -145,11 +132,9 @@ namespace Velox.Core.Apps
 
             A("media", "VideoLAN.VLC", "VLC");
             A("media", "Spotify.Spotify", "Spotify");
-            A("media", "clsid2.mpc-hc", "MPC-HC");
             A("media", "OBSProject.OBSStudio", "OBS Studio");
             A("media", "Audacity.Audacity", "Audacity");
             A("media", "HandBrake.HandBrake", "HandBrake");
-            A("media", "PeterPawlowski.foobar2000", "foobar2000");
             A("media", "Stremio.Stremio", "Stremio");
 
             A("imaging", "GIMP.GIMP.3", "GIMP");
@@ -159,13 +144,14 @@ namespace Velox.Core.Apps
             A("imaging", "BlenderFoundation.Blender", "Blender");
             A("imaging", "IrfanSkiljan.IrfanView", "IrfanView");
             A("imaging", "ShareX.ShareX", "ShareX");
-            A("imaging", "Greenshot.Greenshot", "Greenshot");
 
             A("docs", "TheDocumentFoundation.LibreOffice", "LibreOffice");
             A("docs", "ONLYOFFICE.DesktopEditors", "ONLYOFFICE");
             A("docs", "Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader");
             A("docs", "SumatraPDF.SumatraPDF", "SumatraPDF");
             A("docs", "Notepad++.Notepad++", "Notepad++");
+            A("docs", "Notion.Notion", "Notion");
+            A("docs", "Anki.Anki", "Anki");
 
             A("games", "Valve.Steam", "Steam");
             A("games", "EpicGames.EpicGamesLauncher", "Epic Games Launcher");
@@ -198,7 +184,6 @@ namespace Velox.Core.Apps
             A("utils", "REALiX.HWiNFO", "HWiNFO");
             A("utils", "CrystalDewWorld.CrystalDiskInfo", "CrystalDiskInfo");
             A("utils", "CrystalDewWorld.CrystalDiskMark", "CrystalDiskMark");
-            A("utils", "AntibodySoftware.WizTree", "WizTree");
             A("utils", "Rufus.Rufus", "Rufus");
             A("utils", "qBittorrent.qBittorrent", "qBittorrent");
             A("utils", "AnyDesk.AnyDesk", "AnyDesk");

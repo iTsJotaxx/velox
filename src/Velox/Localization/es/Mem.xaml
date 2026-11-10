@@ -6,8 +6,8 @@
   <sys:String x:Key="mem.title">Memoria RAM</sys:String>
   <sys:String x:Key="mem.subtitle">Libera RAM sin cerrar nada: Windows guarda en memoria cachés y páginas que no se están usando. Velox las suelta para que quede RAM libre para tus juegos y programas.</sys:String>
   <sys:String x:Key="mem.inUse">en uso</sys:String>
-  <sys:String x:Key="mem.headline">{0} libres de {1}</sys:String>
-  <sys:String x:Key="mem.subline">{0} disponibles en total: {1} están en caché (en espera) y se pueden liberar al instante.</sys:String>
+  <sys:String x:Key="mem.headline">{0} disponibles de {1}</sys:String>
+  <sys:String x:Key="mem.subline">{0} completamente libres y {1} en caché (en espera), que se pueden liberar al instante.</sys:String>
   <sys:String x:Key="mem.noLists">Sin permisos de administrador no se puede ver el detalle de las listas de memoria.</sys:String>
   <sys:String x:Key="mem.legend.use">En uso</sys:String>
   <sys:String x:Key="mem.legend.useTip">Memoria que usan ahora los programas y Windows.</sys:String>

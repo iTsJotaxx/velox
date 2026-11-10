@@ -74,11 +74,10 @@
   <sys:String x:Key="apps.cat.web">Navegadores</sys:String>
   <sys:String x:Key="apps.cat.ai">Inteligencia artificial</sys:String>
   <sys:String x:Key="apps.cat.aitools">Complementos de IA</sys:String>
-  <sys:String x:Key="apps.cat.notes">Notas y conocimiento</sys:String>
   <sys:String x:Key="apps.cat.chat">Mensajería</sys:String>
   <sys:String x:Key="apps.cat.media">Música y vídeo</sys:String>
   <sys:String x:Key="apps.cat.imaging">Imagen y diseño</sys:String>
-  <sys:String x:Key="apps.cat.docs">Documentos</sys:String>
+  <sys:String x:Key="apps.cat.docs">Documentos y notas</sys:String>
   <sys:String x:Key="apps.cat.games">Juegos</sys:String>
   <sys:String x:Key="apps.cat.utils">Utilidades</sys:String>
   <sys:String x:Key="apps.cat.security">Seguridad</sys:String>

@@ -46,6 +46,9 @@
   <sys:String x:Key="ui.status.on">On</sys:String>
   <sys:String x:Key="ui.status.off">Off</sys:String>
   <sys:String x:Key="ui.status.na">Not applicable</sys:String>
+  <sys:String x:Key="ui.status.locked">Locked by Windows</sys:String>
+  <sys:String x:Key="ui.opts.lockedHint">Windows does not let other programs change this setting. It takes two clicks in Settings.</sys:String>
+  <sys:String x:Key="ui.opts.openSettings">Open Settings</sys:String>
   <sys:String x:Key="ui.status.willEnable">Will turn on</sys:String>
   <sys:String x:Key="ui.status.willDisable">Will turn off</sys:String>
   <sys:String x:Key="ui.badge.recommended">Recommended</sys:String>

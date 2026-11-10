@@ -46,6 +46,9 @@
   <sys:String x:Key="ui.status.on">Activa</sys:String>
   <sys:String x:Key="ui.status.off">Inactiva</sys:String>
   <sys:String x:Key="ui.status.na">No aplicable</sys:String>
+  <sys:String x:Key="ui.status.locked">Bloqueado por Windows</sys:String>
+  <sys:String x:Key="ui.opts.lockedHint">Windows no deja que otros programas cambien este ajuste. Se hace en dos clics desde Configuración.</sys:String>
+  <sys:String x:Key="ui.opts.openSettings">Abrir Configuración</sys:String>
   <sys:String x:Key="ui.status.willEnable">Se activará</sys:String>
   <sys:String x:Key="ui.status.willDisable">Se desactivará</sys:String>
   <sys:String x:Key="ui.badge.recommended">Recomendado</sys:String>
