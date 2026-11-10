@@ -100,8 +100,6 @@
   <sys:String x:Key="opt.SearchWeb.name">Start search without web results</sys:String>
   <sys:String x:Key="opt.SearchWeb.desc">Removes Bing suggestions and web results from Start menu search, so searches are faster and only show your apps and files. Takes effect the next time you sign in.</sys:String>
   <!-- Optimizations added in 1.4 -->
-  <sys:String x:Key="opt.PrioritySeparation.name">More CPU for the foreground game</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.desc">Windows shares the CPU giving more priority and shorter turns to the program in front of you (the game). It helps keep FPS steady when things run in the background.</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.name">True exclusive fullscreen</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.desc">Turns off Windows «fullscreen optimizations» so fullscreen games run in exclusive mode. In some DirectX 9/11 games it lowers input lag; in others it changes nothing. Alt+Tab may take a little longer.</sys:String>
   <sys:String x:Key="opt.Mpo.name">Disable multiplane overlay (MPO)</sys:String>
@@ -142,8 +140,6 @@
   <sys:String x:Key="opt.WindowedOpt.velox">Windowed optimizations</sys:String>
   <sys:String x:Key="opt.MMCSS.base">Windows profile</sys:String>
   <sys:String x:Key="opt.MMCSS.velox">Games at high priority</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.base">Balanced (2)</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.velox">Foreground (38)</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.base">Optimizations on</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.velox">True exclusive</sys:String>
   <sys:String x:Key="opt.Mpo.base">MPO on</sys:String>

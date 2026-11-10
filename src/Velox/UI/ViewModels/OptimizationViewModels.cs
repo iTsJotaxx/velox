@@ -175,12 +175,14 @@ namespace Velox.UI.ViewModels
         public bool Scanned => _scanned;
 
         /// <summary>Los interruptores coinciden con la configuración recomendada (los «a tu gusto» no cuentan).</summary>
-        public bool IsRecommendedMode => _scanned && AllItems.Where(i => i.IsScored).All(i => i.IsChecked == i.IsRecommended);
+        public bool IsRecommendedMode => _scanned && AllItems.Where(i => i.IsScored).All(i => i.IsChecked == i.IsRecommended)
+                                         && !AllItems.Any(i => !i.IsScored && i.IsPending); // un «a tu gusto» o de riesgo pendiente ya es elegir a mano
         public bool IsCustomMode => !IsRecommendedMode;
 
         public string ApplyText => PendingCount > 0 ? Loc.F("ui.opts.applyN", PendingCount) : Loc.T("ui.opts.apply");
         public string ModeHint =>
             !_scanned ? Loc.T("ui.opts.hintScanning") :
+            IsRecommendedMode && PendingCount == 1 ? Loc.T("ui.opts.hintRecPending1") :
             IsRecommendedMode && PendingCount > 0 ? Loc.F("ui.opts.hintRecPending", PendingCount) :
             IsRecommendedMode ? Loc.T("ui.opts.hintRecDone") : Loc.T("ui.opts.hintCustom");
 

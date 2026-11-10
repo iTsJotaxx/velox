@@ -20,6 +20,14 @@ namespace Velox.Core.Optimizations
         public static readonly List<Category> Categories = new List<Category>();
         public static readonly List<Optimization> All = new List<Optimization>();
 
+        /// <summary>
+        /// Optimizaciones retiradas de versiones anteriores. Si alguien las tenía aplicadas, al arrancar se devuelve el
+        /// valor original desde la copia (ya no hay interruptor para deshacerlas).
+        /// PrioritySeparation (1.4.0): Win32PrioritySeparation=0x26 hace lo mismo que el valor de fábrica (2) en Windows de
+        /// escritorio, así que era un placebo.
+        /// </summary>
+        public static readonly string[] Retired = { "PrioritySeparation" };
+
         const string MmPath = @"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile";
         const string DshPath = @"HKLM\SOFTWARE\Policies\Microsoft\Dsh";
         const string TaskbarAdv = @"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced";
@@ -198,12 +206,6 @@ namespace Velox.Core.Optimizations
                     R(MmPath + @"\Tasks\Games", "Scheduling Category", "High", Str, "Medium"),
                     R(MmPath + @"\Tasks\Games", "SFIO Priority", "High", Str, "Normal"),
                 },
-            };
-            yield return new Optimization
-            {
-                // 0x26: intervalos cortos y variables, con el máximo impulso al programa en primer plano (el juego)
-                Id = "PrioritySeparation", Category = "games", Impact = Impact.Low, Restart = RestartNeed.None,
-                Reg = new[] { Dw(@"HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl", "Win32PrioritySeparation", 0x26, 2).WhenMissing(2) },
             };
             yield return new Optimization
             {

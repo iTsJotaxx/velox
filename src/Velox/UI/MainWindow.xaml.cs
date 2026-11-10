@@ -373,7 +373,7 @@ namespace Velox.UI
             if (n == 0) { ShowToast(Loc.T("ui.tools.undoNothing")); return false; }
             if (!await ConfirmAsync(Loc.T("ui.tools.undoTitle"), Loc.F("ui.tools.undoConfirm", n), null, Loc.T("ui.tools.undoButton"), Loc.T("ui.btn.cancel"), true)) return false;
             int done = 0;
-            await AppState.Current.RunBusy(Loc.T("ui.tools.undoBusy"), async () =>
+            bool ran = await AppState.Current.RunBusy(Loc.T("ui.tools.undoBusy"), async () =>
             {
                 done = await Task.Run(() =>
                 {
@@ -382,8 +382,10 @@ namespace Velox.UI
                     foreach (var t in Core.Tweaks.TweakCatalog.All) { try { t.Opt.Sync?.Invoke(); } catch { } }
                     return r;
                 });
+                await AppState.Current.RefreshLiveSysAsync();
                 await AppState.Current.RefreshOptimizationsAsync();
             });
+            if (!ran) return false; // había otra tarea en curso: no se ha deshecho nada
             AppState.Current.NeedsReboot = true;
             ShowToast(Loc.F("ui.tools.undoDone", done), ToastKind.Success);
             return true;
@@ -393,16 +395,22 @@ namespace Velox.UI
 
         protected override void OnPreviewKeyDown(System.Windows.Input.KeyEventArgs e)
         {
-            if (DialogLayer.Visibility != Visibility.Visible && (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) != 0)
+            // Solo Ctrl: AltGr cuenta como Ctrl+Alt y en el teclado español escribe @ (AltGr+2), # (AltGr+3) o | (AltGr+1)
+            if (DialogLayer.Visibility != Visibility.Visible && System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
                 var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
                 var nav = ShortcutNav();
                 int n = key >= System.Windows.Input.Key.D1 && key <= System.Windows.Input.Key.D9 ? key - System.Windows.Input.Key.D1
                       : key >= System.Windows.Input.Key.NumPad1 && key <= System.Windows.Input.Key.NumPad9 ? key - System.Windows.Input.Key.NumPad1 : -1;
                 if (n >= 0 && n < nav.Length && nav[n].CommandParameter is string target) { Navigate(target); e.Handled = true; return; }
-                if (key == System.Windows.Input.Key.F && PageHost.Content is FrameworkElement page && page.FindName("TxtSearch") is TextBox box)
+                if (key == System.Windows.Input.Key.F && PageHost.Content is FrameworkElement page)
                 {
-                    box.Focus(); box.SelectAll(); e.Handled = true; return;
+                    // El buscador visible de la página: «TxtSearch» en Optimizaciones, «TxtFilter» en Instalar y Desinstalar
+                    foreach (var name in new[] { "TxtSearch", "TxtFilter" })
+                        if (page.FindName(name) is TextBox box && box.IsVisible && box.IsEnabled)
+                        {
+                            box.Focus(); box.SelectAll(); e.Handled = true; return;
+                        }
                 }
                 if (key == System.Windows.Input.Key.Enter && PageHost.Content is OptimizationsView ov && ov.TryApplyShortcut()) { e.Handled = true; return; }
             }

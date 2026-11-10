@@ -85,9 +85,12 @@ namespace Velox.UI.Views
             if (!vm.Scanned) { SheetHead.Visibility = Visibility.Collapsed; return; }
 
             bool todo = vm.RecommendedDiff > 0;
+            // BASE → VELOX solo enseña lo que Velox ha cambiado (tiene copia del valor original). Lo que ya venía así de
+            // Windows (p. ej. el Modo de juego activado de fábrica) no es un cambio de Velox y no se le atribuye.
+            var saved = new System.Collections.Generic.HashSet<string>(BackupStore.Ids(), StringComparer.OrdinalIgnoreCase);
             var list = (todo
                 ? vm.AllItems.Where(i => i.IsScored && i.IsApplied != i.IsRecommended)
-                : vm.AllItems.Where(i => i.IsAvailable && i.IsApplied)).ToList();
+                : vm.AllItems.Where(i => i.IsApplied && saved.Contains(i.Opt.Id))).ToList();
 
             ColSetting.Text = Loc.T("ui.sum.colSetting");
             ColFrom.Text = todo ? Loc.T("ui.sum.colNow") : Loc.T("ui.sum.colBase");

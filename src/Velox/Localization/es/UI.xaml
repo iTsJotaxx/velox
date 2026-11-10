@@ -4,7 +4,6 @@
   <!-- Navegación y ventana -->
   <sys:String x:Key="ui.nav.sectionPerf">RENDIMIENTO</sys:String>
   <sys:String x:Key="ui.nav.sectionApps">APLICACIONES</sys:String>
-  <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
   <sys:String x:Key="ui.nav.sectionSystem">SISTEMA</sys:String>
   <sys:String x:Key="ui.nav.summary">Resumen</sys:String>
   <sys:String x:Key="ui.nav.optimizations">Optimizaciones</sys:String>
@@ -13,7 +12,6 @@
   <sys:String x:Key="ui.nav.diagnostics">Diagnósticos</sys:String>
   <sys:String x:Key="ui.nav.tools">Herramientas</sys:String>
   <sys:String x:Key="ui.set.viewLog">Ver registro</sys:String>
-  <sys:String x:Key="ui.nav.log">Registro</sys:String>
   <sys:String x:Key="ui.nav.settings">Ajustes</sys:String>
   <sys:String x:Key="ui.a11y.minimize">Minimizar</sys:String>
   <sys:String x:Key="ui.a11y.maximize">Maximizar</sys:String>
@@ -69,14 +67,12 @@
   <sys:String x:Key="ui.sum.rescan">Volver a escanear</sys:String>
   <sys:String x:Key="ui.sum.scanning">Escaneando el equipo...</sys:String>
   <sys:String x:Key="ui.sum.lastScan">Último escaneo a las {0}</sys:String>
-  <sys:String x:Key="ui.sum.optimized">optimizado</sys:String>
   <sys:String x:Key="ui.sum.heroScanning">Analizando tu equipo</sys:String>
   <sys:String x:Key="ui.sum.heroScanningText">Velox está leyendo tu hardware y la configuración de Windows para saber qué te conviene.</sys:String>
   <sys:String x:Key="ui.sum.heroDone">Tu equipo tiene la configuración recomendada</sys:String>
   <sys:String x:Key="ui.sum.heroDoneText">Todos los ajustes están como se recomienda para tu hardware. Puedes personalizarlos cuando quieras.</sys:String>
   <sys:String x:Key="ui.sum.heroTodo">{0} cambios recomendados</sys:String>
   <sys:String x:Key="ui.sum.heroTodoText">{0} de {1} ajustes ya están como se recomienda para tu hardware. Aplica el resto con un clic; cada cambio se puede deshacer.</sys:String>
-  <sys:String x:Key="ui.sum.activeCount">{0} de {1} optimizaciones activas</sys:String>
   <sys:String x:Key="ui.sum.applyRec">Aplicar lo recomendado</sys:String>
   <sys:String x:Key="ui.sum.applyRecN">Aplicar lo recomendado ({0})</sys:String>
   <sys:String x:Key="ui.sum.applyRecDone">Todo está en lo recomendado</sys:String>
@@ -143,6 +139,7 @@
   <sys:String x:Key="ui.opts.catPending1">1 pendiente</sys:String>
   <sys:String x:Key="ui.opts.hintScanning">Escaneando el equipo para saber qué se recomienda...</sys:String>
   <sys:String x:Key="ui.opts.hintRecPending">Modo recomendado: los interruptores están como se recomienda para tu equipo (los marcados «A tu gusto» no se tocan). Pulsa «Aplicar cambios» para aplicar los {0} cambios.</sys:String>
+  <sys:String x:Key="ui.opts.hintRecPending1">Modo recomendado: los interruptores están como se recomienda para tu equipo (los marcados «A tu gusto» no se tocan). Pulsa «Aplicar cambios» para aplicar el cambio pendiente.</sys:String>
   <sys:String x:Key="ui.opts.hintRecDone">Modo recomendado: tu equipo ya tiene la configuración recomendada. Los marcados «A tu gusto» dependen de ti. Toca cualquier interruptor para personalizar.</sys:String>
   <sys:String x:Key="ui.opts.hintCustom">Modo personalizado: elige tú qué activar. Pulsa «Recomendado» para volver a la configuración recomendada para tu equipo.</sys:String>
   <sys:String x:Key="ui.opts.recSelected">Configuración recomendada marcada: {0} cambios. Pulsa «Aplicar cambios».</sys:String>

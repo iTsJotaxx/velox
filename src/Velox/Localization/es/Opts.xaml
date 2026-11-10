@@ -100,8 +100,6 @@
   <sys:String x:Key="opt.SearchWeb.name">Búsqueda de Inicio sin resultados de internet</sys:String>
   <sys:String x:Key="opt.SearchWeb.desc">Quita las sugerencias y los resultados web de Bing al buscar en el menú Inicio, de modo que las búsquedas son más rápidas y solo muestran tus apps y archivos. Se aplica al volver a iniciar sesión.</sys:String>
   <!-- Optimizaciones añadidas en 1.4 -->
-  <sys:String x:Key="opt.PrioritySeparation.name">Más CPU para el juego en primer plano</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.desc">Windows reparte la CPU dando más prioridad y turnos más cortos al programa que tienes delante (el juego). Ayuda a mantener los FPS estables cuando hay cosas en segundo plano.</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.name">Pantalla completa exclusiva real</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.desc">Desactiva las «optimizaciones de pantalla completa» de Windows para que los juegos en pantalla completa vayan en modo exclusivo. En algunos juegos DirectX 9/11 reduce el retraso de entrada; en otros no cambia nada. Cambiar de ventana con Alt+Tab puede tardar un poco más.</sys:String>
   <sys:String x:Key="opt.Mpo.name">Desactivar la superposición multiplano (MPO)</sys:String>
@@ -142,8 +140,6 @@
   <sys:String x:Key="opt.WindowedOpt.velox">Optimización en ventana</sys:String>
   <sys:String x:Key="opt.MMCSS.base">Perfil de Windows</sys:String>
   <sys:String x:Key="opt.MMCSS.velox">Prioridad alta a juegos</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.base">Equilibrado (2)</sys:String>
-  <sys:String x:Key="opt.PrioritySeparation.velox">Primer plano (38)</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.base">Optimización activa</sys:String>
   <sys:String x:Key="opt.FullscreenOpt.velox">Exclusiva de verdad</sys:String>
   <sys:String x:Key="opt.Mpo.base">MPO activado</sys:String>

@@ -239,12 +239,25 @@ namespace Velox.IntegrationTests
             });
             Step("Preferencias: guardar y leer", () =>
             {
+                // Las preferencias son las reales del usuario (%AppData%\Velox): se cambia un valor, se comprueba y se deja como estaba
                 Settings.Load();
-                Settings.Current.AutoMemThreshold = 23;
-                Settings.Save();
+                int original = Settings.Current.AutoMemThreshold;
+                int probe = original == 23 ? 24 : 23;
+                try
+                {
+                    Settings.Current.AutoMemThreshold = probe;
+                    Settings.Save();
+                    Settings.Load();
+                    Assert(Settings.Current.AutoMemThreshold == probe, "no se guardó");
+                }
+                finally
+                {
+                    Settings.Current.AutoMemThreshold = original;
+                    Settings.Save();
+                }
                 Settings.Load();
-                Assert(Settings.Current.AutoMemThreshold == 23, "no se guardó");
-                return "ok";
+                Assert(Settings.Current.AutoMemThreshold == original, "no se restauró");
+                return "guardado, leído y restaurado";
             });
 
             W("Smoke: " + (_total - _fails) + "/" + _total + " OK");

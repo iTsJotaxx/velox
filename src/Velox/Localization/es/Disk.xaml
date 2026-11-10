@@ -57,5 +57,4 @@
   <sys:String x:Key="disk.del.missing">Ya no existe en el disco.</sys:String>
   <sys:String x:Key="disk.del.notAllowed">Esto no se puede borrar desde aquí.</sys:String>
   <sys:String x:Key="disk.del.root">No se puede borrar la carpeta analizada entera.</sys:String>
-  <sys:String x:Key="disk.del.system">Es una carpeta o archivo del sistema: Velox no lo borra para no estropear Windows.</sys:String>
 </ResourceDictionary>

@@ -57,5 +57,4 @@
   <sys:String x:Key="disk.del.missing">It no longer exists on disk.</sys:String>
   <sys:String x:Key="disk.del.notAllowed">This cannot be deleted from here.</sys:String>
   <sys:String x:Key="disk.del.root">The analyzed folder itself cannot be deleted.</sys:String>
-  <sys:String x:Key="disk.del.system">It is a system folder or file: Velox does not delete it so Windows keeps working.</sys:String>
 </ResourceDictionary>

@@ -39,9 +39,9 @@
   <sys:String x:Key="mem.opt.combineText">Junta en una sola las páginas de memoria idénticas (Windows 10 y 11).</sys:String>
 
   <sys:String x:Key="mem.autoTitle">Limpieza automática</sys:String>
-  <sys:String x:Key="mem.autoText">Mientras Velox esté abierto, vacía la caché en espera cuando la RAM disponible baje del límite (como mucho una vez por minuto). No toca la memoria de los programas.</sys:String>
+  <sys:String x:Key="mem.autoText">Mientras Velox esté abierto, vacía la caché en espera cuando la RAM libre baje del límite y la caché ocupe al menos 1 GB o el 10 % de la RAM (como mucho una vez por minuto). No toca la memoria de los programas.</sys:String>
   <sys:String x:Key="mem.autoOff">Desactivada.</sys:String>
-  <sys:String x:Key="mem.autoOn">Activa: actuará cuando quede menos de un {0} % de RAM disponible.</sys:String>
+  <sys:String x:Key="mem.autoOn">Activa: actuará cuando quede menos de un {0} % de RAM libre.</sys:String>
   <sys:String x:Key="mem.autoLast">Activa (límite {0} %). Última limpieza automática a las {1}: +{2} libres.</sys:String>
 
   <sys:String x:Key="mem.topTitle">Lo que más RAM usa</sys:String>

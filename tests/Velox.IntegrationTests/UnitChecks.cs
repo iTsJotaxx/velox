@@ -227,10 +227,10 @@ namespace Velox.IntegrationTests
             {
                 var all = Velox.Core.Optimizations.Catalog.All;
                 var sys = new Velox.Core.Scan.SystemInfo { Hvci = true, RamTotalGB = 16 };
-                foreach (var id in new[] { "PrioritySeparation", "FullscreenOpt", "Mpo", "MemoryIntegrity", "CpuMitigations" })
+                foreach (var id in new[] { "FullscreenOpt", "Mpo", "MemoryIntegrity", "CpuMitigations" })
                     Check("catalog has " + id, all.Any(o => o.Id == id));
                 Check("ids are unique", all.Select(o => o.Id).Distinct().Count() == all.Count);
-                var risky = all.Where(o => o.IsRisky).ToList();
+                Check("retired optimizations are not in the catalog", !all.Any(o => Velox.Core.Optimizations.Catalog.Retired.Contains(o.Id)));                var risky = all.Where(o => o.IsRisky).ToList();
                 Check("risky set", new HashSet<string>(risky.Select(o => o.Id)).SetEquals(new[] { "MemoryIntegrity", "CpuMitigations", "WSearch" }),
                       string.Join(",", risky.Select(o => o.Id)));
                 foreach (var o in risky)
@@ -240,6 +240,20 @@ namespace Velox.IntegrationTests
                     Check("risky is user's call: " + o.Id, Velox.Core.Optimizations.OptimizationEngine.IsPreference(o, sys));
                 }
                 Check("security risks need a reboot", risky.Where(o => o.Risk == "security").All(o => o.Restart == Velox.Core.Optimizations.RestartNeed.Reboot));
+            }
+
+            // ---------------------------------------------------------------- Limpieza automática de RAM: cuándo actúa
+            {
+                const double G = Velox.Core.Tools.MemSnapshot.GB;
+                Velox.Core.Tools.MemSnapshot M(double total, double free, double standby, bool lists = true) =>
+                    new Velox.Core.Tools.MemSnapshot { Total = total * G, Free = free * G, Standby = standby * G, Available = (free + standby) * G, HasLists = lists };
+                bool Should(Velox.Core.Tools.MemSnapshot s) => Velox.Core.Tools.MemoryAutoCleaner.ShouldClean(s, 20);
+                Check("auto clean: little free, big cache -> clean", Should(M(16, 1, 8)));
+                Check("auto clean: plenty free -> leave", !Should(M(16, 6, 8)));
+                Check("auto clean: little free but small cache -> leave (nothing to gain)", !Should(M(16, 0.5, 0.5)));
+                Check("auto clean: cache under 10 % of a big machine -> leave", !Should(M(64, 2, 3)));
+                Check("auto clean: lists unreadable -> leave", !Should(M(16, 1, 8, false)));
+                Check("auto clean: no data -> leave", !Should(new Velox.Core.Tools.MemSnapshot()));
             }
 
             // ---------------------------------------------------------------- Inicio de Windows: nombres legibles

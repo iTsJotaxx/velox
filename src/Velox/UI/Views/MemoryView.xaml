@@ -55,7 +55,7 @@
             </Border>
             <WrapPanel>
               <StackPanel Orientation="Horizontal" Margin="0,0,18,4" ToolTip="{DynamicResource mem.legend.useTip}">
-                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource AccentGradient}" VerticalAlignment="Center" Margin="0,0,7,0"/>
                 <TextBlock Text="{DynamicResource mem.legend.use}" Foreground="{StaticResource TextMuted}" FontSize="12"/>
                 <TextBlock x:Name="TxtUse" FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0"/>
               </StackPanel>

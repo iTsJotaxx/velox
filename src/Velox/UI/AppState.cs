@@ -69,6 +69,23 @@ namespace Velox.UI
 
         public Task RefreshOptimizationsAsync() => Optimizations.RefreshAsync(Sys);
 
+        /// <summary>
+        /// Tras aplicar o deshacer cambios: relee lo que esos cambios mueven (plan de energía y Hz de las pantallas)
+        /// para que el Resumen no enseñe datos del último escaneo.
+        /// </summary>
+        public async Task RefreshLiveSysAsync()
+        {
+            var sys = Sys;
+            if (sys == null) return;
+            try
+            {
+                var live = await Task.Run(() => new { Plan = Core.Sys.PowerCfg.ActiveSchemeName(), Displays = Native.Display.GetDisplays() });
+                if (!string.IsNullOrEmpty(live.Plan)) sys.PowerScheme = live.Plan;
+                if (live.Displays != null && live.Displays.Count > 0) sys.Displays = live.Displays;
+            }
+            catch (Exception ex) { Log.Warn("Live system info: " + ex.Message); }
+        }
+
         /// <summary>Confirma y aplica los cambios pendientes (con punto de restauración si está activado).</summary>
         public async Task ApplyPendingAsync()
         {
@@ -84,7 +101,8 @@ namespace Velox.UI
 
             var failed = new List<string>();
             int done = 0;
-            await RunBusy(Loc.T("ui.busy.applying"), async () =>
+            bool cancelled = false;
+            bool ran = await RunBusy(Loc.T("ui.busy.applying"), async () =>
             {
                 if (Settings.Current.CreateRestorePoint && !_restorePointDone)
                 {
@@ -93,7 +111,7 @@ namespace Velox.UI
                     if (rp.Result == RestorePointResult.Failed)
                     {
                         bool go = await Win.ConfirmAsync(Loc.T("ui.rp.failedTitle"), rp.Message + "\n\n" + Loc.T("ui.rp.continue"), null, Loc.T("ui.btn.continue"), Loc.T("ui.btn.cancel"));
-                        if (!go) { Win.ShowToast(Loc.T("ui.msg.cancelled"), ToastKind.Warning); return; }
+                        if (!go) { cancelled = true; Win.ShowToast(Loc.T("ui.msg.cancelled"), ToastKind.Warning); return; }
                     }
                     else _restorePointDone = true;
                 }
@@ -117,9 +135,12 @@ namespace Velox.UI
                     }
                 }
                 BusyText = Loc.T("ui.busy.checking");
+                await RefreshLiveSysAsync();
                 await Optimizations.RefreshAsync(sys);
             });
 
+            // Cancelado (o había otra tarea en curso): no se aplicó nada, así que no hay resultado que anunciar
+            if (!ran || cancelled) return;
             if (failed.Count == 0) Win.ShowToast(Loc.F("ui.opts.appliedOk", done), ToastKind.Success);
             else await Win.ConfirmAsync(Loc.F("ui.opts.appliedSome", done, failed.Count), Loc.T("ui.opts.failedText"), string.Join("\n", failed), Loc.T("ui.btn.ok"), null);
         }

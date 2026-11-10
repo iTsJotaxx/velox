@@ -222,6 +222,18 @@ namespace Velox.Core.Tools
             _timer = null;
         }
 
+        /// <summary>
+        /// ¿Toca vaciar la caché en espera? Solo cuando queda poca RAM libre de verdad (la «disponible» de Windows ya
+        /// cuenta la caché, así que vaciarla no la sube) y la caché ocupa lo bastante como para notarse: al menos 1 GB
+        /// o el 10 % de la RAM. Sin esa segunda condición se vaciaría una y otra vez sin ganar nada.
+        /// </summary>
+        internal static bool ShouldClean(MemSnapshot s, int thresholdPct)
+        {
+            if (s == null || s.Total <= 0 || !s.HasLists) return false; // sin las listas no se sabe qué hay libre
+            if (s.Free * 100.0 / s.Total >= thresholdPct) return false;
+            return s.Standby >= Math.Max(MemSnapshot.GB, s.Total * 0.10);
+        }
+
         static void Tick()
         {
             if (Interlocked.Exchange(ref _running, 1) == 1) return;
@@ -231,12 +243,11 @@ namespace Velox.Core.Tools
                 var s = MemoryTool.Snapshot();
                 if (s.Total <= 0) return;
                 int threshold = Math.Max(5, Math.Min(60, Settings.Current.AutoMemThreshold));
-                if (s.AvailablePct >= threshold) return;
-                if (s.HasLists && s.Standby < 256.0 * 1024 * 1024) return; // nada que liberar
+                if (!ShouldClean(s, threshold)) return;
                 _last = DateTime.Now;
                 var r = MemoryTool.PurgeStandbyOnly();
                 LastResult = r;
-                Log.Info("Automatic RAM clean (available under " + threshold + " %).");
+                Log.Info("Automatic RAM clean (free under " + threshold + " %).");
                 Cleaned?.Invoke(r);
             }
             catch (Exception ex) { Log.Warn("Automatic RAM clean: " + ex.Message); }

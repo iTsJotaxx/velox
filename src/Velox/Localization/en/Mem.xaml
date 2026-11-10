@@ -39,9 +39,9 @@
   <sys:String x:Key="mem.opt.combineText">Merges identical memory pages into one (Windows 10 and 11).</sys:String>
 
   <sys:String x:Key="mem.autoTitle">Automatic cleaning</sys:String>
-  <sys:String x:Key="mem.autoText">While Velox is open, it empties the standby cache when available RAM drops below the limit (at most once a minute). It does not touch program memory.</sys:String>
+  <sys:String x:Key="mem.autoText">While Velox is open, it empties the standby cache when free RAM drops below the limit and the cache holds at least 1 GB or 10 % of the RAM (at most once a minute). It does not touch program memory.</sys:String>
   <sys:String x:Key="mem.autoOff">Off.</sys:String>
-  <sys:String x:Key="mem.autoOn">On: it will act when less than {0} % of RAM is available.</sys:String>
+  <sys:String x:Key="mem.autoOn">On: it will act when less than {0} % of RAM is free.</sys:String>
   <sys:String x:Key="mem.autoLast">On (limit {0} %). Last automatic clean at {1}: +{2} free.</sys:String>
 
   <sys:String x:Key="mem.topTitle">What uses the most RAM</sys:String>
