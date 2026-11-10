@@ -193,8 +193,8 @@ namespace Velox.IntegrationTests
 
             // ---------------------------------------------------------------- Limpieza profunda en una carpeta de prueba
             {
-                string root = Path.Combine(dir, "deepclean");
-                if (Directory.Exists(root)) Directory.Delete(root, true);
+                // Carpeta nueva en cada ejecución: una anterior con su unión dentro no puede tumbar la prueba
+                string root = Path.Combine(dir, "deepclean-" + Guid.NewGuid().ToString("N").Substring(0, 8));
                 string cache = Path.Combine(root, "cache"), keep = Path.Combine(root, "keep"), thumbs = Path.Combine(root, "thumbs");
                 Directory.CreateDirectory(Path.Combine(cache, "sub", "deep"));
                 Directory.CreateDirectory(keep);
@@ -231,6 +231,8 @@ namespace Velox.IntegrationTests
                 Check("clean: blocked category does nothing", DeepCleaner.Clean(blocked) == 0 && File.Exists(Path.Combine(young, "new.tmp")));
                 Check("clean: real categories never include user folders", DeepCleaner.Categories().SelectMany(c => c.Roots).All(r =>
                     r.IndexOf("Documents", StringComparison.OrdinalIgnoreCase) < 0 && r.IndexOf("Downloads", StringComparison.OrdinalIgnoreCase) < 0 && r.IndexOf("Desktop", StringComparison.OrdinalIgnoreCase) < 0 && !r.Contains("$Recycle")));
+                // Limpieza de la prueba: primero la unión (sin seguirla), luego el resto; si algo queda en uso, no pasa nada
+                try { if (Directory.Exists(Path.Combine(cache, "link"))) Directory.Delete(Path.Combine(cache, "link")); Directory.Delete(root, true); } catch { }
             }
 
             // ---------------------------------------------------------------- Modo sin ventana: argumentos
