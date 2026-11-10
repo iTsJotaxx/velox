@@ -21,52 +21,52 @@
       <!-- ===================================================== Barra lateral -->
       <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="0,0,1,0">
         <DockPanel>
-          <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="22,16,0,20">
-            <Border Width="36" Height="36" CornerRadius="10" Background="{StaticResource AccentGradient}">
+          <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="22,16,0,14">
+            <Border Width="36" Height="36" CornerRadius="8" Background="{StaticResource Paper}">
               <Canvas Width="36" Height="36">
-                <Line X1="4.5" Y1="14.5" X2="9.5" Y2="14.5" Stroke="#99FFFFFF" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                <Line X1="6" Y1="18.7" X2="11" Y2="18.7" Stroke="#99FFFFFF" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                <Path Fill="White" Data="M7.2,8.6 L13.7,8.6 L18.7,21.6 L23.8,8.6 L29.5,8.6 L21.6,28.1 L15.8,28.1 Z"/>
+                <Line X1="4.5" Y1="14.5" X2="9.5" Y2="14.5" Stroke="{StaticResource Action}" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="6" Y1="18.7" X2="11" Y2="18.7" Stroke="{StaticResource Action}" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Path Fill="{StaticResource Ink}" Data="M7.2,8.6 L13.7,8.6 L18.7,21.6 L23.8,8.6 L29.5,8.6 L21.6,28.1 L15.8,28.1 Z"/>
               </Canvas>
             </Border>
             <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
-              <TextBlock Text="Velox" FontFamily="{StaticResource FontDisplay}" FontSize="19" FontWeight="SemiBold"/>
+              <TextBlock Text="Velox" FontFamily="{StaticResource FontDisplay}" FontStretch="SemiCondensed" FontSize="21" FontWeight="SemiBold"/>
               <TextBlock x:Name="TxtVersion" Style="{StaticResource Caption}" Text="v1.0.0"/>
             </StackPanel>
           </StackPanel>
 
           <!-- Monitor en vivo (compacto, 2 x 2) -->
-          <Border DockPanel.Dock="Bottom" Margin="14,6,14,14" Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Padding="12,10,12,6">
+          <Border DockPanel.Dock="Bottom" Margin="14,6,14,12" Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="8" Padding="12,10,12,6">
             <StackPanel>
-              <TextBlock Text="{DynamicResource ui.monitor.title}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="0,0,0,6"/>
+              <TextBlock Text="{DynamicResource ui.monitor.title}" Style="{StaticResource Label}" Margin="0,0,0,6"/>
               <UniformGrid Columns="2">
                 <StackPanel Margin="0,0,7,6">
                   <Grid>
-                    <TextBlock Text="CPU" Style="{StaticResource Caption}"/>
-                    <TextBlock x:Name="TxtCpu" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                    <TextBlock Text="CPU" Style="{StaticResource Label}" FontWeight="Normal"/>
+                    <TextBlock x:Name="TxtCpu" Text="--" HorizontalAlignment="Right" FontSize="12.5" Style="{StaticResource Figure}"/>
                   </Grid>
                   <ProgressBar x:Name="BarCpu" Height="4" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel Margin="7,0,0,6">
                   <Grid>
-                    <TextBlock Text="GPU" Style="{StaticResource Caption}"/>
-                    <TextBlock x:Name="TxtGpu" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                    <TextBlock Text="GPU" Style="{StaticResource Label}" FontWeight="Normal"/>
+                    <TextBlock x:Name="TxtGpu" Text="--" HorizontalAlignment="Right" FontSize="12.5" Style="{StaticResource Figure}"/>
                   </Grid>
-                  <ProgressBar x:Name="BarGpu" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Violet}"/>
+                  <ProgressBar x:Name="BarGpu" Height="4" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,7,6">
                   <Grid>
-                    <TextBlock Text="RAM" Style="{StaticResource Caption}"/>
-                    <TextBlock x:Name="TxtRam" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                    <TextBlock Text="RAM" Style="{StaticResource Label}" FontWeight="Normal"/>
+                    <TextBlock x:Name="TxtRam" Text="--" HorizontalAlignment="Right" FontSize="12.5" Style="{StaticResource Figure}"/>
                   </Grid>
-                  <ProgressBar x:Name="BarRam" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Success}"/>
+                  <ProgressBar x:Name="BarRam" Height="4" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel Margin="7,0,0,6">
                   <Grid>
-                    <TextBlock Text="VRAM" Style="{StaticResource Caption}"/>
-                    <TextBlock x:Name="TxtVram" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                    <TextBlock Text="VRAM" Style="{StaticResource Label}" FontWeight="Normal"/>
+                    <TextBlock x:Name="TxtVram" Text="--" HorizontalAlignment="Right" FontSize="12.5" Style="{StaticResource Figure}"/>
                   </Grid>
-                  <ProgressBar x:Name="BarVram" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Warning}"/>
+                  <ProgressBar x:Name="BarVram" Height="4" Margin="0,4,0,0"/>
                 </StackPanel>
               </UniformGrid>
             </StackPanel>
@@ -75,22 +75,20 @@
           <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
             <StackPanel>
               <RadioButton x:Name="NavSummary" Style="{StaticResource NavItem}" Tag="&#xE80F;" Content="{DynamicResource ui.nav.summary}" Click="Nav_Click" CommandParameter="summary"/>
-              <TextBlock Text="{DynamicResource ui.nav.sectionPerf}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
+              <TextBlock Text="{DynamicResource ui.nav.sectionPerf}" Style="{StaticResource Label}" Margin="26,10,0,4"/>
               <RadioButton x:Name="NavOptimizations" Style="{StaticResource NavItem}" Tag="&#xE945;" Content="{DynamicResource ui.nav.optimizations}" Click="Nav_Click" CommandParameter="optimizations"/>
               <RadioButton x:Name="NavProcesses" Style="{StaticResource NavItem}" Tag="&#xE7FC;" Content="{DynamicResource ui.nav.processes}" Click="Nav_Click" CommandParameter="processes"/>
               <RadioButton x:Name="NavMemory" Style="{StaticResource NavItem}" Tag="&#xEEA0;" Content="{DynamicResource ui.nav.memory}" Click="Nav_Click" CommandParameter="memory"/>
               <RadioButton x:Name="NavStartup" Style="{StaticResource NavItem}" Tag="&#xE7E8;" Content="{DynamicResource ui.nav.startup}" Click="Nav_Click" CommandParameter="startup"/>
-              <TextBlock Text="{DynamicResource ui.nav.sectionApps}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
+              <TextBlock Text="{DynamicResource ui.nav.sectionApps}" Style="{StaticResource Label}" Margin="26,10,0,4"/>
               <RadioButton x:Name="NavApps" Style="{StaticResource NavItem}" Tag="&#xE896;" Content="{DynamicResource ui.nav.apps}" Click="Nav_Click" CommandParameter="apps"/>
               <RadioButton x:Name="NavUninstall" Style="{StaticResource NavItem}" Tag="&#xE74D;" Content="{DynamicResource ui.nav.uninstall}" Click="Nav_Click" CommandParameter="uninstall"/>
-              <TextBlock Text="{DynamicResource ui.nav.sectionSystem}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
+              <TextBlock Text="{DynamicResource ui.nav.sectionSystem}" Style="{StaticResource Label}" Margin="26,10,0,4"/>
               <RadioButton x:Name="NavDrivers" Style="{StaticResource NavItem}" Tag="&#xE772;" Content="{DynamicResource ui.nav.drivers}" Click="Nav_Click" CommandParameter="drivers"/>
               <RadioButton x:Name="NavDisk" Style="{StaticResource NavItem}" Tag="&#xEDA2;" Content="{DynamicResource ui.nav.disk}" Click="Nav_Click" CommandParameter="disk"/>
               <RadioButton x:Name="NavTweaks" Style="{StaticResource NavItem}" Tag="&#xE771;" Content="{DynamicResource ui.nav.tweaks}" Click="Nav_Click" CommandParameter="tweaks"/>
               <RadioButton x:Name="NavDiagnostics" Style="{StaticResource NavItem}" Tag="&#xE9D9;" Content="{DynamicResource ui.nav.diagnostics}" Click="Nav_Click" CommandParameter="diagnostics"/>
               <RadioButton x:Name="NavTools" Style="{StaticResource NavItem}" Tag="&#xE90F;" Content="{DynamicResource ui.nav.tools}" Click="Nav_Click" CommandParameter="tools"/>
-              <TextBlock Text="{DynamicResource ui.nav.section2}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
-              <RadioButton x:Name="NavLog" Style="{StaticResource NavItem}" Tag="&#xE81C;" Content="{DynamicResource ui.nav.log}" Click="Nav_Click" CommandParameter="log"/>
               <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}" Tag="&#xE713;" Content="{DynamicResource ui.nav.settings}" Click="Nav_Click" CommandParameter="settings"/>
             </StackPanel>
           </ScrollViewer>
@@ -119,15 +117,15 @@
                 <TextBlock x:Name="TxtRestart" Foreground="{StaticResource Warning}" FontSize="12" FontWeight="SemiBold" Margin="7,0,0,0" VerticalAlignment="Center"/>
               </StackPanel>
             </Border>
-            <Button Style="{StaticResource CaptionButton}" Content="&#xE921;" Click="Min_Click"/>
-            <Button x:Name="BtnMax" Style="{StaticResource CaptionButton}" Content="&#xE922;" Click="Max_Click"/>
-            <Button Style="{StaticResource CaptionClose}" Content="&#xE8BB;" Click="Close_Click"/>
+            <Button Style="{StaticResource CaptionButton}" Content="&#xE921;" Click="Min_Click" AutomationProperties.Name="{DynamicResource ui.a11y.minimize}"/>
+            <Button x:Name="BtnMax" Style="{StaticResource CaptionButton}" Content="&#xE922;" Click="Max_Click" AutomationProperties.Name="{DynamicResource ui.a11y.maximize}"/>
+            <Button Style="{StaticResource CaptionClose}" Content="&#xE8BB;" Click="Close_Click" AutomationProperties.Name="{DynamicResource ui.a11y.close}"/>
           </StackPanel>
         </Grid>
 
         <!-- Línea de actividad -->
         <Canvas x:Name="BusyTrack" Grid.Row="1" Height="2" VerticalAlignment="Top" ClipToBounds="True" Visibility="Collapsed" Panel.ZIndex="5">
-          <Border x:Name="BusyBar" Width="220" Height="2" Background="{StaticResource AccentGradient}" CornerRadius="1">
+          <Border x:Name="BusyBar" Width="220" Height="2" Background="{StaticResource Action}" CornerRadius="1">
             <Border.RenderTransform><TranslateTransform x:Name="BusyBarX" X="-220"/></Border.RenderTransform>
           </Border>
         </Canvas>
@@ -141,9 +139,9 @@
       </Grid>
 
       <!-- ===================================================== Diálogo -->
-      <Grid x:Name="DialogLayer" Grid.ColumnSpan="2" Background="#B8060810" Visibility="Collapsed" Panel.ZIndex="20">
-        <Border x:Name="DialogCard" Width="560" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource CardBg}" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="16" Padding="26,24">
-          <Border.Effect><DropShadowEffect BlurRadius="40" ShadowDepth="0" Opacity="0.55" Color="Black"/></Border.Effect>
+      <Grid x:Name="DialogLayer" Grid.ColumnSpan="2" Background="{StaticResource Overlay}" Visibility="Collapsed" Panel.ZIndex="20">
+        <Border x:Name="DialogCard" Width="560" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{StaticResource CardBg}" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="12" Padding="26,24">
+          <Border.Effect><DropShadowEffect BlurRadius="40" ShadowDepth="12" Direction="270" Opacity="0.5" Color="Black"/></Border.Effect>
           <StackPanel>
             <TextBlock x:Name="DlgTitle" Style="{StaticResource H2}" FontSize="18" TextWrapping="Wrap"/>
             <TextBlock x:Name="DlgMessage" Style="{StaticResource Muted}" Margin="0,10,0,0"/>

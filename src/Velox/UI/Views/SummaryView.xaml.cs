@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Velox.Core.Backup;
 using Velox.Core.Scan;
 using Velox.Localization;
 
@@ -48,43 +49,112 @@ namespace Velox.UI.Views
         {
             var vm = AppState.Current.Optimizations;
             var st = AppState.Current;
+            RenderSaved();
             if (!vm.Scanned)
             {
-                TxtPct.Text = "--";
                 TxtHeroTitle.Text = Loc.T("ui.sum.heroScanning");
                 TxtHeroText.Text = Loc.T("ui.sum.heroScanningText");
-                TxtActive.Text = "...";
                 BtnApplyRec.Content = Loc.T("ui.sum.applyRec");
                 BtnApplyRec.IsEnabled = false;
+                RenderSheet();
                 return;
             }
             int total = vm.ScoredCount, match = vm.MatchCount, diff = vm.RecommendedDiff;
-            double pct = total == 0 ? 100 : Math.Round(100.0 * match / total);
-            TxtPct.Text = pct + "%";
-            Gauge.BeginAnimation(Infra.ArcGauge.ValueProperty, new DoubleAnimation(pct, TimeSpan.FromMilliseconds(700)) { EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut } });
             TxtHeroTitle.Text = diff == 0 ? Loc.T("ui.sum.heroDone") : Loc.F("ui.sum.heroTodo", diff);
             TxtHeroText.Text = diff == 0 ? Loc.T("ui.sum.heroDoneText") : Loc.F("ui.sum.heroTodoText", match, total);
-            TxtActive.Text = Loc.F("ui.sum.activeCount", vm.ActiveCount, vm.AvailableCount);
             RestartBadge.Visibility = string.IsNullOrEmpty(st.RestartNotice) ? Visibility.Collapsed : Visibility.Visible;
             TxtRestartBadge.Text = st.RestartNotice;
             BtnApplyRec.Content = diff == 0 ? Loc.T("ui.sum.applyRecDone") : Loc.F("ui.sum.applyRecN", diff);
             BtnApplyRec.IsEnabled = diff > 0 && st.IsIdle;
+            RenderSheet();
         }
 
-        // ------------------------------------------------------------ Fichas
+        // ------------------------------------------------------------ Hoja de reglajes
+
+        const int SheetMax = 7;
+
+        /// <summary>
+        /// Con cambios recomendados: AJUSTE | AHORA → RECOMENDADO. Sin ellos: el reglaje en vigor, AJUSTE | BASE → VELOX.
+        /// Las etiquetas salen de cada optimización (opt.Id.base / opt.Id.velox), nunca se inventan valores.
+        /// </summary>
+        void RenderSheet()
+        {
+            var vm = AppState.Current.Optimizations;
+            SheetRows.Children.Clear();
+            BtnMore.Visibility = Visibility.Collapsed;
+            if (!vm.Scanned) { SheetHead.Visibility = Visibility.Collapsed; return; }
+
+            bool todo = vm.RecommendedDiff > 0;
+            var list = (todo
+                ? vm.AllItems.Where(i => i.IsScored && i.IsApplied != i.IsRecommended)
+                : vm.AllItems.Where(i => i.IsAvailable && i.IsApplied)).ToList();
+
+            ColSetting.Text = Loc.T("ui.sum.colSetting");
+            ColFrom.Text = todo ? Loc.T("ui.sum.colNow") : Loc.T("ui.sum.colBase");
+            ColTo.Text = todo ? Loc.T("ui.sum.colRec") : "VELOX";
+            SheetHead.Visibility = list.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+            if (list.Count == 0)
+            {
+                SheetRows.Children.Add(new TextBlock { Text = Loc.T("ui.sum.noneApplied"), Style = Res<Style>("Muted"), Margin = new Thickness(0, 4, 0, 0) });
+                return;
+            }
+            foreach (var it in list.Take(SheetMax))
+            {
+                string from = todo ? (it.IsApplied ? it.VeloxText : it.BaseText) : it.BaseText;
+                string to = todo ? (it.IsRecommended ? it.VeloxText : it.BaseText) : it.VeloxText;
+                AddSheetRow(it.Name, from, to);
+            }
+            if (list.Count > SheetMax)
+            {
+                BtnMore.Content = Loc.F("ui.sum.more", list.Count);
+                BtnMore.Visibility = Visibility.Visible;
+            }
+        }
+
+        void AddSheetRow(string name, string from, string to)
+        {
+            var g = new Grid();
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(5, GridUnitType.Star) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(36) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4, GridUnitType.Star) });
+            g.Children.Add(new TextBlock { Text = name, FontSize = 13.5, TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = name, Margin = new Thickness(0, 0, 16, 0), VerticalAlignment = VerticalAlignment.Center });
+            var f = new TextBlock { Text = from, Style = Res<Style>("Figure"), FontSize = 13.5, FontWeight = FontWeights.Normal, Foreground = Res<Brush>("TextMuted"), TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Right };
+            Grid.SetColumn(f, 1); g.Children.Add(f);
+            var arrow = new TextBlock { Text = "\uE72A", FontFamily = Res<FontFamily>("Icons"), FontSize = 10, Foreground = Res<Brush>("TextDim"), VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+            Grid.SetColumn(arrow, 2); g.Children.Add(arrow);
+            var t = new TextBlock { Text = to, Style = Res<Style>("Figure"), FontSize = 13.5, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
+            Grid.SetColumn(t, 3); g.Children.Add(t);
+            SheetRows.Children.Add(new Border { BorderBrush = Res<Brush>("Rule"), BorderThickness = new Thickness(0, 1, 0, 0), Padding = new Thickness(0, 10, 0, 10), Child = g });
+        }
+
+        void RenderSaved()
+        {
+            int n = BackupStore.Ids().Count;
+            TxtSaved.Text = n == 0 ? Loc.T("ui.sum.savedNone") : n == 1 ? Loc.T("ui.sum.saved1") : Loc.F("ui.sum.saved", n);
+            BtnBackToBase.IsEnabled = n > 0 && AppState.Current.IsIdle;
+        }
+
+        async void BackToBase_Click(object sender, RoutedEventArgs e)
+        {
+            await ((MainWindow)Window.GetWindow(this)).UndoAllAsync();
+            RenderScore();
+        }
+
+        // ------------------------------------------------------------ Cabecera: el equipo en cifras
 
         void RenderTiles(SystemInfo s)
         {
             SpecTiles.Children.Clear();
             if (s == null) return;
             var gpu = s.Gpus.FirstOrDefault(g => g.Dedicated) ?? s.Gpus.FirstOrDefault();
-            AddTile("", Loc.T("ui.sum.tileCpu"), Shorten(s.Cpu), Loc.F("ui.sum.tileCpuSub", s.Cores, s.Threads));
-            AddTile("", Loc.T("ui.sum.tileGpu"), gpu == null ? Loc.T("ui.sum.gpuNone") : Shorten(gpu.Name), gpu != null && gpu.VramGB > 0 ? gpu.VramGB.ToString("0.#") + " GB VRAM" : "");
-            AddTile("", Loc.T("ui.sum.tileRam"), s.RamTotalGB.ToString("0.#") + " GB " + s.RamType,
+            AddTile(Loc.T("ui.sum.tileCpu"), Shorten(s.Cpu), Loc.F("ui.sum.tileCpuSub", s.Cores, s.Threads));
+            AddTile(Loc.T("ui.sum.tileGpu"), gpu == null ? Loc.T("ui.sum.gpuNone") : Shorten(gpu.Name), gpu != null && gpu.VramGB > 0 ? gpu.VramGB.ToString("0.#") + " GB VRAM" : "");
+            AddTile(Loc.T("ui.sum.tileRam"), s.RamTotalGB.ToString("0.#") + " GB " + s.RamType,
                 // En máquinas virtuales Windows no da módulos de RAM ni tipo de disco: no se muestran «0 módulos» ni «Unknown»
                 (s.RamSpeed > 0 ? s.RamSpeed + " MT/s" : "") + (s.RamSpeed > 0 && s.RamModules > 0 ? " · " : "")
                 + (s.RamModules > 0 ? Loc.F("ui.sum.tileRamModules", s.RamModules) : ""));
-            AddTile("", Loc.T("ui.sum.tileDisk"), (s.DiskType == "SSD" || s.DiskType == "HDD" ? s.DiskType : Loc.T("ui.sum.diskGeneric")) + (string.IsNullOrEmpty(s.DiskBus) ? "" : " · " + s.DiskBus),
+            AddTile(Loc.T("ui.sum.tileDisk"), (s.DiskType == "SSD" || s.DiskType == "HDD" ? s.DiskType : Loc.T("ui.sum.diskGeneric")) + (string.IsNullOrEmpty(s.DiskBus) ? "" : " · " + s.DiskBus),
                 Loc.F("ui.sum.tileDiskFree", s.DiskFreeGB.ToString("0"), s.DiskSizeGB.ToString("0")));
         }
 
@@ -95,20 +165,13 @@ namespace Velox.UI.Views
             return s.Trim();
         }
 
-        void AddTile(string glyph, string label, string value, string sub)
+        void AddTile(string label, string value, string sub)
         {
-            var tile = new Border { Style = Res<Style>("Card"), Padding = new Thickness(18, 16, 18, 16), Margin = new Thickness(0, 0, 12, 0) };
-            var sp = new StackPanel();
-            var head = new StackPanel { Orientation = Orientation.Horizontal };
-            var ic = new Border { Style = Res<Style>("IconTile"), Width = 32, Height = 32, CornerRadius = new CornerRadius(9) };
-            ic.Child = new TextBlock { Text = glyph, FontFamily = Res<FontFamily>("Icons"), FontSize = 15, Foreground = Res<Brush>("AccentText"), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-            head.Children.Add(ic);
-            head.Children.Add(new TextBlock { Text = label, Style = Res<Style>("Caption"), FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(10, 0, 0, 0) });
-            sp.Children.Add(head);
-            sp.Children.Add(new TextBlock { Text = value, FontSize = 14.5, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, 12, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = value });
-            sp.Children.Add(new TextBlock { Text = sub, Style = Res<Style>("Caption"), Margin = new Thickness(0, 3, 0, 0) });
-            tile.Child = sp;
-            SpecTiles.Children.Add(tile);
+            var sp = new StackPanel { Margin = new Thickness(0, 0, 20, 0) };
+            sp.Children.Add(new TextBlock { Text = label, Style = Res<Style>("Label") });
+            sp.Children.Add(new TextBlock { Text = value, Style = Res<Style>("Figure"), FontSize = 21, Margin = new Thickness(0, 6, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis, ToolTip = value });
+            sp.Children.Add(new TextBlock { Text = sub, Style = Res<Style>("Caption"), Margin = new Thickness(0, 3, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis });
+            SpecTiles.Children.Add(sp);
         }
 
         // ------------------------------------------------------------ Sistema
@@ -153,8 +216,8 @@ namespace Velox.UI.Views
                 string glyph; Brush color, bg;
                 switch (f.Level)
                 {
-                    case FindingLevel.Warning: glyph = ""; color = Res<Brush>("Warning"); bg = new SolidColorBrush(Color.FromRgb(0x1F, 0x1B, 0x12)); break;
-                    case FindingLevel.Ok: glyph = ""; color = Res<Brush>("Success"); bg = new SolidColorBrush(Color.FromRgb(0x13, 0x1F, 0x1B)); break;
+                    case FindingLevel.Warning: glyph = ""; color = Res<Brush>("Warning"); bg = Res<Brush>("WarningSoft"); break;
+                    case FindingLevel.Ok: glyph = ""; color = Res<Brush>("Success"); bg = Res<Brush>("SuccessSoft"); break;
                     default: glyph = ""; color = Res<Brush>("Info"); bg = Res<Brush>("CardInner"); break;
                 }
                 var dp = new DockPanel();
@@ -162,7 +225,7 @@ namespace Velox.UI.Views
                 DockPanel.SetDock(ic, Dock.Left);
                 dp.Children.Add(ic);
                 dp.Children.Add(new TextBlock { Text = f.Text, TextWrapping = TextWrapping.Wrap, LineHeight = 19 });
-                PanelFindings.Children.Add(new Border { Background = bg, CornerRadius = new CornerRadius(10), Padding = new Thickness(14, 11, 14, 11), Margin = new Thickness(0, 0, 0, 8), Child = dp });
+                PanelFindings.Children.Add(new Border { Background = bg, CornerRadius = new CornerRadius(6), Padding = new Thickness(14, 11, 14, 11), Margin = new Thickness(0, 0, 0, 8), Child = dp });
             }
         }
 
@@ -176,9 +239,9 @@ namespace Velox.UI.Views
                 var sp = new StackPanel { Margin = new Thickness(0, 0, 0, 10) };
                 var g = new Grid();
                 g.Children.Add(new TextBlock { Text = a.Name + (a.Count > 1 ? "  ×" + a.Count : ""), TextTrimming = TextTrimming.CharacterEllipsis });
-                g.Children.Add(new TextBlock { Text = a.MB.ToString("N0") + " MB", Foreground = Res<Brush>("TextMuted"), HorizontalAlignment = HorizontalAlignment.Right });
+                g.Children.Add(new TextBlock { Text = a.MB.ToString("N0") + " MB", Style = Res<Style>("Figure"), FontWeight = FontWeights.Normal, Foreground = Res<Brush>("TextMuted"), HorizontalAlignment = HorizontalAlignment.Right });
                 sp.Children.Add(g);
-                sp.Children.Add(new ProgressBar { Value = max > 0 ? a.MB / max * 100 : 0, Height = 4, Margin = new Thickness(0, 6, 0, 0), Foreground = Res<Brush>("Violet") });
+                sp.Children.Add(new ProgressBar { Value = max > 0 ? a.MB / max * 100 : 0, Height = 3, Margin = new Thickness(0, 6, 0, 0) });
                 PanelTopApps.Children.Add(sp);
             }
         }

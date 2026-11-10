@@ -9,7 +9,7 @@
           <TextBlock Text="{DynamicResource ui.sum.title}" Style="{StaticResource H1}"/>
           <TextBlock x:Name="TxtScanTime" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
         </StackPanel>
-        <Button x:Name="BtnScan" Style="{StaticResource BtnBase}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Scan_Click">
+        <Button x:Name="BtnScan" Style="{StaticResource BtnBase}" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Scan_Click" Padding="14,8">
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="&#xE72C;" FontFamily="{StaticResource Icons}" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"/>
             <TextBlock Text="{DynamicResource ui.sum.rescan}"/>
@@ -17,42 +17,51 @@
         </Button>
       </Grid>
 
-      <!-- Panel destacado -->
-      <Border Margin="0,22,0,0" CornerRadius="18" Background="{StaticResource HeroGradient}" BorderBrush="#2A3150" BorderThickness="1" Padding="30,26">
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-          </Grid.ColumnDefinitions>
-          <Grid Width="132" Height="132">
-            <infra:ArcGauge x:Name="Gauge" Thickness="11" FillBrush="{StaticResource AccentGradient}" TrackBrush="#262C40"/>
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-              <TextBlock x:Name="TxtPct" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="32" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-              <TextBlock Text="{DynamicResource ui.sum.optimized}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
-            </StackPanel>
+      <!-- Hoja de reglajes: el equipo (cabecera) y los cambios (tabla) -->
+      <Border Margin="0,22,0,0" Style="{StaticResource Card}" Padding="0">
+        <StackPanel>
+          <!-- Cabecera: el equipo en cifras -->
+          <UniformGrid x:Name="SpecTiles" Columns="4" Margin="24,20,24,18"/>
+          <Border Height="1" Background="{StaticResource Rule}"/>
+
+          <StackPanel Margin="24,20,24,0">
+            <TextBlock x:Name="TxtHeroTitle" Style="{StaticResource H2}" FontSize="22"/>
+            <TextBlock x:Name="TxtHeroText" Style="{StaticResource Muted}" Margin="0,6,0,0" MaxWidth="640" HorizontalAlignment="Left"/>
+          </StackPanel>
+
+          <!-- Tabla: AJUSTE | AHORA → RECOMENDADO -->
+          <Grid x:Name="SheetHead" Margin="24,18,24,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="5*"/>
+              <ColumnDefinition Width="4*"/>
+              <ColumnDefinition Width="36"/>
+              <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ColSetting" Style="{StaticResource Label}"/>
+            <TextBlock x:Name="ColFrom" Grid.Column="1" Style="{StaticResource Label}" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="ColTo" Grid.Column="3" Style="{StaticResource Label}"/>
           </Grid>
-          <StackPanel Grid.Column="1" Margin="30,0,20,0" VerticalAlignment="Center">
-            <TextBlock x:Name="TxtHeroTitle" Style="{StaticResource H2}" FontSize="21"/>
-            <TextBlock x:Name="TxtHeroText" Style="{StaticResource Muted}" Margin="0,8,0,0" MaxWidth="560" HorizontalAlignment="Left"/>
-            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-              <Border Style="{StaticResource Badge}" Margin="0" Background="#1F2742">
-                <TextBlock x:Name="TxtActive" Style="{StaticResource BadgeText}" Foreground="{StaticResource AccentText}"/>
-              </Border>
-              <Border x:Name="RestartBadge" Style="{StaticResource Badge}" Background="{StaticResource WarningSoft}" Visibility="Collapsed">
+          <StackPanel x:Name="SheetRows" Margin="24,8,24,0"/>
+          <Button x:Name="BtnMore" Style="{StaticResource BtnGhost}" HorizontalAlignment="Left" Margin="14,4,0,0" Click="SeeAll_Click" Visibility="Collapsed"/>
+
+          <!-- Pie: aplicar · copias guardadas · volver a la base -->
+          <Border Height="1" Background="{StaticResource Rule}" Margin="0,16,0,0"/>
+          <Grid Margin="24,16,24,18">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <Button x:Name="BtnApplyRec" Style="{StaticResource BtnPrimary}" Padding="22,11" FontSize="13.5" Click="ApplyRec_Click"/>
+              <Button Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Click="SeeAll_Click" Content="{DynamicResource ui.sum.customize}"/>
+              <Border x:Name="RestartBadge" Style="{StaticResource Badge}" Margin="12,0,0,0" Background="{StaticResource WarningSoft}" Visibility="Collapsed">
                 <TextBlock x:Name="TxtRestartBadge" Style="{StaticResource BadgeText}" Foreground="{StaticResource Warning}"/>
               </Border>
             </StackPanel>
-          </StackPanel>
-          <StackPanel Grid.Column="2" VerticalAlignment="Center">
-            <Button x:Name="BtnApplyRec" Style="{StaticResource BtnPrimary}" Padding="24,13" FontSize="13.5" Click="ApplyRec_Click"/>
-            <Button Style="{StaticResource BtnGhost}" Margin="0,8,0,0" Click="SeeAll_Click" Content="{DynamicResource ui.sum.customize}"/>
-          </StackPanel>
-        </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+              <TextBlock Text="&#xE81C;" FontFamily="{StaticResource Icons}" FontSize="13" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+              <TextBlock x:Name="TxtSaved" Style="{StaticResource Figure}" FontWeight="Normal" FontSize="13" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center"/>
+              <Button x:Name="BtnBackToBase" Style="{StaticResource BtnBase}" Margin="14,0,0,0" Padding="14,8" Click="BackToBase_Click" Content="{DynamicResource ui.sum.backToBase}"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
       </Border>
-
-      <!-- Fichas del equipo -->
-      <UniformGrid x:Name="SpecTiles" Columns="4" Margin="0,16,-12,0"/>
 
       <Grid Margin="0,16,0,0">
         <Grid.ColumnDefinitions>
@@ -88,7 +97,8 @@
                     <Setter Property="Template">
                       <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                          <Border x:Name="Bd" Background="#151923" BorderBrush="#222838" BorderThickness="1" CornerRadius="11" Padding="13,11">
+                          <Grid>
+                          <Border x:Name="Bd" Background="{StaticResource CardInner}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="8" Padding="13,11">
                             <DockPanel>
                               <Border DockPanel.Dock="Left" Style="{StaticResource IconTile}" Width="34" Height="34" Margin="0,0,12,0" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource Icon}" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource AccentText}"/>
@@ -97,11 +107,14 @@
                               <ContentPresenter VerticalAlignment="Center"/>
                             </DockPanel>
                           </Border>
+                          <Border x:Name="Focus" BorderBrush="{StaticResource FocusRing}" BorderThickness="2" CornerRadius="10" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+                          </Grid>
                           <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                              <Setter TargetName="Bd" Property="Background" Value="#1A2032"/>
-                              <Setter TargetName="Bd" Property="BorderBrush" Value="#33406A"/>
+                              <Setter TargetName="Bd" Property="Background" Value="{StaticResource Selected}"/>
+                              <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Border}"/>
                             </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Focus" Property="Visibility" Value="Visible"/></Trigger>
                           </ControlTemplate.Triggers>
                         </ControlTemplate>
                       </Setter.Value>

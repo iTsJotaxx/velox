@@ -19,7 +19,7 @@
       </Grid>
 
       <!-- Estado de la memoria -->
-      <Border Style="{StaticResource Card}" Background="{StaticResource HeroGradient}" Padding="26,22" Margin="0,20,0,0">
+      <Border Style="{StaticResource Card}" Background="{StaticResource CardBg}" Padding="26,22" Margin="0,20,0,0">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -28,18 +28,18 @@
           </Grid.ColumnDefinitions>
 
           <Grid Width="150" Height="150">
-            <infra:ArcGauge x:Name="Gauge" Thickness="12" FillBrush="{StaticResource AccentGradient}" TrackBrush="#262C40"/>
+            <infra:ArcGauge x:Name="Gauge" Thickness="12" FillBrush="{StaticResource AccentGradient}" TrackBrush="{StaticResource Track}"/>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-              <TextBlock x:Name="TxtPct" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="34" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+              <TextBlock x:Name="TxtPct" Text="--" Style="{StaticResource Figure}" FontSize="34" HorizontalAlignment="Center"/>
               <TextBlock Text="{DynamicResource mem.inUse}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
             </StackPanel>
           </Grid>
 
           <StackPanel Grid.Column="1" Margin="28,4,24,0" VerticalAlignment="Center">
-            <TextBlock x:Name="TxtHeadline" FontFamily="{StaticResource FontDisplay}" FontSize="22" FontWeight="SemiBold" Text="--"/>
+            <TextBlock x:Name="TxtHeadline" Style="{StaticResource H2}" FontSize="22" Text="--"/>
             <TextBlock x:Name="TxtSubline" Style="{StaticResource Muted}" Margin="0,4,0,0"/>
             <!-- Barra apilada: en uso / modificada / en espera / libre -->
-            <Border CornerRadius="6" Height="14" ClipToBounds="True" Background="#262C3A" Margin="0,16,0,10">
+            <Border CornerRadius="6" Height="14" ClipToBounds="True" Background="{StaticResource Track}" Margin="0,16,0,10">
               <Grid x:Name="StackBar">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition x:Name="ColUse" Width="0*"/>
@@ -200,7 +200,7 @@
                           <Run Text="{Binding Name, Mode=OneWay}"/><Run Text="{Binding CountText, Mode=OneWay}" Foreground="{StaticResource TextDim}"/>
                         </TextBlock>
                         <Grid Margin="0,5,0,0">
-                          <Border Height="4" CornerRadius="2" Background="#232937"/>
+                          <Border Height="4" CornerRadius="2" Background="{StaticResource Border}"/>
                           <Border Height="4" CornerRadius="2" Background="{StaticResource AccentGradient}" HorizontalAlignment="Left" Width="{Binding BarWidth}"/>
                         </Grid>
                       </StackPanel>

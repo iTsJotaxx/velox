@@ -48,6 +48,7 @@ namespace Velox
                     else if (a.StartsWith("--shot-delay=", StringComparison.OrdinalIgnoreCase)) App.ShotDelay = int.Parse(a.Substring(13));
                     else if (a.StartsWith("--disk-enter=", StringComparison.OrdinalIgnoreCase)) App.DiskEnter = int.Parse(a.Substring(13));
                     else if (a.StartsWith("--action=", StringComparison.OrdinalIgnoreCase)) App.TestAction = a.Substring(9);
+                    else if (a.StartsWith("--size=", StringComparison.OrdinalIgnoreCase)) App.TestSize = a.Substring(7);
 #endif
                 }
 

@@ -74,7 +74,10 @@
             <TextBlock Text="{DynamicResource ui.set.data}" FontSize="14" FontWeight="SemiBold"/>
             <TextBlock x:Name="TxtDataPath" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,3,0,0"/>
           </StackPanel>
-          <Button Grid.Column="2" Style="{StaticResource BtnBase}" Content="{DynamicResource ui.set.openFolder}" VerticalAlignment="Center" Click="OpenData_Click"/>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Style="{StaticResource BtnBase}" Content="{DynamicResource ui.set.viewLog}" Click="ViewLog_Click" Margin="0,0,8,0"/>
+            <Button Style="{StaticResource BtnBase}" Content="{DynamicResource ui.set.openFolder}" Click="OpenData_Click"/>
+          </StackPanel>
         </Grid>
       </Border>
 
@@ -100,19 +103,19 @@
       </Border>
 
       <!-- Acerca de -->
-      <Border Margin="0,14,0,0" CornerRadius="14" Background="{StaticResource HeroGradient}" BorderBrush="#2A3150" BorderThickness="1" Padding="24,22">
+      <Border Margin="0,14,0,0" CornerRadius="10" Background="{StaticResource CardBg}" BorderBrush="{StaticResource Border}" BorderThickness="1" Padding="24,22">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
-          <Border Width="56" Height="56" CornerRadius="15" Background="{StaticResource AccentGradient}">
+          <Border Width="56" Height="56" CornerRadius="12" Background="{StaticResource Paper}">
             <Viewbox Width="56" Height="56">
               <Canvas Width="36" Height="36">
-                <Line X1="4.5" Y1="14.5" X2="9.5" Y2="14.5" Stroke="#99FFFFFF" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                <Line X1="6" Y1="18.7" X2="11" Y2="18.7" Stroke="#99FFFFFF" StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                <Path Fill="White" Data="M7.2,8.6 L13.7,8.6 L18.7,21.6 L23.8,8.6 L29.5,8.6 L21.6,28.1 L15.8,28.1 Z"/>
+                <Line X1="4.5" Y1="14.5" X2="9.5" Y2="14.5" Stroke="{StaticResource Action}" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Line X1="6" Y1="18.7" X2="11" Y2="18.7" Stroke="{StaticResource Action}" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                <Path Fill="{StaticResource Ink}" Data="M7.2,8.6 L13.7,8.6 L18.7,21.6 L23.8,8.6 L29.5,8.6 L21.6,28.1 L15.8,28.1 Z"/>
               </Canvas>
             </Viewbox>
           </Border>

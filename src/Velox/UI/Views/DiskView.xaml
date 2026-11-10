@@ -23,7 +23,7 @@
               </Trigger>
               <Trigger Property="Tag" Value="active">
                 <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
-                <Setter TargetName="Bd" Property="Background" Value="#1A2032"/>
+                <Setter TargetName="Bd" Property="Background" Value="{StaticResource Selected}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -44,7 +44,7 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="#202634"/>
+                <Setter TargetName="Bd" Property="Background" Value="{StaticResource CardInner}"/>
                 <Setter Property="Foreground" Value="{StaticResource Text}"/>
               </Trigger>
             </ControlTemplate.Triggers>
@@ -175,7 +175,7 @@
           </StackPanel>
 
           <!-- Analizando -->
-          <Border x:Name="ScanPanel" Grid.RowSpan="2" Background="#E00F1218" CornerRadius="10" Visibility="Collapsed">
+          <Border x:Name="ScanPanel" Grid.RowSpan="2" Background="#E0101113" CornerRadius="10" Visibility="Collapsed">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="380">
               <TextBlock x:Name="TxtScanTitle" Style="{StaticResource H2}" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
               <ProgressBar x:Name="ScanBar" Height="5" Margin="0,16,0,12"/>
@@ -220,7 +220,7 @@
                   <StackPanel Grid.Column="1">
                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12.5" TextTrimming="CharacterEllipsis"/>
                     <Grid Margin="0,5,0,0">
-                      <Border Height="4" CornerRadius="2" Background="#232937"/>
+                      <Border Height="4" CornerRadius="2" Background="{StaticResource Border}"/>
                       <Border Height="4" CornerRadius="2" Background="{Binding Brush}" HorizontalAlignment="Left" Width="{Binding BarWidth}"/>
                     </Grid>
                   </StackPanel>
@@ -239,7 +239,7 @@
           </StackPanel>
           <StackPanel Grid.Row="3" Margin="4,0,6,0">
             <!-- Barra apilada por tipos -->
-            <Border CornerRadius="5" Height="10" ClipToBounds="True" Background="#232937" Margin="0,0,0,10">
+            <Border CornerRadius="5" Height="10" ClipToBounds="True" Background="{StaticResource Border}" Margin="0,0,0,10">
               <StackPanel x:Name="KindStrip" Orientation="Horizontal"/>
             </Border>
             <ItemsControl x:Name="KindList">

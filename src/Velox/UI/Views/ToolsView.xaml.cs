@@ -183,24 +183,8 @@ namespace Velox.UI.Views
 
         async void Undo_Click(object sender, RoutedEventArgs e)
         {
-            int n = BackupStore.Ids().Count;
-            if (n == 0) { Win.ShowToast(Loc.T("ui.tools.undoNothing")); return; }
-            if (!await Win.ConfirmAsync(Loc.T("ui.tools.undoTitle"), Loc.F("ui.tools.undoConfirm", n), null, Loc.T("ui.tools.undoButton"), Loc.T("ui.btn.cancel"), true)) return;
-            int done = 0;
-            await AppState.Current.RunBusy(Loc.T("ui.tools.undoBusy"), async () =>
-            {
-                done = await Task.Run(() =>
-                {
-                    int r = BackupStore.RestoreAll();
-                    foreach (var o in Core.Optimizations.Catalog.All) { try { o.Sync?.Invoke(); } catch { } }
-                    foreach (var t in Core.Tweaks.TweakCatalog.All) { try { t.Opt.Sync?.Invoke(); } catch { } }
-                    return r;
-                });
-                await AppState.Current.RefreshOptimizationsAsync();
-            });
-            AppState.Current.NeedsReboot = true;
+            await Win.UndoAllAsync();
             RefreshBackups(); UpdateButtons();
-            Win.ShowToast(Loc.F("ui.tools.undoDone", done), ToastKind.Success);
         }
 
         void OpenData_Click(object sender, RoutedEventArgs e) => Process.Start("explorer.exe", "\"" + AppPaths.DataDir + "\"");

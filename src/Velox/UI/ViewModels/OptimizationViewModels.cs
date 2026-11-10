@@ -57,6 +57,11 @@ namespace Velox.UI.ViewModels
         public bool IsRisky => Opt.IsRisky;
         public string RiskText => Opt.RiskText;
         public string Description => Opt.Description;
+        /// <summary>Hoja de reglajes: estado sin la optimización (base) y con ella (Velox).</summary>
+        public string BaseText => Loc.T("opt." + Opt.Id + ".base");
+        public string VeloxText => Loc.T("opt." + Opt.Id + ".velox");
+        /// <summary>Lo que se lee en la columna de estado: solo cuando aporta algo (pendiente, no disponible, bloqueado).</summary>
+        public bool ShowStatus => StatusKind == "pending" || StatusKind == "na";
         public string ImpactText => Loc.T("ui.impact." + Opt.Impact.ToString().ToLowerInvariant());
         public string ImpactKind => Opt.Impact.ToString();
         public bool HasRestart => Opt.Restart != RestartNeed.None;
@@ -79,7 +84,7 @@ namespace Velox.UI.ViewModels
         {
             Raise(nameof(IsPending)); Raise(nameof(StatusKind)); Raise(nameof(StatusText));
             Raise(nameof(ShowRecommended)); Raise(nameof(ShowNotRecommended)); Raise(nameof(ShowPreference));
-            Raise(nameof(IsScored)); Raise(nameof(ShowManual));
+            Raise(nameof(IsScored)); Raise(nameof(ShowManual)); Raise(nameof(ShowStatus));
         }
 
         public void RefreshTexts() => RaiseAll();
@@ -107,7 +112,7 @@ namespace Velox.UI.ViewModels
         public int Pending => Items.Count(i => i.IsPending);
         public bool HasPending => Pending > 0;
         public string CountText => Loc.F("ui.opts.catCount", Active, Available);
-        public string PendingText => Loc.F("ui.opts.catPending", Pending);
+        public string PendingText => Pending == 1 ? Loc.T("ui.opts.catPending1") : Loc.F("ui.opts.catPending", Pending);
         public double ActivePct => Available == 0 ? 0 : 100.0 * Active / Available;
 
         internal void OnRiskyEnabled(OptItemVM item) => _owner.OnRiskyEnabled(item);

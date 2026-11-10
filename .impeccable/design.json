@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T13:41:17.945Z",
+  "title": "Design System: Velox",
+  "extensions": {
+    "colorMeta": {
+      "graphite-ground": {
+        "role": "neutral",
+        "displayName": "Graphite Ground",
+        "canonical": "#101113",
+        "tonalRamp": [
+          "#040405",
+          "#070809",
+          "#0A0B0C",
+          "#0E0E10",
+          "#343536",
+          "#646466",
+          "#9FA0A1",
+          "#DBDBDC"
+        ]
+      },
+      "shell-black": {
+        "role": "neutral",
+        "displayName": "Shell Black",
+        "canonical": "#0B0C0D",
+        "tonalRamp": [
+          "#030303",
+          "#050506",
+          "#070808",
+          "#090A0B",
+          "#303031",
+          "#606162",
+          "#9D9E9E",
+          "#DADBDB"
+        ]
+      },
+      "graphite-panel": {
+        "role": "neutral",
+        "displayName": "Graphite Panel",
+        "canonical": "#17191C",
+        "tonalRamp": [
+          "#060607",
+          "#0A0B0D",
+          "#0F1012",
+          "#141518",
+          "#3A3C3E",
+          "#686A6B",
+          "#A2A3A4",
+          "#DCDDDD"
+        ]
+      },
+      "graphite-inset": {
+        "role": "neutral",
+        "displayName": "Graphite Inset",
+        "canonical": "#1D1F23",
+        "tonalRamp": [
+          "#070809",
+          "#0D0E10",
+          "#131417",
+          "#191A1E",
+          "#3F4144",
+          "#6C6D70",
+          "#A5A5A7",
+          "#DDDDDE"
+        ]
+      },
+      "graphite-selected": {
+        "role": "neutral",
+        "displayName": "Graphite Selected",
+        "canonical": "#24262A",
+        "tonalRamp": [
+          "#090A0B",
+          "#101113",
+          "#17191B",
+          "#1F2024",
+          "#45474A",
+          "#717275",
+          "#A7A8AA",
+          "#DEDEDF"
+        ]
+      },
+      "hairline-rule": {
+        "role": "neutral",
+        "displayName": "Hairline Rule",
+        "canonical": "#26292D",
+        "tonalRamp": [
+          "#0A0A0B",
+          "#111214",
+          "#191B1D",
+          "#202326",
+          "#47494D",
+          "#727477",
+          "#A8A9AB",
+          "#DEDFE0"
+        ]
+      },
+      "graphite-edge": {
+        "role": "neutral",
+        "displayName": "Graphite Edge",
+        "canonical": "#2C2F34",
+        "tonalRamp": [
+          "#0B0C0D",
+          "#141517",
+          "#1D1F22",
+          "#25282C",
+          "#4C4E52",
+          "#76787B",
+          "#ABACAE",
+          "#DFE0E1"
+        ]
+      },
+      "track-grey": {
+        "role": "neutral",
+        "displayName": "Track Grey",
+        "canonical": "#2A2D32",
+        "tonalRamp": [
+          "#0B0B0D",
+          "#131416",
+          "#1B1D21",
+          "#24262B",
+          "#4A4D51",
+          "#75777A",
+          "#AAABAD",
+          "#DFE0E0"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#F2F1EC",
+        "tonalRamp": [
+          "#3D3C3B",
+          "#6D6C6A",
+          "#9D9D99",
+          "#CECDC9",
+          "#F4F3EF",
+          "#F7F6F3",
+          "#FAF9F7",
+          "#FDFDFC"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "#B0B1AB",
+        "tonalRamp": [
+          "#2C2C2B",
+          "#4F504D",
+          "#72736F",
+          "#969691",
+          "#BCBDB8",
+          "#CCCCC8",
+          "#DFE0DD",
+          "#F3F3F2"
+        ]
+      },
+      "text-dim": {
+        "role": "neutral",
+        "displayName": "Text Dim",
+        "canonical": "#8E908B",
+        "tonalRamp": [
+          "#242423",
+          "#40413F",
+          "#5C5E5A",
+          "#797A76",
+          "#9FA19C",
+          "#B6B7B4",
+          "#D2D3D1",
+          "#EEEEEE"
+        ]
+      },
+      "data-fill": {
+        "role": "neutral",
+        "displayName": "Data Fill",
+        "canonical": "#D6D4CC",
+        "tonalRamp": [
+          "#363533",
+          "#605F5C",
+          "#8B8A85",
+          "#B6B4AD",
+          "#DCDAD4",
+          "#E4E3DE",
+          "#EFEEEB",
+          "#F9F9F7"
+        ]
+      },
+      "signal-orange": {
+        "role": "primary",
+        "displayName": "Signal Orange",
+        "canonical": "#FF5A1F",
+        "tonalRamp": [
+          "#401708",
+          "#73280E",
+          "#A63B14",
+          "#D94D1A",
+          "#FF7341",
+          "#FF946D",
+          "#FFBDA5",
+          "#FFE6DD"
+        ]
+      },
+      "action-ink": {
+        "role": "primary",
+        "displayName": "Action Ink",
+        "canonical": "#170A04",
+        "tonalRamp": [
+          "#060301",
+          "#0A0502",
+          "#0F0703",
+          "#140903",
+          "#3A2F2A",
+          "#68605C",
+          "#A29D9B",
+          "#DCDAD9"
+        ]
+      },
+      "applied-green": {
+        "role": "tertiary",
+        "displayName": "Applied Green",
+        "canonical": "#3FCF86",
+        "tonalRamp": [
+          "#103422",
+          "#1C5D3C",
+          "#298757",
+          "#36B072",
+          "#5CD698",
+          "#82E0B0",
+          "#B2ECCF",
+          "#E2F8ED"
+        ]
+      },
+      "pending-amber": {
+        "role": "tertiary",
+        "displayName": "Pending Amber",
+        "canonical": "#F4B740",
+        "tonalRamp": [
+          "#3D2E10",
+          "#6E521D",
+          "#9F772A",
+          "#CF9C36",
+          "#F6C25D",
+          "#F8D083",
+          "#FBE2B3",
+          "#FDF4E2"
+        ]
+      },
+      "pending-row": {
+        "role": "tertiary",
+        "displayName": "Pending Row",
+        "canonical": "#1E1A11",
+        "tonalRamp": [
+          "#080704",
+          "#0E0C08",
+          "#14110B",
+          "#1A160E",
+          "#403C35",
+          "#6D6A64",
+          "#A5A3A0",
+          "#DDDDDB"
+        ]
+      },
+      "risk-red": {
+        "role": "tertiary",
+        "displayName": "Risk Red",
+        "canonical": "#FF6B66",
+        "tonalRamp": [
+          "#401B1A",
+          "#73302E",
+          "#A64642",
+          "#D95B57",
+          "#FF817D",
+          "#FF9F9C",
+          "#FFC4C2",
+          "#FFE9E8"
+        ]
+      },
+      "risk-red-soft": {
+        "role": "tertiary",
+        "displayName": "Risk Red Soft",
+        "canonical": "#311819",
+        "tonalRamp": [
+          "#0C0606",
+          "#160B0B",
+          "#201010",
+          "#2A1415",
+          "#503B3C",
+          "#79696A",
+          "#ADA3A3",
+          "#E0DCDD"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles (30px Bahnschrift SemiCondensed)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel and category titles; 22px for the setup sheet headline."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Every compared number or value: specs, monitor, BASE → VELOX labels. Tabular numerals."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions in Segoe UI Variable, 13px / 19px."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column heads, sidebar groups, spec labels (Bahnschrift 12px)."
+      }
+    },
+    "shadows": [
+      {
+        "name": "dialog-lift",
+        "value": "0 12px 40px rgba(0,0,0,0.5)",
+        "purpose": "Only the confirmation dialog over the dimmed overlay."
+      }
+    ],
+    "motion": [
+      {
+        "name": "switch-travel",
+        "value": "160ms exponential ease-out",
+        "purpose": "Switch knob travel."
+      },
+      {
+        "name": "page-enter",
+        "value": "220ms fade + 10px rise, cubic ease-out",
+        "purpose": "Page change in the content column."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "min-window",
+        "value": "1060x680"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action of a screen.",
+      "html": "<button class=\"ds-btn-primary\">Apply recommended (3)</button>",
+      "css": ".ds-btn-primary{background:#FF5A1F;color:#170A04;border:none;border-radius:6px;padding:10px 20px;font-weight:600;font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;font-size:13px;cursor:pointer;transition:filter .12s}.ds-btn-primary:hover{filter:brightness(1.06)}.ds-btn-primary:active{filter:brightness(1.12)}.ds-btn-primary:focus-visible{outline:2px solid #F2F1EC;outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Every other action.",
+      "html": "<button class=\"ds-btn\">Back to base</button>",
+      "css": ".ds-btn{background:#1D1F23;color:#F2F1EC;border:1px solid #2C2F34;border-radius:6px;padding:9px 16px;font-weight:600;font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;font-size:13px;cursor:pointer}.ds-btn:hover{background:#26282C}.ds-btn:focus-visible{outline:2px solid #F2F1EC;outline-offset:3px}"
+    },
+    {
+      "name": "Switch",
+      "kind": "custom",
+      "refersTo": "switch-on",
+      "description": "On = paper-white track with an ink knob.",
+      "html": "<button class=\"ds-switch\" role=\"switch\" aria-checked=\"true\" aria-label=\"Game Mode\"><span></span></button>",
+      "css": ".ds-switch{width:44px;height:24px;border-radius:12px;border:none;background:#F2F1EC;position:relative;cursor:pointer}.ds-switch span{position:absolute;top:4px;left:24px;width:16px;height:16px;border-radius:50%;background:#101113;transition:left .16s cubic-bezier(.16,1,.3,1)}.ds-switch[aria-checked=false]{background:#2A2D32;box-shadow:inset 0 0 0 1px #3B3E44}.ds-switch[aria-checked=false] span{left:4px;background:#9A9C97}.ds-switch:focus-visible{outline:2px solid #F2F1EC;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Active section with the orange tick.",
+      "html": "<a class=\"ds-nav is-active\" href=\"#\"><span class=\"ds-tick\"></span>Optimizations</a><a class=\"ds-nav\" href=\"#\">Memory (RAM)</a>",
+      "css": ".ds-nav{display:block;position:relative;padding:6px 14px 6px 18px;margin:0 12px 1px;border-radius:6px;color:#B0B1AB;text-decoration:none;font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;font-size:13px}.ds-nav:hover{background:#1B1D20}.ds-nav.is-active{background:#24262A;color:#F2F1EC}.ds-tick{position:absolute;left:0;top:50%;margin-top:-8px;width:3px;height:16px;border-radius:2px;background:#FF5A1F}.ds-nav:focus-visible{outline:2px solid #F2F1EC}"
+    },
+    {
+      "name": "Risk Chip",
+      "kind": "chip",
+      "refersTo": "badge-risk",
+      "description": "The only coloured chip.",
+      "html": "<span class=\"ds-chip-risk\">Risk</span> <span class=\"ds-chip\">Medium impact</span> <span class=\"ds-chip-rec\">★ Recommended</span>",
+      "css": ".ds-chip-risk,.ds-chip,.ds-chip-rec{display:inline-block;padding:2px 7px;border-radius:4px;font-family: Bahnschrift, 'Segoe UI', sans-serif; font-stretch: semi-condensed;font-size:11.5px;font-weight:600}.ds-chip-risk{background:#311819;color:#FF6B66}.ds-chip{background:#1D1F23;color:#B0B1AB}.ds-chip-rec{color:#F2F1EC;box-shadow:inset 0 0 0 1px #6E706B}"
+    },
+    {
+      "name": "Setup Sheet Row",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Signature: SETTING | BASE → VELOX on hairline rules.",
+      "html": "<div class=\"ds-sheet\"><div class=\"ds-row ds-head\"><span>SETTING</span><span class=\"r\">BASE</span><span></span><span>VELOX</span></div><div class=\"ds-row\"><span>Game Mode</span><span class=\"r f\">Game Mode off</span><span class=\"a\">→</span><span class=\"f t\">Game Mode on</span></div><div class=\"ds-row pending\"><span>Turn off core parking</span><span class=\"r f\">Windows parks cores</span><span class=\"a\">→</span><span class=\"f t\">100 % cores active</span></div></div>",
+      "css": ".ds-sheet{background:#17191C;border:1px solid #222428;border-radius:10px;padding:8px 24px;color:#F2F1EC;font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;font-size:13.5px}.ds-row{display:grid;grid-template-columns:5fr 4fr 36px 4fr;align-items:center;padding:10px 0;border-top:1px solid #26292D}.ds-head{border-top:none;font-family: Bahnschrift, 'Segoe UI', sans-serif; font-stretch: semi-condensed;font-size:12px;font-weight:600;color:#8E908B}.ds-row .r{text-align:right}.ds-row .a{text-align:center;color:#8E908B}.ds-row .f{font-family: Bahnschrift, 'Segoe UI', sans-serif; font-stretch: semi-condensed;font-variant-numeric:tabular-nums;color:#B0B1AB}.ds-row .t{color:#F2F1EC;font-weight:600}.ds-row.pending{background:#1E1A11}.ds-row.pending .a,.ds-row.pending .t{color:#F4B740}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "panel",
+      "description": "Search with Ctrl+F.",
+      "html": "<label class=\"ds-search\"><input placeholder=\"Search settings…\" aria-label=\"Search settings\"></label>",
+      "css": ".ds-search input{width:260px;background:#17191C;color:#F2F1EC;border:1px solid #2C2F34;border-radius:6px;padding:8px 12px;font-family: 'Segoe UI Variable Text', 'Segoe UI', sans-serif;font-size:13px;caret-color:#F2F1EC}.ds-search input::placeholder{color:#8E908B}.ds-search input:focus-visible{outline:2px solid #F2F1EC;outline-offset:2px}.ds-search input::selection{background:rgba(255,90,31,.45)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Setup Sheet",
+    "overview": "Velox reads like the setup sheet a race engineer keeps in the pits: the car's baseline on one side, the setup on the other, every change written down so it can be taken back. The PC has a base (the user's original values) and a Velox setup (what Velox changes), and the interface shows both, side by side, everywhere a setting appears. Character comes from precision, figures and ruled columns, not from decoration.\n\nThe surface is a working Windows tool first. Navigation, switches, buttons and lists are standard desktop controls; the world lends only type (Bahnschrift's DIN figures), palette (warm graphite and paper white), density (ruled rows over boxed cards) and one signature move (the BASE → VELOX delta). It is dark because it is used at a desk in the evening, in low light. It refuses the category's habits: no neon or RGB glow, no aggressive angular shapes, no \"BOOST\" claims, nothing that looks like a game HUD.",
+    "keyCharacteristics": [
+      "Warm graphite ground with paper-white text; no gradients anywhere.",
+      "Signal orange appears only where the user acts.",
+      "Every figure and column head is set in Bahnschrift with tabular numerals.",
+      "Settings are rows separated by hairline rules, each carrying its BASE → VELOX delta.",
+      "Undo is always in sight: \"N changes saved · Back to base\"."
+    ],
+    "rules": [
+      {
+        "name": "The One Action Rule",
+        "body": "Signal orange marks where the user acts, nothing else. One orange button per screen; secondary actions stay graphite.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Meaning Rule",
+        "body": "Green is applied, amber is pending, red is risk. Impact, recommendation and data are never coloured with them.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Gradient Rule",
+        "body": "Every surface, button and bar is a flat colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Figures Are DIN Rule",
+        "body": "Any number or value a user compares is set in Bahnschrift with tabular numerals, so columns line up.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Sheet Rule",
+        "body": "Panels never cast shadows; a panel is separated by tone and a hairline edge.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do show the BASE → VELOX delta wherever a setting appears, using the setting's own labels.",
+      "Do keep \"N changes saved · Back to base\" visible on the Overview.",
+      "Do set every number, spec and column head in Bahnschrift with tabular numerals.",
+      "Do separate list items with 1px hairline rules inside one panel instead of a grid of identical cards.",
+      "Do give every interactive control a visible 2px paper-white keyboard focus ring and an accessible name."
+    ],
+    "donts": [
+      "Don't use neon or RGB glow, aggressive angular shapes, \"BOOST\"/\"+FPS\" claims, or anything that looks like a game HUD.",
+      "Don't use gradients on any surface, button, bar or text.",
+      "Don't put signal orange on anything that isn't an action, or show more than one orange button per screen.",
+      "Don't colour impact, recommendation or data with green, amber or red.",
+      "Don't bring in fonts or assets that don't ship with Windows; Velox stays a single executable."
+    ]
+  }
+}

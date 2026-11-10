@@ -199,7 +199,7 @@ namespace Velox.UI.Infra
             Brush brush;
             if (frame)
             {
-                brush = new SolidColorBrush(Mix(Color.FromRgb(0x14, 0x18, 0x22), c, 0.22));
+                brush = new SolidColorBrush(Mix(Color.FromRgb(0x17, 0x19, 0x1C), c, 0.22));
             }
             else
             {

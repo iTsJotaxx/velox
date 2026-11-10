@@ -30,7 +30,7 @@
                 <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Warning}" Text="{DynamicResource unin.badge.protected}"/>
               </StackPanel>
             </Border>
-            <Border Style="{StaticResource Badge}" Background="#20252F" Visibility="{Binding IsQuiet, Converter={StaticResource BoolVis}}" ToolTip="{DynamicResource unin.badge.quietTip}">
+            <Border Style="{StaticResource Badge}" Background="{StaticResource Track}" Visibility="{Binding IsQuiet, Converter={StaticResource BoolVis}}" ToolTip="{DynamicResource unin.badge.quietTip}">
               <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{DynamicResource unin.badge.quiet}"/>
             </Border>
             <Border x:Name="Status" Style="{StaticResource Badge}" Background="{StaticResource AccentSoft}" Visibility="{Binding ShowStatus, Converter={StaticResource BoolVis}}">
@@ -44,14 +44,14 @@
       <DataTemplate.Triggers>
         <DataTrigger Binding="{Binding StatusKind}" Value="ok">
           <Setter TargetName="Status" Property="Background" Value="{StaticResource SuccessSoft}"/>
-          <Setter TargetName="StatusText" Property="Foreground" Value="#5EE0AE"/>
+          <Setter TargetName="StatusText" Property="Foreground" Value="{StaticResource Success}"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding StatusKind}" Value="error">
           <Setter TargetName="Status" Property="Background" Value="{StaticResource DangerSoft}"/>
           <Setter TargetName="StatusText" Property="Foreground" Value="{StaticResource Danger}"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding StatusKind}" Value="queued">
-          <Setter TargetName="Status" Property="Background" Value="#20252F"/>
+          <Setter TargetName="Status" Property="Background" Value="{StaticResource Track}"/>
           <Setter TargetName="StatusText" Property="Foreground" Value="{StaticResource TextMuted}"/>
         </DataTrigger>
       </DataTemplate.Triggers>

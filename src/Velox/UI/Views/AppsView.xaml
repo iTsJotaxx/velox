@@ -18,7 +18,7 @@
           <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="13" Margin="10,0,6,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
           <Border Grid.Column="2" x:Name="Badge" Style="{StaticResource Badge}" Margin="0" Background="{StaticResource SuccessSoft}"
                   Visibility="{Binding ShowBadge, Converter={StaticResource BoolVis}}">
-            <TextBlock x:Name="BadgeText" Style="{StaticResource BadgeText}" Foreground="#5EE0AE" Text="{Binding BadgeText}"/>
+            <TextBlock x:Name="BadgeText" Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}" Text="{Binding BadgeText}"/>
           </Border>
         </Grid>
       </CheckBox>
@@ -32,7 +32,7 @@
           <Setter TargetName="BadgeText" Property="Foreground" Value="{StaticResource Danger}"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding BadgeKind}" Value="queued">
-          <Setter TargetName="Badge" Property="Background" Value="#20252F"/>
+          <Setter TargetName="Badge" Property="Background" Value="{StaticResource Track}"/>
           <Setter TargetName="BadgeText" Property="Foreground" Value="{StaticResource TextMuted}"/>
         </DataTrigger>
       </DataTemplate.Triggers>
@@ -117,7 +117,7 @@
 
       <!-- Avisos y progreso -->
       <StackPanel Grid.Row="2">
-        <Border x:Name="NoWingetBanner" Style="{StaticResource Card}" Background="{StaticResource WarningSoft}" BorderBrush="#4D3F1A" Padding="18,14" Margin="0,14,0,0" Visibility="Collapsed">
+        <Border x:Name="NoWingetBanner" Style="{StaticResource Card}" Background="{StaticResource WarningSoft}" BorderBrush="{StaticResource WarningEdge}" Padding="18,14" Margin="0,14,0,0" Visibility="Collapsed">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto"/>
@@ -161,7 +161,7 @@
     </Grid>
 
     <!-- Elegir región (Riot Client) -->
-    <Grid x:Name="RegionLayer" Background="#B8060810" Visibility="Collapsed" Panel.ZIndex="11">
+    <Grid x:Name="RegionLayer" Background="{StaticResource Overlay}" Visibility="Collapsed" Panel.ZIndex="11">
       <Border Style="{StaticResource Card}" Width="560" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24,22">
         <StackPanel>
           <TextBlock x:Name="TxtRegionTitle" Style="{StaticResource H2}" FontSize="18"/>
@@ -184,7 +184,7 @@
                           <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                             <Border Style="{StaticResource Badge}" Background="{StaticResource SuccessSoft}" Visibility="{Binding IsRecommended, Converter={StaticResource BoolVis}}">
-                              <TextBlock Style="{StaticResource BadgeText}" Foreground="#5EE0AE" FontSize="10" Text="{DynamicResource apps.region.recommended}"/>
+                              <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}" FontSize="10" Text="{DynamicResource apps.region.recommended}"/>
                             </Border>
                           </StackPanel>
                           <TextBlock x:Name="Mark" Grid.Column="1" Text="&#xE73E;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource AccentText}" Margin="8,0,0,0" Visibility="Hidden"/>
@@ -194,7 +194,7 @@
                         <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Border}"/></Trigger>
                         <Trigger Property="IsChecked" Value="True">
                           <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
-                          <Setter TargetName="Bd" Property="Background" Value="#1A2032"/>
+                          <Setter TargetName="Bd" Property="Background" Value="{StaticResource Selected}"/>
                           <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
                         </Trigger>
                       </ControlTemplate.Triggers>
@@ -213,7 +213,7 @@
     </Grid>
 
     <!-- Añadir aplicación -->
-    <Grid x:Name="AddLayer" Background="#B8060810" Visibility="Collapsed" Panel.ZIndex="10">
+    <Grid x:Name="AddLayer" Background="{StaticResource Overlay}" Visibility="Collapsed" Panel.ZIndex="10">
       <Border Style="{StaticResource Card}" Width="620" MaxHeight="620" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24,22">
         <Grid>
           <Grid.RowDefinitions>

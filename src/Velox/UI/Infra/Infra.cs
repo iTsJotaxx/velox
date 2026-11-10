@@ -57,7 +57,7 @@ namespace Velox.UI.Infra
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(nameof(Thickness), typeof(double), typeof(ArcGauge),
             new FrameworkPropertyMetadata(10.0, FrameworkPropertyMetadataOptions.AffectsRender));
         public static readonly DependencyProperty TrackBrushProperty = DependencyProperty.Register(nameof(TrackBrush), typeof(Brush), typeof(ArcGauge),
-            new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(0x23, 0x29, 0x37)), FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(0x2A, 0x2D, 0x32)), FrameworkPropertyMetadataOptions.AffectsRender));
         public static readonly DependencyProperty FillBrushProperty = DependencyProperty.Register(nameof(FillBrush), typeof(Brush), typeof(ArcGauge),
             new FrameworkPropertyMetadata(Brushes.DodgerBlue, FrameworkPropertyMetadataOptions.AffectsRender));
 

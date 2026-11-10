@@ -21,6 +21,8 @@ namespace Velox
         public static int DiskEnter { get; set; }
         /// <summary>Solo pruebas: acción extra antes de la captura (p. ej. "clean" en Memoria).</summary>
         public static string TestAction { get; set; }
+        /// <summary>Solo pruebas: tamaño de la ventana, p. ej. "1060x680" (el mínimo).</summary>
+        public static string TestSize { get; set; }
 #endif
 
         protected override void OnStartup(StartupEventArgs e)

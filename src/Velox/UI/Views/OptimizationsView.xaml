@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <UserControl.Resources>
 
-    <!-- Fila de una optimización -->
+    <!-- Fila de una optimización: nombre y etiquetas · BASE → VELOX · descripción -->
     <DataTemplate x:Key="OptRow">
-      <Border x:Name="Row" Padding="16,14,16,14" CornerRadius="10" Background="Transparent"
+      <Border x:Name="Row" Padding="16,14,16,14" CornerRadius="8" Background="Transparent"
               Visibility="{Binding IsVisible, Converter={StaticResource BoolVis}}">
         <Grid>
           <Grid.ColumnDefinitions>
@@ -14,24 +14,25 @@
             <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
           <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding IsChecked, Mode=TwoWay}" IsEnabled="{Binding IsAvailable}"
-                    VerticalAlignment="Top" Margin="0,1,18,0"/>
+                    VerticalAlignment="Top" Margin="0,1,18,0"
+                    AutomationProperties.Name="{Binding Name}" AutomationProperties.HelpText="{Binding Description}"/>
           <StackPanel Grid.Column="1">
             <WrapPanel>
               <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,0,2"/>
-              <Border Style="{StaticResource Badge}" Background="{StaticResource AccentSoft}" Visibility="{Binding ShowRecommended, Converter={StaticResource BoolVis}}">
+              <Border Style="{StaticResource Badge}" Background="Transparent" BorderBrush="{StaticResource ChipEdge}" BorderThickness="1" Visibility="{Binding ShowRecommended, Converter={StaticResource BoolVis}}">
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="&#xE735;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource AccentText}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource AccentText}" Text="{DynamicResource ui.badge.recommended}"/>
+                  <TextBlock Text="&#xE735;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource Text}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Text}" Text="{DynamicResource ui.badge.recommended}"/>
                 </StackPanel>
               </Border>
-              <Border Style="{StaticResource Badge}" Background="#1A1E27" Visibility="{Binding ShowNotRecommended, Converter={StaticResource BoolVis}}">
+              <Border Style="{StaticResource Badge}" Padding="0,2" Visibility="{Binding ShowNotRecommended, Converter={StaticResource BoolVis}}">
                 <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource TextDim}" Text="{DynamicResource ui.badge.notRecommended}"/>
               </Border>
-              <Border Style="{StaticResource Badge}" Background="#211C33" Visibility="{Binding ShowPreference, Converter={StaticResource BoolVis}}"
+              <Border Style="{StaticResource Badge}" Background="{StaticResource CardInner}" Visibility="{Binding ShowPreference, Converter={StaticResource BoolVis}}"
                       ToolTip="{DynamicResource ui.badge.preferenceTip}">
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="&#xE76E;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource Violet}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Violet}" Text="{DynamicResource ui.badge.preference}"/>
+                  <TextBlock Text="&#xE76E;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{DynamicResource ui.badge.preference}"/>
                 </StackPanel>
               </Border>
               <Border Style="{StaticResource Badge}" Background="{StaticResource DangerSoft}" Visibility="{Binding IsRisky, Converter={StaticResource BoolVis}}"
@@ -41,15 +42,26 @@
                   <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Danger}" Text="{DynamicResource ui.badge.risk}"/>
                 </StackPanel>
               </Border>
-              <Border x:Name="ImpactBadge" Style="{StaticResource Badge}" Background="#20252F">
+              <Border x:Name="ImpactBadge" Style="{StaticResource Badge}" Background="{StaticResource CardInner}">
                 <TextBlock x:Name="ImpactTxt" Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{Binding ImpactText}"/>
               </Border>
-              <Border Style="{StaticResource Badge}" Background="{StaticResource WarningSoft}" Visibility="{Binding HasRestart, Converter={StaticResource BoolVis}}">
-                <TextBlock Style="{StaticResource BadgeText}" Foreground="#F7CF6F" Text="{Binding RestartText}"/>
+              <Border Style="{StaticResource Badge}" Background="{StaticResource CardInner}" Visibility="{Binding HasRestart, Converter={StaticResource BoolVis}}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="&#xE777;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{Binding RestartText}"/>
+                </StackPanel>
               </Border>
             </WrapPanel>
+
+            <!-- BASE → VELOX: el lado que está en vigor va en blanco; el otro, apagado -->
+            <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
+              <TextBlock x:Name="BaseTxt" Text="{Binding BaseText}" Style="{StaticResource Figure}" FontSize="13" FontWeight="Normal" Foreground="{StaticResource Text}"/>
+              <TextBlock x:Name="Arrow" Text="&#xE72A;" FontFamily="{StaticResource Icons}" FontSize="10" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="10,1,10,0"/>
+              <TextBlock x:Name="VeloxTxt" Text="{Binding VeloxText}" Style="{StaticResource Figure}" FontSize="13" FontWeight="Normal" Foreground="{StaticResource TextDim}"/>
+            </StackPanel>
+
             <TextBlock Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,6,0,0"/>
-            <Border Visibility="{Binding ShowManual, Converter={StaticResource BoolVis}}" Background="#1A1E27" CornerRadius="8"
+            <Border Visibility="{Binding ShowManual, Converter={StaticResource BoolVis}}" Background="{StaticResource CardInner}" CornerRadius="6"
                     Padding="12,8" Margin="0,10,0,0" HorizontalAlignment="Left">
               <StackPanel Orientation="Horizontal">
                 <TextBlock Text="&#xE72E;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -59,7 +71,9 @@
               </StackPanel>
             </Border>
           </StackPanel>
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="18,3,0,0">
+          <!-- Estado: solo cuando aporta algo (pendiente, no disponible o bloqueado) -->
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="18,3,0,0"
+                      Visibility="{Binding ShowStatus, Converter={StaticResource BoolVis}}">
             <Ellipse x:Name="Dot" Width="7" Height="7" Fill="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
             <TextBlock x:Name="Status" Text="{Binding StatusText}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextDim}" MinWidth="96"/>
           </StackPanel>
@@ -67,24 +81,48 @@
       </Border>
       <DataTemplate.Triggers>
         <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
-          <Setter TargetName="Row" Property="Background" Value="#181C26"/>
+          <Setter TargetName="Row" Property="Background" Value="{StaticResource RowHover}"/>
         </Trigger>
-        <DataTrigger Binding="{Binding StatusKind}" Value="on">
-          <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Success}"/>
-          <Setter TargetName="Status" Property="Foreground" Value="{StaticResource Success}"/>
+        <!-- En vigor: la columna VELOX -->
+        <DataTrigger Binding="{Binding IsApplied}" Value="True">
+          <Setter TargetName="BaseTxt" Property="Foreground" Value="{StaticResource TextDim}"/>
+          <Setter TargetName="VeloxTxt" Property="Foreground" Value="{StaticResource Text}"/>
+          <Setter TargetName="VeloxTxt" Property="FontWeight" Value="SemiBold"/>
         </DataTrigger>
+        <DataTrigger Binding="{Binding IsApplied}" Value="False">
+          <Setter TargetName="BaseTxt" Property="FontWeight" Value="SemiBold"/>
+        </DataTrigger>
+        <!-- Pendiente: la flecha y el destino en ámbar hasta que se aplique -->
         <DataTrigger Binding="{Binding StatusKind}" Value="pending">
           <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Warning}"/>
           <Setter TargetName="Status" Property="Foreground" Value="{StaticResource Warning}"/>
-          <Setter TargetName="Row" Property="Background" Value="#1C1A14"/>
+          <Setter TargetName="Arrow" Property="Foreground" Value="{StaticResource Warning}"/>
+          <Setter TargetName="Row" Property="Background" Value="{StaticResource PendingRow}"/>
         </DataTrigger>
+        <MultiDataTrigger>
+          <MultiDataTrigger.Conditions>
+            <Condition Binding="{Binding StatusKind}" Value="pending"/>
+            <Condition Binding="{Binding IsChecked}" Value="True"/>
+          </MultiDataTrigger.Conditions>
+          <Setter TargetName="VeloxTxt" Property="Foreground" Value="{StaticResource Warning}"/>
+          <Setter TargetName="VeloxTxt" Property="FontWeight" Value="SemiBold"/>
+        </MultiDataTrigger>
+        <MultiDataTrigger>
+          <MultiDataTrigger.Conditions>
+            <Condition Binding="{Binding StatusKind}" Value="pending"/>
+            <Condition Binding="{Binding IsChecked}" Value="False"/>
+          </MultiDataTrigger.Conditions>
+          <Setter TargetName="BaseTxt" Property="Foreground" Value="{StaticResource Warning}"/>
+          <Setter TargetName="BaseTxt" Property="FontWeight" Value="SemiBold"/>
+        </MultiDataTrigger>
         <DataTrigger Binding="{Binding StatusKind}" Value="na">
-          <Setter TargetName="Dot" Property="Fill" Value="#3A4050"/>
-          <Setter TargetName="Status" Property="Foreground" Value="#545B6B"/>
+          <Setter TargetName="Dot" Property="Fill" Value="{StaticResource TextFaint}"/>
+          <Setter TargetName="Status" Property="Foreground" Value="{StaticResource TextDim}"/>
+          <Setter TargetName="BaseTxt" Property="Foreground" Value="{StaticResource TextDim}"/>
+          <Setter TargetName="BaseTxt" Property="FontWeight" Value="Normal"/>
         </DataTrigger>
         <DataTrigger Binding="{Binding ImpactKind}" Value="High">
-          <Setter TargetName="ImpactBadge" Property="Background" Value="{StaticResource SuccessSoft}"/>
-          <Setter TargetName="ImpactTxt" Property="Foreground" Value="#5EE0AE"/>
+          <Setter TargetName="ImpactTxt" Property="Foreground" Value="{StaticResource Text}"/>
         </DataTrigger>
       </DataTemplate.Triggers>
     </DataTemplate>
@@ -97,8 +135,8 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Border Width="42" Height="42" CornerRadius="11" Background="{StaticResource AccentSoft}" VerticalAlignment="Center">
-          <TextBlock Text="{Binding Icon}" FontFamily="{StaticResource Icons}" FontSize="18" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Border Style="{StaticResource IconTile}" Width="40" Height="40" VerticalAlignment="Center">
+          <TextBlock Text="{Binding Icon}" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
         <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center">
           <TextBlock Text="{Binding Name}" Style="{StaticResource H2}"/>
@@ -109,12 +147,13 @@
             <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Warning}" Text="{Binding PendingText}"/>
           </Border>
           <StackPanel Margin="12,0,0,0" Width="96">
-            <TextBlock Text="{Binding CountText}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right"/>
-            <ProgressBar Value="{Binding ActivePct, Mode=OneWay}" Height="4" Margin="0,6,0,0"/>
+            <TextBlock Text="{Binding CountText}" Style="{StaticResource Figure}" FontSize="12.5" FontWeight="Normal" Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right"/>
+            <ProgressBar Value="{Binding ActivePct, Mode=OneWay}" Height="3" Margin="0,6,0,0"/>
           </StackPanel>
         </StackPanel>
       </Grid>
     </DataTemplate>
+
   </UserControl.Resources>
 
   <Grid Margin="32,4,32,0">
@@ -131,15 +170,15 @@
         <TextBlock Text="{DynamicResource ui.opts.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0" MaxWidth="720" HorizontalAlignment="Left"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-        <CheckBox x:Name="ChkRestore" Style="{StaticResource Switch}" VerticalAlignment="Center" Click="ChkRestore_Click"/>
+        <CheckBox x:Name="ChkRestore" Style="{StaticResource Switch}" VerticalAlignment="Center" Click="ChkRestore_Click" AutomationProperties.Name="{DynamicResource ui.opts.restorePoint}"/>
         <TextBlock Text="{DynamicResource ui.opts.restorePoint}" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center" Margin="10,0,18,0"/>
-        <Button x:Name="BtnApply" Style="{StaticResource BtnPrimary}" Padding="20,10" Click="Apply_Click"/>
+        <Button x:Name="BtnApply" Style="{StaticResource BtnPrimary}" Padding="20,10" Click="Apply_Click" ToolTip="Ctrl+Enter"/>
       </StackPanel>
     </Grid>
 
     <Grid Grid.Row="1" Margin="0,22,0,0">
       <StackPanel Orientation="Horizontal">
-        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="10" Padding="3">
+        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="7" Padding="3">
           <StackPanel Orientation="Horizontal">
             <RadioButton x:Name="RbRec" Style="{StaticResource Segment}" GroupName="Mode" Click="Recommended_Click">
               <StackPanel Orientation="Horizontal">
@@ -158,11 +197,11 @@
         <Button x:Name="BtnDiscard" Style="{StaticResource BtnBase}" Content="{DynamicResource ui.opts.discard}" Margin="10,0,0,0" Click="Discard_Click"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="10" Width="260" Padding="12,0">
+        <Border Background="{StaticResource CardBg}" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="6" Width="260" Padding="12,0">
           <Grid>
             <TextBlock Text="&#xE721;" FontFamily="{StaticResource Icons}" FontSize="13" Foreground="{StaticResource TextDim}" VerticalAlignment="Center"/>
             <TextBlock x:Name="SearchHint" Text="{DynamicResource ui.opts.search}" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="24,0,0,0" IsHitTestVisible="False"/>
-            <TextBox x:Name="TxtSearch" VerticalAlignment="Center" Margin="22,0,0,0" Padding="0,8" TextChanged="Search_Changed"/>
+            <TextBox x:Name="TxtSearch" VerticalAlignment="Center" Margin="22,0,0,0" Padding="0,8" TextChanged="Search_Changed" AutomationProperties.Name="{DynamicResource ui.opts.search}" ToolTip="Ctrl+F"/>
           </Grid>
         </Border>
         <Button x:Name="BtnExpand" Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Click="Expand_Click"/>

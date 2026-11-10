@@ -12,3 +12,5 @@ tools/test/*.manifest
 
 # Prototipo PowerShell anterior (no forma parte del proyecto)
 OptimizadorPC/
+tools/test/bin/
+.impeccable/review/

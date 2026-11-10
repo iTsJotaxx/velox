@@ -51,11 +51,11 @@
             <UniformGrid Columns="2" Margin="0,16,0,0">
               <StackPanel>
                 <TextBlock Text="{DynamicResource ui.tools.memStandby}" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtStandby" Text="--" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                <TextBlock x:Name="TxtStandby" Text="--" Style="{StaticResource Figure}" FontSize="22" Margin="0,2,0,0"/>
               </StackPanel>
               <StackPanel>
                 <TextBlock Text="{DynamicResource ui.tools.memFree}" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtFree" Text="--" FontSize="20" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                <TextBlock x:Name="TxtFree" Text="--" Style="{StaticResource Figure}" FontSize="22" Margin="0,2,0,0"/>
               </StackPanel>
             </UniformGrid>
             <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
@@ -81,7 +81,7 @@
               <Grid Width="104" Height="104">
                 <infra:ArcGauge x:Name="HzGauge" Thickness="9" FillBrush="{StaticResource AccentGradient}"/>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                  <TextBlock x:Name="TxtHz" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                  <TextBlock x:Name="TxtHz" Text="--" Style="{StaticResource Figure}" FontSize="26" HorizontalAlignment="Center"/>
                   <TextBlock Text="Hz" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
                 </StackPanel>
               </Grid>

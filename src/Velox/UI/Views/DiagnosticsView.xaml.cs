@@ -31,42 +31,52 @@ namespace Velox.UI.Views
             {
                 var actions = DiagnosticsCatalog.All.Where(a => a.Group == g && DiagnosticsCatalog.IsAvailable(a, sys)).ToList();
                 if (actions.Count == 0) continue;
-                Groups.Children.Add(new TextBlock { Text = Loc.T("diaggroup." + g), Style = Res<Style>("H2"), Margin = new Thickness(0, 22, 0, 12) });
-                var wrap = new WrapPanel();
-                foreach (var a in actions) wrap.Children.Add(Card(a));
-                Groups.Children.Add(wrap);
+                Groups.Children.Add(new TextBlock { Text = Loc.T("diaggroup." + g), Style = Res<Style>("H2"), Margin = new Thickness(0, 24, 0, 10) });
+                // Un bloque por grupo con filas separadas por reglas (como la hoja de reglajes), no una rejilla de tarjetas
+                var list = new StackPanel();
+                for (int i = 0; i < actions.Count; i++) list.Children.Add(RowFor(actions[i], i == 0));
+                Groups.Children.Add(new Border { Style = Res<Style>("Card"), Padding = new Thickness(20, 4, 20, 4), Child = list });
             }
         }
 
-        FrameworkElement Card(DiagAction a)
+        FrameworkElement RowFor(DiagAction a, bool first)
         {
-            var card = new Border { Style = Res<Style>("Card"), Width = 304, Margin = new Thickness(0, 0, 14, 14), Padding = new Thickness(20, 18, 20, 18) };
-            var dp = new DockPanel();
-            var head = new StackPanel { Orientation = Orientation.Horizontal };
-            var tile = new Border { Style = Res<Style>("IconTile") };
-            tile.Child = new TextBlock { Text = a.Icon, FontFamily = Res<FontFamily>("Icons"), FontSize = 17, Foreground = Res<Brush>("AccentText"), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
-            head.Children.Add(tile);
-            var titles = new StackPanel { Margin = new Thickness(12, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
-            titles.Children.Add(new TextBlock { Text = a.Name, FontSize = 14, FontWeight = FontWeights.SemiBold, TextWrapping = TextWrapping.Wrap, MaxWidth = 212 });
+            var g = new Grid();
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            g.ColumnDefinitions.Add(new ColumnDefinition());
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            var tile = new Border { Style = Res<Style>("IconTile"), Width = 34, Height = 34, VerticalAlignment = VerticalAlignment.Top, Margin = new Thickness(0, 2, 14, 0) };
+            tile.Child = new TextBlock { Text = a.Icon, FontFamily = Res<FontFamily>("Icons"), FontSize = 16, Foreground = Res<Brush>("AccentText"), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+            g.Children.Add(tile);
+
+            var text = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            var title = new WrapPanel();
+            title.Children.Add(new TextBlock { Text = a.Name, FontSize = 14, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 10, 0) });
             string kindKey = a.Kind == DiagKind.InApp ? "ui.diag.kindInApp" : a.Kind == DiagKind.Console ? "ui.diag.kindConsole" : "ui.diag.kindExternal";
-            titles.Children.Add(new TextBlock { Text = Loc.T(kindKey), Style = Res<Style>("Caption"), Margin = new Thickness(0, 2, 0, 0) });
-            head.Children.Add(titles);
-            DockPanel.SetDock(head, Dock.Top);
-            dp.Children.Add(head);
+            title.Children.Add(new TextBlock { Text = Loc.T(kindKey), Style = Res<Style>("Label"), FontWeight = FontWeights.Normal, VerticalAlignment = VerticalAlignment.Center });
+            text.Children.Add(title);
+            text.Children.Add(new TextBlock { Text = a.Description, Style = Res<Style>("Muted"), FontSize = 12.5, Margin = new Thickness(0, 4, 0, 0), MaxWidth = 720, HorizontalAlignment = HorizontalAlignment.Left });
+            Grid.SetColumn(text, 1);
+            g.Children.Add(text);
 
             var btn = new Button
             {
-                Style = Res<Style>(a.Kind == DiagKind.InApp ? "BtnPrimary" : "BtnBase"),
+                Style = Res<Style>("BtnBase"),
                 Content = Loc.T(a.Kind == DiagKind.InApp ? "ui.diag.run" : "ui.diag.open"),
-                HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 14, 0, 0), Tag = a,
+                VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(20, 0, 0, 0), MinWidth = 92, Tag = a,
             };
+            System.Windows.Automation.AutomationProperties.SetName(btn, (string)btn.Content + ": " + a.Name);
             btn.Click += Run_Click;
             btn.SetBinding(IsEnabledProperty, new System.Windows.Data.Binding(nameof(AppState.IsIdle)) { Source = AppState.Current });
-            DockPanel.SetDock(btn, Dock.Bottom);
-            dp.Children.Add(btn);
-            dp.Children.Add(new TextBlock { Text = a.Description, Style = Res<Style>("Muted"), FontSize = 12.5, Margin = new Thickness(0, 12, 0, 0) });
-            card.Child = dp;
-            return card;
+            Grid.SetColumn(btn, 2);
+            g.Children.Add(btn);
+
+            return new Border
+            {
+                BorderBrush = Res<Brush>("Rule"), BorderThickness = new Thickness(0, first ? 0 : 1, 0, 0),
+                Padding = new Thickness(0, 14, 0, 14), Child = g,
+            };
         }
 
         async void Run_Click(object sender, RoutedEventArgs e)

@@ -126,6 +126,7 @@ namespace Velox.UI.Views
             }
         }
 
+        void ViewLog_Click(object sender, RoutedEventArgs e) => Win.Navigate("log");
         void OpenData_Click(object sender, RoutedEventArgs e) => Process.Start("explorer.exe", "\"" + AppPaths.DataDir + "\"");
         void GitHub_Click(object sender, RoutedEventArgs e) => Process.Start(new ProcessStartInfo(AppInfo.RepositoryUrl) { UseShellExecute = true });
     }

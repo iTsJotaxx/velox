@@ -67,6 +67,14 @@ namespace Velox.UI.Views
 
         async void Apply_Click(object sender, RoutedEventArgs e) => await AppState.Current.ApplyPendingAsync();
 
+        /// <summary>Ctrl+Enter: aplica los cambios pendientes si el botón está disponible.</summary>
+        public bool TryApplyShortcut()
+        {
+            if (!BtnApply.IsEnabled || BtnApply.Visibility != Visibility.Visible) return false;
+            Apply_Click(BtnApply, new RoutedEventArgs());
+            return true;
+        }
+
         void Recommended_Click(object sender, RoutedEventArgs e)
         {
             int n = Vm.SelectRecommended();
@@ -115,6 +123,9 @@ namespace Velox.UI.Views
         }
 
         public void TestSearch(string text) => TxtSearch.Text = text;
+
+        /// <summary>Solo pruebas: pliega todo y deja pendiente una optimización (sin aplicar nada).</summary>
+        public void TestPending(string id) { Vm.SetAllExpanded(false); TestToggle(id); }
 
         public void TestToggle(string id)
         {

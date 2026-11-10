@@ -34,11 +34,11 @@
               <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Level}" Value="WARN">
                   <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Warning}"/>
-                  <Setter TargetName="Msg" Property="Foreground" Value="#F7D47A"/>
+                  <Setter TargetName="Msg" Property="Foreground" Value="{StaticResource Warning}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Level}" Value="ERROR">
                   <Setter TargetName="Dot" Property="Fill" Value="{StaticResource Danger}"/>
-                  <Setter TargetName="Msg" Property="Foreground" Value="#FFA3A3"/>
+                  <Setter TargetName="Msg" Property="Foreground" Value="{StaticResource DangerText}"/>
                 </DataTrigger>
               </DataTemplate.Triggers>
             </DataTemplate>

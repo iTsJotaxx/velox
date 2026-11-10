@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,7 +35,14 @@ namespace Velox.UI
         {
             InitializeComponent();
             TxtVersion.Text = "v" + AppInfo.Version;
-            SourceInitialized += (s, e) => WindowEffects.Apply(this, Color.FromRgb(0x23, 0x29, 0x37), Color.FromRgb(0x0B, 0x0D, 0x12));
+#if UITEST
+            if (!string.IsNullOrEmpty(App.TestSize))
+            {
+                var p = App.TestSize.Split('x');
+                Width = double.Parse(p[0]); Height = double.Parse(p[1]);
+            }
+#endif
+            SourceInitialized += (s, e) => WindowEffects.Apply(this, Color.FromRgb(0x2C, 0x2F, 0x34), Color.FromRgb(0x10, 0x11, 0x13));
             StateChanged += (s, e) => UpdateMaximized();
             Loaded += OnLoaded;
             Closing += OnClosing;
@@ -42,7 +50,12 @@ namespace Velox.UI
             AppState.Current.PropertyChanged += OnStateChanged;
             Loc.LanguageChanged += OnLanguageChanged;
             _monitor.Sampled += OnMonitorSample;
+            // Atajos Ctrl+1…9 para las primeras secciones (se muestran en el tooltip)
+            var nav = ShortcutNav();
+            for (int i = 0; i < nav.Length; i++) nav[i].ToolTip = "Ctrl+" + (i + 1);
         }
+
+        RadioButton[] ShortcutNav() => new[] { NavSummary, NavOptimizations, NavProcesses, NavMemory, NavStartup, NavApps, NavUninstall, NavDrivers, NavDisk };
 
         async void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -110,7 +123,7 @@ namespace Velox.UI
                 case "disk": return NavDisk;
                 case "tweaks": return NavTweaks;
                 case "tools": return NavTools;
-                case "log": return NavLog;
+                case "log": return NavSettings; // el registro se abre desde Ajustes
                 case "settings": return NavSettings;
                 default: return NavSummary;
             }
@@ -205,6 +218,7 @@ namespace Velox.UI
                     string act = App.TestAction;
                     if (act.StartsWith("expand:")) ov.TestExpand(act.Substring(7));
                     else if (act.StartsWith("risk:")) ov.TestToggle(act.Substring(5));
+                    else if (act.StartsWith("pending:")) ov.TestPending(act.Substring(8));
                     else if (act.StartsWith("search:")) ov.TestSearch(act.Substring(7));
                     await Task.Delay(900);
                 }
@@ -212,6 +226,24 @@ namespace Velox.UI
                 {
                     drv.TestSafety();
                     await Task.Delay(1500);
+                }
+                if (App.TestAction == "todo")
+                {
+                    // Solo pruebas: simula que 3 ajustes recomendados están sin aplicar (no toca Windows)
+                    for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    foreach (var it in AppState.Current.Optimizations.AllItems.Where(x => x.IsScored && x.IsRecommended && x.IsApplied).Take(3).ToList())
+                    { it.IsApplied = false; it.SetCheckedSilently(false); }
+                    (PageHost.Content as IPage)?.OnShown();
+                    await Task.Delay(500);
+                }
+                if (App.TestAction != null && App.TestAction.StartsWith("tab:"))
+                {
+                    // --action=tab:N mueve el foco N veces con Tab (comprueba el anillo de foco)
+                    for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    int n = int.Parse(App.TestAction.Substring(4));
+                    for (int i = 0; i < n; i++)
+                        ((System.Windows.Input.Keyboard.FocusedElement as UIElement) ?? PageHost).MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Next));
+                    await Task.Delay(500);
                 }
                 if (App.TestAction == "protection") { _ = OfferSystemProtectionAsync(); await Task.Delay(1200); }
                 if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
@@ -303,13 +335,13 @@ namespace Velox.UI
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (s.Cpu >= 0) { TxtCpu.Text = Math.Round(s.Cpu) + " %"; BarCpu.Value = s.Cpu; }
+                if (s.Cpu >= 0) { TxtCpu.Text = Math.Round(s.Cpu) + " %"; SetLoad(BarCpu, TxtCpu, s.Cpu); }
                 if (s.RamTotal > 0)
                 {
                     TxtRam.Text = (s.RamUsed / 1073741824.0).ToString("0.0") + " / " + (s.RamTotal / 1073741824.0).ToString("0") + " GB";
-                    BarRam.Value = s.RamUsed / s.RamTotal * 100;
+                    SetLoad(BarRam, TxtRam, s.RamUsed / s.RamTotal * 100);
                 }
-                if (s.Gpu >= 0) { TxtGpu.Text = Math.Round(s.Gpu) + " %"; BarGpu.Value = s.Gpu; }
+                if (s.Gpu >= 0) { TxtGpu.Text = Math.Round(s.Gpu) + " %"; SetLoad(BarGpu, TxtGpu, s.Gpu); }
                 else TxtGpu.Text = "N/D";
                 if (s.Vram >= 0)
                 {
@@ -317,10 +349,64 @@ namespace Velox.UI
                     TxtVram.Text = total > 0
                         ? (s.Vram / 1073741824.0).ToString("0.0") + " / " + (total / 1073741824.0).ToString("0") + " GB"
                         : (s.Vram / 1073741824.0).ToString("0.0") + " GB";
-                    BarVram.Value = total > 0 ? s.Vram / total * 100 : 0;
+                    SetLoad(BarVram, TxtVram, total > 0 ? s.Vram / total * 100 : 0);
                 }
                 else TxtVram.Text = "N/D";
             }), DispatcherPriority.Background);
+        }
+
+        /// <summary>Barra del monitor: relleno neutro; ámbar solo cuando la carga pasa del 85 %.</summary>
+        void SetLoad(ProgressBar bar, TextBlock txt, double pct)
+        {
+            bar.Value = pct;
+            bool high = pct >= 85;
+            bar.Foreground = (Brush)FindResource(high ? "Warning" : "DataFill");
+            txt.Foreground = (Brush)FindResource(high ? "Warning" : "Text");
+        }
+
+        // ------------------------------------------------------------ Volver a la base
+
+        /// <summary>Restaura todos los valores originales que guardó Velox (Resumen y Herramientas). true si se deshizo algo.</summary>
+        public async Task<bool> UndoAllAsync()
+        {
+            int n = Core.Backup.BackupStore.Ids().Count;
+            if (n == 0) { ShowToast(Loc.T("ui.tools.undoNothing")); return false; }
+            if (!await ConfirmAsync(Loc.T("ui.tools.undoTitle"), Loc.F("ui.tools.undoConfirm", n), null, Loc.T("ui.tools.undoButton"), Loc.T("ui.btn.cancel"), true)) return false;
+            int done = 0;
+            await AppState.Current.RunBusy(Loc.T("ui.tools.undoBusy"), async () =>
+            {
+                done = await Task.Run(() =>
+                {
+                    int r = Core.Backup.BackupStore.RestoreAll();
+                    foreach (var o in Core.Optimizations.Catalog.All) { try { o.Sync?.Invoke(); } catch { } }
+                    foreach (var t in Core.Tweaks.TweakCatalog.All) { try { t.Opt.Sync?.Invoke(); } catch { } }
+                    return r;
+                });
+                await AppState.Current.RefreshOptimizationsAsync();
+            });
+            AppState.Current.NeedsReboot = true;
+            ShowToast(Loc.F("ui.tools.undoDone", done), ToastKind.Success);
+            return true;
+        }
+
+        // ------------------------------------------------------------ Atajos de teclado
+
+        protected override void OnPreviewKeyDown(System.Windows.Input.KeyEventArgs e)
+        {
+            if (DialogLayer.Visibility != Visibility.Visible && (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) != 0)
+            {
+                var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
+                var nav = ShortcutNav();
+                int n = key >= System.Windows.Input.Key.D1 && key <= System.Windows.Input.Key.D9 ? key - System.Windows.Input.Key.D1
+                      : key >= System.Windows.Input.Key.NumPad1 && key <= System.Windows.Input.Key.NumPad9 ? key - System.Windows.Input.Key.NumPad1 : -1;
+                if (n >= 0 && n < nav.Length && nav[n].CommandParameter is string target) { Navigate(target); e.Handled = true; return; }
+                if (key == System.Windows.Input.Key.F && PageHost.Content is FrameworkElement page && page.FindName("TxtSearch") is TextBox box)
+                {
+                    box.Focus(); box.SelectAll(); e.Handled = true; return;
+                }
+                if (key == System.Windows.Input.Key.Enter && PageHost.Content is OptimizationsView ov && ov.TryApplyShortcut()) { e.Handled = true; return; }
+            }
+            base.OnPreviewKeyDown(e);
         }
 
         // ------------------------------------------------------------ Avisos

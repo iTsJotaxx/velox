@@ -102,7 +102,7 @@
                 </Border>
                 <DataTemplate.Triggers>
                   <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Row" Property="Background" Value="#181C26"/>
+                    <Setter TargetName="Row" Property="Background" Value="{StaticResource RowHover}"/>
                   </Trigger>
                 </DataTemplate.Triggers>
               </DataTemplate>
