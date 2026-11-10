@@ -437,12 +437,23 @@ namespace Velox.UI.Views
             if (!n.IsAggregate) menu.Items.Add(Item("disk.menu.open", "", () => TryRun(() => DiskActions.Open(n))));
             menu.Items.Add(Item("disk.menu.explorer", "", () => TryRun(() => DiskActions.ShowInExplorer(n))));
             if (!n.IsAggregate) menu.Items.Add(Item("disk.menu.copyPath", "", () => TryRun(() => { Clipboard.SetText(n.FullPath); Win?.ShowToast(Loc.T("disk.copied"), ToastKind.Success); })));
-            if (DiskActions.ProtectedReason(n) == null)
+            string reason = DiskActions.ProtectedReason(n);
+            menu.Items.Add(new Separator());
+            if (reason == null)
             {
-                menu.Items.Add(new Separator());
                 var del = Item("disk.menu.recycle", "", () => RecycleAsync(n));
                 del.Style = (Style)FindResource("MenuDanger");
                 menu.Items.Add(del);
+            }
+            else if (!n.IsAggregate)
+            {
+                // Se explica por qué no se puede borrar (carpeta clave, de Windows, programa instalado...)
+                menu.Items.Add(new MenuItem
+                {
+                    Header = new TextBlock { Text = reason, TextWrapping = TextWrapping.Wrap, MaxWidth = 300, Foreground = (Brush)FindResource("TextMuted"), FontSize = 12 },
+                    Tag = "",
+                    IsHitTestVisible = false,
+                });
             }
             menu.PlacementTarget = this;
             menu.IsOpen = true;

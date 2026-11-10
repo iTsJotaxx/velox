@@ -34,8 +34,9 @@ namespace Velox.Core.Apps
         public string InstallLocation { get; set; }
         public string IconPath { get; set; }
         public int IconIndex { get; set; }
-        /// <summary>Componente que usan otros programas (Visual C++, .NET, DirectX...): mejor no quitarlo.</summary>
-        public bool IsShared { get; set; }
+        /// <summary>Motivo (traducido) por el que Velox no lo desinstala (componente de Windows, runtime, driver...), o null.</summary>
+        public string ProtectReason { get; set; }
+        public bool IsProtected => ProtectReason != null;
 
         public bool IsMsi => !string.IsNullOrEmpty(ProductCode);
         /// <summary>Se puede quitar sin ventanas (silencioso, MSI o Store).</summary>
@@ -60,7 +61,6 @@ namespace Velox.Core.Apps
     {
         const string UninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
         static readonly Regex Guid = new Regex(@"\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}");
-        static readonly Regex SharedName = new Regex(@"Visual C\+\+|\.NET (Desktop |Windows Desktop |ASP\.NET Core )?Runtime|\.NET Framework|DirectX|Windows SDK|Windows App Runtime|WebView2|VC\+\+ ?Redist|Microsoft Update Health|Java\(TM\)|Temurin", RegexOptions.IgnoreCase);
 
         // ------------------------------------------------------------ Escritorio
 
@@ -121,7 +121,7 @@ namespace Velox.Core.Apps
                                 bool msi = Convert.ToInt32(k.GetValue("WindowsInstaller") ?? 0) == 1 || un.IndexOf("msiexec", StringComparison.OrdinalIgnoreCase) >= 0;
                                 if (msi && Guid.IsMatch(sub)) p.ProductCode = Guid.Match(sub).Value;
                                 ParseIcon(k.GetValue("DisplayIcon") as string, p);
-                                p.IsShared = SharedName.IsMatch(name);
+                                p.ProtectReason = Protection.ProgramReason(name, p.Publisher, null);
                                 list.Add(p);
                             }
                         }
@@ -200,8 +200,8 @@ namespace Velox.Core.Apps
                                 Key = full,
                                 Name = Get("N"),
                                 Publisher = pub,
-                                // Sin «Instalador de aplicaciones» deja de funcionar winget (y la sección Instalar aplicaciones)
-                                IsShared = Regex.IsMatch(fam, @"^Microsoft\.(DesktopAppInstaller|WindowsStore|StorePurchaseApp)_", RegexOptions.IgnoreCase),
+                                // Store, Instalador de aplicaciones (winget), Seguridad de Windows...: imprescindibles
+                                ProtectReason = Protection.ProgramReason(Get("N"), pub, fam),
                                 Version = Get("V"),
                                 InstallLocation = Get("L"),
                             });
@@ -249,6 +249,11 @@ namespace Velox.Core.Apps
         public static UninstallResult Uninstall(InstalledProgram p, Action<string> onStatus, CancellationToken ct)
         {
             var res = new UninstallResult();
+            if (p.IsProtected)
+            {
+                Log.Warn("Uninstall refused (protected): " + p.Name + ".");
+                return new UninstallResult { Outcome = UninstallOutcome.Failed, Error = p.ProtectReason };
+            }
             Log.Info("Uninstall: " + p.Name + " (" + p.Kind + (p.IsMsi ? ", MSI " + p.ProductCode : "") + ")...");
             try
             {
@@ -394,7 +399,8 @@ namespace Velox.Core.Apps
                 string dir = p.InstallLocation;
                 if (string.IsNullOrWhiteSpace(dir) || p.Kind == ProgramKind.Store) return;
                 dir = Path.GetFullPath(Environment.ExpandEnvironmentVariables(dir)).TrimEnd('\\');
-                if (!IsSafeLeftover(dir)) return;
+                var others = GetDesktop().Select(x => x.InstallLocation).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                if (!IsSafeLeftover(dir, others)) return;
                 // Muchos desinstaladores borran su propia carpeta unos segundos después de terminar: se les da tiempo
                 for (int i = 0; i < 16 && Directory.Exists(dir); i++) Thread.Sleep(500);
                 if (!Directory.Exists(dir)) return;
@@ -406,7 +412,7 @@ namespace Velox.Core.Apps
         }
 
         /// <summary>Solo carpetas propias de un programa: dentro de Archivos de programa, ProgramData o AppData y nunca esas raíces.</summary>
-        public static bool IsSafeLeftover(string dir)
+        public static bool IsSafeLeftover(string dir, IEnumerable<string> installedFolders = null)
         {
             dir = dir.TrimEnd('\\');
             var roots = new[]
@@ -424,7 +430,9 @@ namespace Velox.Core.Apps
             // «Microsoft», «Common Files»... son compartidas
             string leaf = Path.GetFileName(dir);
             if (Regex.IsMatch(leaf, @"^(Microsoft|Common Files|Windows.*|WindowsApps|Package Cache|Packages|Temp|Programs)$", RegexOptions.IgnoreCase)) return false;
-            return roots.Any(r => dir.StartsWith(r + "\\", StringComparison.OrdinalIgnoreCase));
+            if (!roots.Any(r => dir.StartsWith(r + "\\", StringComparison.OrdinalIgnoreCase))) return false;
+            // Y nunca una carpeta clave, una que las contenga o la de otro programa que sigue instalado
+            return Protection.PathReason(dir, installedFolders) == null;
         }
 
         static long FolderSize(string dir)
@@ -442,7 +450,8 @@ namespace Velox.Core.Apps
         /// <summary>Envía la carpeta de restos a la papelera (solo si sigue siendo segura).</summary>
         public static void RecycleLeftover(string dir)
         {
-            if (!IsSafeLeftover(dir)) throw new InvalidOperationException(Loc.T("disk.del.system"));
+            var others = GetDesktop().Select(x => x.InstallLocation).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            if (!IsSafeLeftover(dir, others)) throw new InvalidOperationException(Protection.PathReason(dir, others) ?? Loc.T("protect.path.system"));
             if (!Directory.Exists(dir)) return; // ya la borró el propio desinstalador
             RecycleFolder(dir);
         }

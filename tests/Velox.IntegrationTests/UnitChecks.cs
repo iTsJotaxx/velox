@@ -151,6 +151,50 @@ namespace Velox.IntegrationTests
                 Check("unin: D:\\Games is not (outside known roots)", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(@"D:\Games\Something"));
             }
 
+            // ---------------------------------------------------------------- Protección: carpetas clave y programas imprescindibles
+            {
+                string Sf(Environment.SpecialFolder f) => Environment.GetFolderPath(f);
+                string win = Sf(Environment.SpecialFolder.Windows), sysd = Path.GetPathRoot(win);
+                string pf = Sf(Environment.SpecialFolder.ProgramFiles), pd = Sf(Environment.SpecialFolder.CommonApplicationData);
+                string prof = Sf(Environment.SpecialFolder.UserProfile), roam = Sf(Environment.SpecialFolder.ApplicationData), loc = Sf(Environment.SpecialFolder.LocalApplicationData);
+                string downloads = Path.Combine(prof, "Downloads");
+                var mustProtect = new[]
+                {
+                    sysd, win, Path.Combine(win, @"System32\drivers"), pf, Path.Combine(pf, "Common Files"), Path.Combine(pf, @"WindowsApps\SomePkg"),
+                    pd, Path.Combine(pd, @"Microsoft\Windows"), Path.Combine(sysd, "Users"), Path.Combine(sysd, @"Users\Public"), Path.Combine(sysd, @"Users\OtroUsuario"),
+                    prof, Path.Combine(prof, "AppData"), roam, loc, Path.Combine(prof, @"AppData\LocalLow"), Path.Combine(loc, "Microsoft"), Path.Combine(loc, "Packages"),
+                    Path.Combine(roam, @"Microsoft\Windows\Start Menu"), Sf(Environment.SpecialFolder.Desktop), Sf(Environment.SpecialFolder.MyDocuments), downloads,
+                    Sf(Environment.SpecialFolder.MyPictures), Sf(Environment.SpecialFolder.MyVideos), Sf(Environment.SpecialFolder.MyMusic),
+                    Path.Combine(sysd, "Recovery"), Path.Combine(sysd, "System Volume Information"), @"D:\$Recycle.Bin", Path.Combine(sysd, "pagefile.sys"),
+                    AppPaths.DataDir, Path.Combine(pd, @"Velox\backup.xml"),
+                };
+                foreach (var p in mustProtect)
+                    Check("protect: " + p, Protection.PathReason(p) != null, "not protected");
+                var mustAllow = new[]
+                {
+                    Path.Combine(pf, "SomeOldApp"), Path.Combine(downloads, "setup.exe"), Path.Combine(Sf(Environment.SpecialFolder.MyDocuments), "Old project"),
+                    Path.Combine(Sf(Environment.SpecialFolder.Desktop), "nota.txt"), Path.Combine(loc, @"Temp\foo"), Path.Combine(loc, "SomeAppCache"),
+                    @"D:\Games\Old", Path.Combine(sysd, "Games"),
+                };
+                foreach (var p in mustAllow)
+                    Check("allow: " + p, Protection.PathReason(p) == null, Protection.PathReason(p));
+                var installed = new[] { Path.Combine(pf, "Foo App") };
+                Check("protect: installed program folder", Protection.PathReason(Path.Combine(pf, "Foo App"), installed) != null);
+                Check("allow: cache inside installed program", Protection.PathReason(Path.Combine(pf, @"Foo App\cache"), installed) == null);
+
+                foreach (var n in new[] { "Microsoft Visual C++ 2015-2022 Redistributable (x64) - 14.40.33810", "Microsoft .NET Runtime - 8.0.10 (x64)",
+                                          "Microsoft Windows Desktop Runtime - 8.0.10 (x64)", "Microsoft Edge WebView2 Runtime", "Microsoft Edge",
+                                          "NVIDIA Graphics Driver 566.36", "Realtek High Definition Audio Driver", "Intel(R) Chipset Device Software",
+                                          "Oracle VirtualBox Guest Additions 7.2.22", "Microsoft Windows Application Compatibility Fix Database" })
+                    Check("protect program: " + n, Protection.ProgramReason(n, "", null) != null);
+                Check("protect store: App Installer", Protection.ProgramReason("Instalador de aplicaciones", "Microsoft Corporation", "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe") != null);
+                Check("protect store: Microsoft Store", Protection.ProgramReason("Microsoft Store", "Microsoft Corporation", "Microsoft.WindowsStore_8wekyb3d8bbwe") != null);
+                foreach (var n in new[] { "Brave", "Microsoft .NET SDK 8.0.427 (x64)", "Driver Booster 11", "Display Driver Uninstaller", "Spotify", "Steam",
+                                          "Microsoft OneDrive", "Copilot", "7-Zip 26.06 (x64 edition)" })
+                    Check("allow program: " + n, Protection.ProgramReason(n, "", null) == null, Protection.ProgramReason(n, "", null));
+                Check("allow store: Solitaire", Protection.ProgramReason("Solitaire & Casual Games", "Microsoft Corporation", "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe") == null);
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

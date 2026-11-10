@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 using Velox.Localization;
@@ -26,34 +28,28 @@ namespace Velox.Core.Disk
         public static string ProtectedReason(DiskNode n)
         {
             if (n == null || n.IsAggregate) return Loc.T("disk.del.notAllowed");
-            string p = n.FullPath.TrimEnd('\\');
-            if (p.Length <= 2 || n.Parent == null) return Loc.T("disk.del.root");
-            string name = Path.GetFileName(p);
-            if (name.Equals("pagefile.sys", StringComparison.OrdinalIgnoreCase) || name.Equals("hiberfil.sys", StringComparison.OrdinalIgnoreCase)
-                || name.Equals("swapfile.sys", StringComparison.OrdinalIgnoreCase) || name.Equals("System Volume Information", StringComparison.OrdinalIgnoreCase)
-                || name.Equals("$Recycle.Bin", StringComparison.OrdinalIgnoreCase))
-                return Loc.T("disk.del.system");
-
-            string win = Environment.GetFolderPath(Environment.SpecialFolder.Windows).TrimEnd('\\');
-            if (Under(p, win)) return Loc.T("disk.del.system");
-            foreach (var sf in new[]
-            {
-                Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolder.ProgramFilesX86, Environment.SpecialFolder.CommonApplicationData,
-                Environment.SpecialFolder.UserProfile, Environment.SpecialFolder.ApplicationData, Environment.SpecialFolder.LocalApplicationData,
-                Environment.SpecialFolder.MyDocuments, Environment.SpecialFolder.Desktop,
-            })
-            {
-                string f = Environment.GetFolderPath(sf);
-                if (!string.IsNullOrEmpty(f) && string.Equals(p, f.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase)) return Loc.T("disk.del.system");
-            }
-            string users = Path.Combine(Path.GetPathRoot(win) ?? "C:\\", "Users");
-            if (string.Equals(p, users, StringComparison.OrdinalIgnoreCase)) return Loc.T("disk.del.system");
-            return null;
+            if (n.Parent == null) return Loc.T("disk.del.root");
+            // Carpetas clave de Windows y del usuario, las que las contienen y las de programas instalados
+            return Protection.PathReason(n.FullPath, InstalledFolders());
         }
 
-        static bool Under(string path, string folder) =>
-            string.Equals(path, folder, StringComparison.OrdinalIgnoreCase) ||
-            path.StartsWith(folder + "\\", StringComparison.OrdinalIgnoreCase);
+        static List<string> _installed;
+        static DateTime _installedAt;
+
+        /// <summary>Carpetas de los programas instalados (se relee como mucho cada 2 minutos).</summary>
+        static List<string> InstalledFolders()
+        {
+            if (_installed == null || (DateTime.Now - _installedAt).TotalMinutes > 2)
+            {
+                try
+                {
+                    _installed = Apps.Uninstaller.GetDesktop().Select(p => p.InstallLocation).Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+                }
+                catch { _installed = new List<string>(); }
+                _installedAt = DateTime.Now;
+            }
+            return _installed;
+        }
 
         // ---------------------------------------------------------------- Papelera (SHFileOperation, sin ventanas)
 

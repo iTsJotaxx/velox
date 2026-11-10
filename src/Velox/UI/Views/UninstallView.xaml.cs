@@ -52,8 +52,9 @@ namespace Velox.UI.Views
         }
         public string SizeText => Program.Size > 0 ? Format.Bytes(Program.Size) : "";
         public string DateText => Program.InstallDate.HasValue ? Program.InstallDate.Value.ToString("d") : "";
-        public string Tip => Program.Kind == ProgramKind.Store ? Program.Key : (Program.QuietUninstallString.Length > 0 ? Program.QuietUninstallString : Program.UninstallString);
-        public bool IsShared => Program.IsShared;
+        public string Tip => Program.IsProtected ? Program.ProtectReason : Program.Kind == ProgramKind.Store ? Program.Key : (Program.QuietUninstallString.Length > 0 ? Program.QuietUninstallString : Program.UninstallString);
+        public bool IsProtected => Program.IsProtected;
+        public string ProtectReason => Program.ProtectReason;
         /// <summary>Etiqueta «Silenciosa»: solo en programas de escritorio (en la Store lo son todas).</summary>
         public bool IsQuiet => Program.IsQuiet && Program.Kind == ProgramKind.Desktop;
 
@@ -63,7 +64,7 @@ namespace Velox.UI.Views
         public bool IsChecked { get => _checked; set { if (Set(ref _checked, value)) Changed?.Invoke(); } }
         public bool IsVisible { get => _visible; set => Set(ref _visible, value); }
         public bool IsBusy { get => _busy; set { if (Set(ref _busy, value)) Raise(nameof(CanSelect)); } }
-        public bool CanSelect => !_busy;
+        public bool CanSelect => !_busy && !Program.IsProtected;
 
         public string Status => _status;
         public string StatusKind => _statusKind;
@@ -195,9 +196,9 @@ namespace Velox.UI.Views
         {
             var sel = (_desktop ?? new List<ProgramRowVM>()).Concat(_store ?? new List<ProgramRowVM>()).Where(r => r.IsChecked).ToList();
             if (sel.Count == 0) return;
-            var lines = sel.Select(r => "–  " + r.Name + (r.IsShared ? "   ⚠ " + Loc.T("unin.badge.shared") : "") + (r.IsQuiet ? "" : "   (" + Loc.T("unin.line.interactive") + ")"));
+            var lines = sel.Select(r => "–  " + r.Name + (r.IsQuiet ? "" : "   (" + Loc.T("unin.line.interactive") + ")"));
             string text = Loc.T("unin.confirmText");
-            if (sel.Any(r => r.IsShared)) text += "\n\n" + Loc.T("unin.confirmShared");
+
             if (!await Win.ConfirmAsync(Loc.F("unin.confirmTitle", sel.Count), text, string.Join("\n", lines), Loc.T("unin.confirmOk"), Loc.T("ui.btn.cancel"), true))
                 return;
 
@@ -282,7 +283,7 @@ namespace Velox.UI.Views
         public void TestSelect(params string[] names)
         {
             foreach (var r in (_desktop ?? new List<ProgramRowVM>()).Concat(_store ?? new List<ProgramRowVM>()))
-                if (names.Any(n => r.Name.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0)) r.IsChecked = true;
+                if (r.CanSelect && names.Any(n => r.Name.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0)) r.IsChecked = true;
         }
         public void TestStore() { RbStore.IsChecked = true; Kind_Click(this, new RoutedEventArgs()); }
         public void TestUninstall() => Uninstall_Click(this, new RoutedEventArgs());
