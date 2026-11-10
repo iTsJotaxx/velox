@@ -78,13 +78,14 @@ namespace Velox.Core.Tools
             return list;
         }
 
-        /// <summary>Proveedor en uso (si todos los adaptadores usan el mismo de la lista), o null (el del router u otro).</summary>
+        /// <summary>Proveedor fijado en todos los adaptadores (de la lista), o null (el del router u otro).</summary>
         public static DnsProvider CurrentProvider(List<DnsAdapter> adapters = null)
         {
             adapters = adapters ?? ActiveAdapters();
             if (adapters.Count == 0) return null;
             foreach (var p in Providers)
-                if (adapters.All(a => a.Current.Count > 0 && a.Current[0] == p.Primary)) return p;
+                // Solo si está fijado a mano: un router que reparte 8.8.8.8 por DHCP no es «usar Google» (no hay nada que deshacer)
+                if (adapters.All(a => SplitServers(a.StaticServers).FirstOrDefault() == p.Primary)) return p;
             return null;
         }
 

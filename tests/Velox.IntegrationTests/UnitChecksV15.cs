@@ -175,11 +175,18 @@ namespace Velox.IntegrationTests
             {
                 var desk = new SystemInfo { IsLaptop = false };
                 var lap = new SystemInfo { IsLaptop = true };
+                // Solo aparecen si el plan de energía tiene ese ajuste (algunos servidores de CI no lo tienen)
+                var setting = new Dictionary<string, string[]>
+                {
+                    { "BatteryNoBoost", new[] { Velox.Core.Sys.PowerCfg.SubProcessor, "be337238-0d82-4146-a960-4f3749d470c7" } },
+                    { "BatterySaverAt30", new[] { "de830923-a562-41af-a086-e3a2c6bad2da", "e69653ca-cf7f-4f05-aa73-cb833fa90ad4" } },
+                };
                 foreach (var id in new[] { "BatteryNoBoost", "BatterySaverAt30" })
                 {
                     var o = Find(id);
+                    bool planHasIt = Velox.Core.Sys.PowerCfg.QueryActive(setting[id][0], setting[id][1]) != null;
                     Check("laptop: " + id + " hidden on desktops", !OptimizationEngine.IsAvailable(o, desk));
-                    Check("laptop: " + id + " available on laptops", OptimizationEngine.IsAvailable(o, lap));
+                    Check("laptop: " + id + " available on laptops (when the plan has it)", OptimizationEngine.IsAvailable(o, lap) == planHasIt);
                     Check("laptop: " + id + " is your call", OptimizationEngine.IsPreference(o, lap) && !OptimizationEngine.IsRecommended(o, lap));
                 }
             }

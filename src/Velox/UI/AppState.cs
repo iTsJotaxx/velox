@@ -65,7 +65,10 @@ namespace Velox.UI
             Findings = await Task.Run(() => Core.Scan.Findings.Build(sys));
             await Optimizations.RefreshAsync(sys);
             await RefreshRevertedAsync();
+#if !UITEST
+            // (las capturas automáticas no la gastan: es del primer arranque real tras reiniciar)
             if (!_rebootChecked) { _rebootChecked = true; RebootVerdicts = await Task.Run(() => CheckAfterReboot()); Raise(nameof(RebootVerdicts)); }
+#endif
             Log.Info("Scan completed." + (Reverted.Count > 0 ? " Reverted since last time: " + string.Join(", ", Reverted.Select(o => o.Id)) + "." : ""));
             ScanCompleted?.Invoke();
         });
