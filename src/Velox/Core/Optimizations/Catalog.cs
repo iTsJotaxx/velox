@@ -108,6 +108,8 @@ namespace Velox.Core.Optimizations
                 Id = "Hibernate", Category = "power", Impact = Impact.Low, Restart = RestartNeed.None,
                 Recommended = s => !s.IsLaptop && LowDisk(s),
                 Preference = s => s.IsLaptop || !LowDisk(s),
+                // Si el firmware no admite hibernar, apagarla no se podría deshacer (powercfg rechaza volver a activarla)
+                Available = s => !PowerCfg.HibernationEnabled() || PowerCfg.SupportsHibernation(),
                 Detect = () => !PowerCfg.HibernationEnabled(),
                 Apply = (id, s) =>
                 {

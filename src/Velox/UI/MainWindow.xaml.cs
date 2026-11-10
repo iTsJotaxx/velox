@@ -143,7 +143,7 @@ namespace Velox.UI
             {
                 if (_current == "disk" && App.DiskEnter > 0 && PageHost.Content is DiskView dv)
                 {
-                    for (int i = 0; i < App.DiskEnter; i++) { dv.TestEnterBiggest(); await Task.Delay(700); }
+                    for (int i = 0; i < App.DiskEnter; i++) { Log.Info("UITEST: enter " + i); dv.TestEnterBiggest(); Log.Info("UITEST: entered " + i); await Task.Delay(700); }
                 }
                 if (_current == "memory" && App.TestAction == "clean" && PageHost.Content is MemoryView mv)
                 {
@@ -155,6 +155,7 @@ namespace Velox.UI
                 }
                 if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
                 await Task.Delay(400);
+                Log.Info("UITEST: rendering");
                 UpdateLayout();
                 var dpi = VisualTreeHelper.GetDpi(this);
                 var target = (FrameworkElement)Content;

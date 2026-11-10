@@ -32,7 +32,10 @@
 - **Startup apps** manager (same mechanism as Task Manager).
 - **Processes & games**: end apps, raise priority, or optimize a game permanently (high CPU priority + high-performance GPU every time it starts).
 - **Windows diagnostics**: SFC, DISM, disk check, disk health, memory test, DirectX, battery and energy reports, reliability monitor, ping/jitter test, network info, DNS flush and network reset.
-- **Tools**: mouse polling-rate meter, free standby memory, clean temporary files, restore point, restart Explorer, undo everything.
+- **Memory (RAM)**: free up RAM without closing any program (program working sets, file cache, standby and modified lists, page combining), trim a single program, optional automatic standby cleaning while Velox is open, and a live breakdown of in use / modified / standby / free memory.
+- **Disk space**: a visual map of what fills a drive or folder (blocks sized by space and colored by file type, nested folders), the biggest items, space by file type, click to go inside, and right-click to open, show in File Explorer, copy the path or send to the Recycle Bin (system folders are protected).
+- **Windows tweaks**: 16 handy hidden options with instant, reversible switches, such as *End task* when right-clicking the taskbar, the classic right-click menu, file extensions, hidden files, dark mode or no startup delay.
+- **Tools**: mouse polling-rate meter, free up RAM, clean temporary files, restore point, restart Explorer, undo everything.
 - **Built-in updater** (Settings): checks the latest GitHub release, downloads `Velox.exe`, verifies its SHA-256 and that it really is a newer Velox, replaces itself and restarts.
 - **English and Spanish**, switchable instantly.
 - A single small `.exe` that runs on any Windows 10/11 with nothing to install.
@@ -78,11 +81,11 @@ You need the [.NET SDK](https://dotnet.microsoft.com/download) (8 or later). The
 
 ```
 src/Velox
-  Core/          engine: registry, backups, services, power plans, scanner, optimizations, tools, diagnostics
+  Core/          engine: registry, backups, services, power plans, scanner, optimizations, Windows tweaks, disk scanner, memory, tools, diagnostics
   Native/        Win32 interop (SystemParametersInfo, displays, raw mouse input, memory lists, NVML, PDH)
   UI/            WPF interface (theme, views, view models)
   Localization/  es / en string dictionaries
-tests/Velox.IntegrationTests   applies and reverts every optimization and checks Windows is left identical
+tests/Velox.IntegrationTests   applies and reverts every optimization and Windows tweak and checks Windows is left identical
 ```
 
 The integration test really changes (and restores) system settings, so it must be run manually as administrator. See [tests/README.md](tests/README.md).

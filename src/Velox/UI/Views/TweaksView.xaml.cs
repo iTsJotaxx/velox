@@ -57,11 +57,21 @@ namespace Velox.UI.Views
         void Build()
         {
             _rows = TweakCatalog.All.Select(t => new TweakRowVM(t)).ToList();
-            GroupList.ItemsSource = TweakCatalog.Groups.Select(g => new TweakGroupVM
+            var groups = TweakCatalog.Groups.Select(g => new TweakGroupVM
             {
                 Group = g,
                 Rows = _rows.Where(r => r.Tweak.Group == g.Id).ToList(),
             }).ToList();
+            // Reparto en dos columnas equilibradas: cada grupo va a la que tenga menos filas
+            var left = new List<TweakGroupVM>(); var right = new List<TweakGroupVM>();
+            int nl = 0, nr = 0;
+            foreach (var g in groups)
+            {
+                int n = g.Rows.Count + 1; // +1 por la cabecera
+                if (nl <= nr) { left.Add(g); nl += n; } else { right.Add(g); nr += n; }
+            }
+            LeftGroups.ItemsSource = left;
+            RightGroups.ItemsSource = right;
         }
 
         public void OnShown() => RefreshStates();

@@ -1,6 +1,6 @@
 # Integration tests
 
-`Velox.IntegrationTests` checks that every optimization can be turned on and off and that Windows is left **exactly** as it was.
+`Velox.IntegrationTests` checks that every optimization and every Windows tweak (the *Windows tweaks* section) can be turned on and off and that Windows is left **exactly** as it was.
 
 For each available optimization it:
 
@@ -18,7 +18,9 @@ dotnet build tests\Velox.IntegrationTests -c Release
 tests\Velox.IntegrationTests\bin\Release\net48\Velox.IntegrationTests.exe result.txt
 ```
 
-Options: `--skip=Id1,Id2` skips optimizations. `RefreshRate` is always skipped because it would change your monitor's refresh rate.
+Options: `--skip=Id1,Id2` skips optimizations (tweaks use the id `tw.Name`, e.g. `tw.DarkMode`) and `--tweaks` tests only the Windows tweaks. `RefreshRate` is always skipped because it would change your monitor's refresh rate.
+
+Registry values whose Windows default is known (a missing value behaves like a specific value) are compared by their effective value: «missing» and «set to the factory value» do exactly the same in Windows.
 
 Exit code `0` means every optimization passed.
 

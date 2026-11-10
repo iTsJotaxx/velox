@@ -25,6 +25,24 @@ namespace Velox.Core.Backup
             }
         }
 
+        /// <summary>Borra un valor de registro guardando antes su copia (al deshacer vuelve a estar como estaba).</summary>
+        public static void RemoveReg(string id, string path, string name)
+        {
+            var st = Reg.Get(path, name);
+            if (!st.Existed) return;
+            string key = "Reg|" + path + "|" + name;
+            bool isNew = !BackupStore.ContainsKey(id, key);
+            var rec = new BackupRecord { Kind = "Reg", Key = key, Path = path, Name = name };
+            rec.SetRegState(st);
+            BackupStore.Add(id, rec);
+            try { Reg.Remove(path, name); }
+            catch
+            {
+                if (isNew) BackupStore.RemoveKey(id, key);
+                throw;
+            }
+        }
+
         /// <summary>Crea una clave de registro; si no existía, al deshacer se borra entera.</summary>
         public static void EnsureKey(string id, string path)
         {

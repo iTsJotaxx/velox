@@ -25,7 +25,10 @@
 - **Inicio de Windows**: activa o desactiva programas de inicio (igual que el Administrador de tareas).
 - **Procesos y juegos**: cierra programas, sube la prioridad u optimiza un juego para siempre (prioridad alta y GPU de alto rendimiento cada vez que se abre).
 - **Diagnósticos de Windows**: SFC, DISM, comprobación de disco, salud de discos, prueba de memoria, DirectX, informes de batería y energía, monitor de confiabilidad, ping y jitter, información de red, vaciar DNS y restablecer la red.
-- **Herramientas**: medidor de Hz del ratón, liberar memoria en espera, limpiar temporales, punto de restauración, reiniciar el Explorador y deshacer todo.
+- **Memoria RAM**: libera RAM sin cerrar ningún programa (memoria de los programas, caché de archivos, listas en espera y modificada, combinar páginas), recorta un programa concreto, limpieza automática opcional mientras Velox está abierto y desglose en vivo de memoria en uso, modificada, en espera y libre.
+- **Espacio en disco**: mapa visual de lo que ocupa una unidad o carpeta (bloques proporcionales al tamaño y con colores por tipo de archivo, carpetas anidadas), lo que más ocupa, espacio por tipo, clic para entrar y clic derecho para abrir, mostrar en el Explorador, copiar la ruta o enviar a la papelera (las carpetas del sistema están protegidas).
+- **Personalizar Windows**: 16 opciones útiles que Windows esconde, con interruptores instantáneos y reversibles, como *Finalizar tarea* en el clic derecho de la barra de tareas, el menú contextual clásico, ver extensiones y archivos ocultos, modo oscuro o quitar la espera de los programas de inicio.
+- **Herramientas**: medidor de Hz del ratón, liberar RAM, limpiar temporales, punto de restauración, reiniciar el Explorador y deshacer todo.
 - **Actualizador integrado** (Ajustes): comprueba la última release de GitHub, descarga `Velox.exe`, verifica su SHA-256 y que sea de verdad un Velox más nuevo, se reemplaza y se reinicia.
 - **Español e inglés**, se cambia al instante.
 - Un solo `.exe` pequeño que funciona en cualquier Windows 10/11 sin instalar nada.

@@ -100,7 +100,12 @@ namespace Velox.Core.Optimizations
         {
             try
             {
-                foreach (var it in o.Reg) Tracked.SetReg(o.Id, it.Path, it.Name, it.Value, it.Kind);
+                foreach (var it in o.Reg)
+                {
+                    // Si sin el valor Windows ya hace lo que se quiere, se deja sin valor (como viene de fábrica)
+                    if (it.HasEffective && Core.Reg.ValuesEqual(it.Effective, it.Value, it.Kind)) Tracked.RemoveReg(o.Id, it.Path, it.Name);
+                    else Tracked.SetReg(o.Id, it.Path, it.Name, it.Value, it.Kind);
+                }
                 o.Apply?.Invoke(o.Id, s);
             }
             catch

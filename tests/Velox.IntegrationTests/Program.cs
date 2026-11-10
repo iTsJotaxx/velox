@@ -119,8 +119,16 @@ namespace Velox.IntegrationTests
         static SortedDictionary<string, string> Snapshot()
         {
             var d = new SortedDictionary<string, string>();
+            // Valores con comportamiento por defecto conocido (WhenMissing): se compara el valor efectivo, porque
+            // «sin valor» y «valor igual al de fábrica» hacen exactamente lo mismo en Windows
             foreach (var o in Catalog.All.Concat(TweakCatalog.All.Select(t => t.Opt)))
-                foreach (var it in o.Reg) d["reg " + it.Path + "|" + it.Name] = RegStr(it.Path, it.Name);
+                foreach (var it in o.Reg)
+                {
+                    var st = Reg.Get(it.Path, it.Name);
+                    d["reg " + it.Path + "|" + it.Name] = it.HasEffective
+                        ? "effective:" + Convert.ToString(st.Existed ? Reg.Normalize(st.Value, it.Kind) : Reg.Normalize(it.Effective, it.Kind))
+                        : RegStr(it.Path, it.Name);
+                }
             foreach (var k in TweakCatalog.TrackedKeys)
             {
                 d["key " + k] = Reg.KeyExists(k).ToString();

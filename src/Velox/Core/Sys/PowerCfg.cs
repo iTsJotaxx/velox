@@ -138,5 +138,24 @@ namespace Velox.Core.Sys
         }
 
         public static void SetHibernation(bool on) => RunChecked("/hibernate " + (on ? "on" : "off"));
+
+        [System.Runtime.InteropServices.DllImport("powrprof.dll")]
+        static extern bool GetPwrCapabilities(IntPtr capabilities);
+
+        /// <summary>
+        /// ¿El equipo admite hibernar (estado S4)? En máquinas virtuales y algunos equipos el registro dice que está
+        /// activada pero el firmware no la admite: entonces se podría apagar y nunca volver a encender.
+        /// </summary>
+        public static bool SupportsHibernation()
+        {
+            IntPtr buf = System.Runtime.InteropServices.Marshal.AllocHGlobal(512); // SYSTEM_POWER_CAPABILITIES (~76 bytes)
+            try
+            {
+                if (!GetPwrCapabilities(buf)) return true; // si no se sabe, no se bloquea
+                return System.Runtime.InteropServices.Marshal.ReadByte(buf, 6) != 0; // BOOLEAN SystemS4
+            }
+            catch { return true; }
+            finally { System.Runtime.InteropServices.Marshal.FreeHGlobal(buf); }
+        }
     }
 }
