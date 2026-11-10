@@ -1,0 +1,64 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Tweaks (en) -->
+  <sys:String x:Key="ui.nav.tweaks">Windows tweaks</sys:String>
+  <sys:String x:Key="tweaks.title">Windows tweaks</sys:String>
+  <sys:String x:Key="tweaks.subtitle">Handy options Windows keeps hidden. They apply instantly with their switch and undo the same way (Velox remembers how everything was).</sys:String>
+  <sys:String x:Key="tweaks.count">{0} of {1} enabled</sys:String>
+  <sys:String x:Key="tweaks.badge.on">On</sys:String>
+  <sys:String x:Key="tweaks.badge.explorer">Restart Explorer</sys:String>
+  <sys:String x:Key="tweaks.badge.win11">Windows 11 only</sys:String>
+  <sys:String x:Key="tweaks.badge.na">Not available here</sys:String>
+  <sys:String x:Key="tweaks.explorerNotice">Some changes fully show up after restarting Windows Explorer (the taskbar and folders close and reopen by themselves in a few seconds).</sys:String>
+  <sys:String x:Key="tweaks.restartExplorer">Restart Explorer</sys:String>
+  <sys:String x:Key="tweaks.enabled">Enabled: {0}</sys:String>
+  <sys:String x:Key="tweaks.disabled">Disabled: {0}</sys:String>
+  <sys:String x:Key="tweaks.failed">Could not change «{0}»: {1}</sys:String>
+  <sys:String x:Key="tweaks.notApplied">Windows did not accept the change to «{0}» (a policy may be blocking it).</sys:String>
+
+  <sys:String x:Key="tweakgrp.taskbar">Taskbar</sys:String>
+  <sys:String x:Key="tweakgrp.taskbar.desc">Buttons and options of the bottom bar</sys:String>
+  <sys:String x:Key="tweakgrp.explorer">File Explorer</sys:String>
+  <sys:String x:Key="tweakgrp.explorer.desc">How your folders and the right-click menu look</sys:String>
+  <sys:String x:Key="tweakgrp.look">Appearance</sys:String>
+  <sys:String x:Key="tweakgrp.look.desc">Theme and lock screen</sys:String>
+  <sys:String x:Key="tweakgrp.system">System</sys:String>
+  <sys:String x:Key="tweakgrp.system.desc">Startup and Windows messages</sys:String>
+
+  <sys:String x:Key="tweak.EndTask.name">«End task» when right-clicking the taskbar</sys:String>
+  <sys:String x:Key="tweak.EndTask.desc">Right-click an app icon on the taskbar and close it for good, even if it is frozen, without opening Task Manager.</sys:String>
+  <sys:String x:Key="tweak.TaskbarLeft.name">Start button on the left</sys:String>
+  <sys:String x:Key="tweak.TaskbarLeft.desc">Aligns the Start button and the icons to the left, like Windows 10.</sys:String>
+  <sys:String x:Key="tweak.ClockSeconds.name">Seconds on the clock</sys:String>
+  <sys:String x:Key="tweak.ClockSeconds.desc">The taskbar clock also shows seconds.</sys:String>
+  <sys:String x:Key="tweak.HideTaskView.name">Hide the Task View button</sys:String>
+  <sys:String x:Key="tweak.HideTaskView.desc">Removes the virtual desktops button from the taskbar (Win + Tab still works).</sys:String>
+
+  <sys:String x:Key="tweak.FileExt.name">Show file extensions</sys:String>
+  <sys:String x:Key="tweak.FileExt.desc">You see «photo.jpg» instead of «photo». Safer: you can tell when a «document.pdf.exe» is really a program.</sys:String>
+  <sys:String x:Key="tweak.Hidden.name">Show hidden files and folders</sys:String>
+  <sys:String x:Key="tweak.Hidden.desc">Shows what Windows hides, such as the AppData folder. Protected system files stay hidden.</sys:String>
+  <sys:String x:Key="tweak.ThisPC.name">Open File Explorer in «This PC»</sys:String>
+  <sys:String x:Key="tweak.ThisPC.desc">File Explorer opens straight to your drives instead of Home / Quick access.</sys:String>
+  <sys:String x:Key="tweak.FullPath.name">Full path in the title</sys:String>
+  <sys:String x:Key="tweak.FullPath.desc">The File Explorer window shows the full path of the open folder.</sys:String>
+  <sys:String x:Key="tweak.Checkboxes.name">Checkboxes to select files</sys:String>
+  <sys:String x:Key="tweak.Checkboxes.desc">Each file gets a checkbox so you can select several without holding Ctrl.</sys:String>
+  <sys:String x:Key="tweak.Compact.name">Compact view</sys:String>
+  <sys:String x:Key="tweak.Compact.desc">Less spacing between items: more files fit in the window.</sys:String>
+  <sys:String x:Key="tweak.NoSyncAds.name">Remove ads from File Explorer</sys:String>
+  <sys:String x:Key="tweak.NoSyncAds.desc">Hides the OneDrive and Microsoft 365 suggestions shown inside File Explorer.</sys:String>
+  <sys:String x:Key="tweak.ClassicMenu.name">Classic right-click menu</sys:String>
+  <sys:String x:Key="tweak.ClassicMenu.desc">Brings back the full Windows 10 right-click menu, without going through «Show more options».</sys:String>
+
+  <sys:String x:Key="tweak.DarkMode.name">Dark mode</sys:String>
+  <sys:String x:Key="tweak.DarkMode.desc">Dark theme for Windows and for the apps that support it.</sys:String>
+  <sys:String x:Key="tweak.LockScreenTips.name">No tips on the lock screen</sys:String>
+  <sys:String x:Key="tweak.LockScreenTips.desc">Removes the fun facts, suggestions and ads Windows puts over the lock screen.</sys:String>
+
+  <sys:String x:Key="tweak.StartupDelay.name">No delay for startup programs</sys:String>
+  <sys:String x:Key="tweak.StartupDelay.desc">Windows holds back the programs that open at sign-in for a few seconds; this removes that wait.</sys:String>
+  <sys:String x:Key="tweak.VerboseStatus.name">Detailed messages at startup and shutdown</sys:String>
+  <sys:String x:Key="tweak.VerboseStatus.desc">Instead of «Please wait» you see what Windows is doing. Useful to find what makes startup or shutdown slow.</sys:String>
+</ResourceDictionary>

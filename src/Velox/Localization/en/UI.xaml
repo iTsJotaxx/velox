@@ -4,6 +4,7 @@
   <!-- Navigation and window -->
   <sys:String x:Key="ui.nav.section">GENERAL</sys:String>
   <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
+  <sys:String x:Key="ui.nav.sectionSystem">SYSTEM</sys:String>
   <sys:String x:Key="ui.nav.summary">Overview</sys:String>
   <sys:String x:Key="ui.nav.optimizations">Optimizations</sys:String>
   <sys:String x:Key="ui.nav.startup">Startup apps</sys:String>
@@ -176,13 +177,14 @@
   <sys:String x:Key="ui.tools.hz125">About 125 Hz: the basic USB rate. If it's a gaming mouse, raise it to 1000 Hz in its software.</sys:String>
   <sys:String x:Key="ui.tools.hzLow">About {0} Hz. If your mouse supports it, raise it to 1000 Hz for lower latency.</sys:String>
   <sys:String x:Key="ui.tools.hzGood">About {0} Hz: perfect for gaming.</sys:String>
-  <sys:String x:Key="ui.tools.memTitle">Free standby memory</sys:String>
-  <sys:String x:Key="ui.tools.memText">Empties Windows' standby memory cache. Useful if a game stutters with RAM almost full; Windows fills it up again with use, which is normal.</sys:String>
+  <sys:String x:Key="ui.tools.memTitle">Free up RAM</sys:String>
+  <sys:String x:Key="ui.tools.memText">Frees the RAM Windows keeps busy in caches without closing any program. Choose what gets cleaned and set up automatic cleaning in the Memory section.</sys:String>
   <sys:String x:Key="ui.tools.memStandby">Standby</sys:String>
   <sys:String x:Key="ui.tools.memFree">Free</sys:String>
   <sys:String x:Key="ui.tools.memButton">Free now</sys:String>
-  <sys:String x:Key="ui.tools.memBusy">Freeing standby memory...</sys:String>
-  <sys:String x:Key="ui.tools.memDone">Memory freed: {0} GB more free.</sys:String>
+  <sys:String x:Key="ui.tools.memBusy">Freeing RAM...</sys:String>
+  <sys:String x:Key="ui.tools.memDone">RAM freed: {0} more free.</sys:String>
+  <sys:String x:Key="ui.tools.memMore">More options</sys:String>
   <sys:String x:Key="ui.tools.tempTitle">Clean temporary files</sys:String>
   <sys:String x:Key="ui.tools.tempText">Deletes your user's and Windows' temporary files older than 24 hours. Files in use are skipped.</sys:String>
   <sys:String x:Key="ui.tools.tempButton">Clean</sys:String>

@@ -1,0 +1,61 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Disk (en) -->
+  <sys:String x:Key="ui.nav.disk">Disk space</sys:String>
+  <sys:String x:Key="disk.title">Disk space</sys:String>
+  <sys:String x:Key="disk.subtitle">See at a glance what fills your disk. Each block is proportional to its size and its color shows the file type. Click a folder to go inside, right-click for more options.</sys:String>
+  <sys:String x:Key="disk.pick">Analyze a folder</sys:String>
+  <sys:String x:Key="disk.pickTitle">Choose the folder to analyze</sys:String>
+  <sys:String x:Key="disk.rescan">Analyze again</sys:String>
+  <sys:String x:Key="disk.driveTip">Analyze this drive</sys:String>
+  <sys:String x:Key="disk.localDisk">Local disk</sys:String>
+  <sys:String x:Key="disk.driveFree">{0} free of {1}</sys:String>
+  <sys:String x:Key="disk.back">Back</sys:String>
+  <sys:String x:Key="disk.up">Up to the parent folder</sys:String>
+  <sys:String x:Key="disk.total">{0}  ·  {1} files  ·  {2} folders</sys:String>
+  <sys:String x:Key="disk.hoverHint">Hover the map to see details. Click a folder to go inside, right-click to open, show or send to the Recycle Bin.</sys:String>
+  <sys:String x:Key="disk.emptyTitle">Choose what to analyze</sys:String>
+  <sys:String x:Key="disk.emptyText">Click a drive above or «Analyze a folder». Velox goes through every file and shows you where the space goes.</sys:String>
+  <sys:String x:Key="disk.scanning">Analyzing {0}</sys:String>
+  <sys:String x:Key="disk.scanProgress">{0} files  ·  {1} folders  ·  {2}</sys:String>
+  <sys:String x:Key="disk.scanFailed">Could not analyze: {0}</sys:String>
+  <sys:String x:Key="disk.scanCancelled">Analysis cancelled.</sys:String>
+  <sys:String x:Key="disk.top">Biggest items</sys:String>
+  <sys:String x:Key="disk.byType">By file type</sys:String>
+  <sys:String x:Key="disk.smallFiles">{0} small files</sys:String>
+  <sys:String x:Key="disk.contains">{0} files, {1} folders</sys:String>
+  <sys:String x:Key="disk.link">link (not analyzed)</sys:String>
+  <sys:String x:Key="disk.denied">no read permission</sys:String>
+  <sys:String x:Key="disk.copied">Path copied to the clipboard.</sys:String>
+
+  <sys:String x:Key="disk.kind.video">Video</sys:String>
+  <sys:String x:Key="disk.kind.image">Images</sys:String>
+  <sys:String x:Key="disk.kind.audio">Audio</sys:String>
+  <sys:String x:Key="disk.kind.archive">Archives</sys:String>
+  <sys:String x:Key="disk.kind.program">Programs</sys:String>
+  <sys:String x:Key="disk.kind.document">Documents</sys:String>
+  <sys:String x:Key="disk.kind.code">Code and data</sys:String>
+  <sys:String x:Key="disk.kind.system">System and cache</sys:String>
+  <sys:String x:Key="disk.kind.diskimage">Disk images</sys:String>
+  <sys:String x:Key="disk.kind.other">Other</sys:String>
+  <sys:String x:Key="disk.kind.folder">Empty folder</sys:String>
+
+  <sys:String x:Key="disk.menu.enter">Look inside</sys:String>
+  <sys:String x:Key="disk.menu.open">Open</sys:String>
+  <sys:String x:Key="disk.menu.explorer">Show in File Explorer</sys:String>
+  <sys:String x:Key="disk.menu.copyPath">Copy path</sys:String>
+  <sys:String x:Key="disk.menu.recycle">Send to Recycle Bin</sys:String>
+
+  <sys:String x:Key="disk.del.title">Send «{0}» to the Recycle Bin?</sys:String>
+  <sys:String x:Key="disk.del.text">{0} will be freed when you empty the Recycle Bin. Until then you can restore it.</sys:String>
+  <sys:String x:Key="disk.del.folderDetail">It contains {0} files and {1} folders.</sys:String>
+  <sys:String x:Key="disk.del.done">«{0}» sent to the Recycle Bin ({1}).</sys:String>
+  <sys:String x:Key="disk.del.errorTitle">Could not send to the Recycle Bin</sys:String>
+  <sys:String x:Key="disk.del.failed">Windows could not move it to the Recycle Bin (code {0}). It may be in use or protected.</sys:String>
+  <sys:String x:Key="disk.del.partial">Part of it could not be moved (files in use or protected). The rest is in the Recycle Bin.</sys:String>
+  <sys:String x:Key="disk.del.missing">It no longer exists on disk.</sys:String>
+  <sys:String x:Key="disk.del.notAllowed">This cannot be deleted from here.</sys:String>
+  <sys:String x:Key="disk.del.root">The analyzed folder itself cannot be deleted.</sys:String>
+  <sys:String x:Key="disk.del.system">It is a system folder or file: Velox does not delete it so Windows keeps working.</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,219 @@
+<UserControl x:Class="Velox.UI.Views.MemoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:Velox.UI.Infra">
+  <UserControl.Resources>
+    <Style x:Key="OptRowText" TargetType="TextBlock" BasedOn="{StaticResource Muted}">
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Margin" Value="0,3,0,0"/>
+    </Style>
+  </UserControl.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32,4,32,30">
+      <Grid>
+        <StackPanel>
+          <TextBlock Text="{DynamicResource mem.title}" Style="{StaticResource H1}"/>
+          <TextBlock Text="{DynamicResource mem.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0" MaxWidth="700" HorizontalAlignment="Left"/>
+        </StackPanel>
+      </Grid>
+
+      <!-- Estado de la memoria -->
+      <Border Style="{StaticResource Card}" Background="{StaticResource HeroGradient}" Padding="26,22" Margin="0,20,0,0">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+
+          <Grid Width="150" Height="150">
+            <infra:ArcGauge x:Name="Gauge" Thickness="12" FillBrush="{StaticResource AccentGradient}" TrackBrush="#262C40"/>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+              <TextBlock x:Name="TxtPct" Text="--" FontFamily="{StaticResource FontDisplay}" FontSize="34" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+              <TextBlock Text="{DynamicResource mem.inUse}" Style="{StaticResource Caption}" HorizontalAlignment="Center"/>
+            </StackPanel>
+          </Grid>
+
+          <StackPanel Grid.Column="1" Margin="28,4,24,0" VerticalAlignment="Center">
+            <TextBlock x:Name="TxtHeadline" FontFamily="{StaticResource FontDisplay}" FontSize="22" FontWeight="SemiBold" Text="--"/>
+            <TextBlock x:Name="TxtSubline" Style="{StaticResource Muted}" Margin="0,4,0,0"/>
+            <!-- Barra apilada: en uso / modificada / en espera / libre -->
+            <Border CornerRadius="6" Height="14" ClipToBounds="True" Background="#262C3A" Margin="0,16,0,10">
+              <Grid x:Name="StackBar">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition x:Name="ColUse" Width="0*"/>
+                  <ColumnDefinition x:Name="ColMod" Width="0*"/>
+                  <ColumnDefinition x:Name="ColStb" Width="0*"/>
+                  <ColumnDefinition x:Name="ColFree" Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="{StaticResource AccentGradient}"/>
+                <Border Grid.Column="1" Background="{StaticResource Warning}"/>
+                <Border Grid.Column="2" Background="{StaticResource Info}"/>
+                <Border Grid.Column="3" Background="{StaticResource Success}"/>
+              </Grid>
+            </Border>
+            <WrapPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,18,4" ToolTip="{DynamicResource mem.legend.useTip}">
+                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource Accent}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource mem.legend.use}" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                <TextBlock x:Name="TxtUse" FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,18,4" ToolTip="{DynamicResource mem.legend.modTip}">
+                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource Warning}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource mem.legend.mod}" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                <TextBlock x:Name="TxtMod" FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,18,4" ToolTip="{DynamicResource mem.legend.stbTip}">
+                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource Info}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource mem.legend.stb}" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                <TextBlock x:Name="TxtStb" FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0,0,18,4" ToolTip="{DynamicResource mem.legend.freeTip}">
+                <Rectangle Width="10" Height="10" RadiusX="3" RadiusY="3" Fill="{StaticResource Success}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                <TextBlock Text="{DynamicResource mem.legend.free}" Foreground="{StaticResource TextMuted}" FontSize="12"/>
+                <TextBlock x:Name="TxtFree" FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0"/>
+              </StackPanel>
+            </WrapPanel>
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" VerticalAlignment="Center" Width="220">
+            <Button x:Name="BtnClean" Style="{StaticResource BtnPrimary}" Padding="22,14" FontSize="14" Click="Clean_Click">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE945;" FontFamily="{StaticResource Icons}" FontSize="15" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="{DynamicResource mem.cleanNow}"/>
+              </StackPanel>
+            </Button>
+            <TextBlock x:Name="TxtLast" Style="{StaticResource Caption}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Grid Margin="0,16,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="16"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Qué se limpia -->
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <Border Style="{StaticResource IconTile}" VerticalAlignment="Top"><TextBlock Text="&#xE9F5;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource mem.optsTitle}" Style="{StaticResource H2}"/>
+                <TextBlock Text="{DynamicResource mem.optsText}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+              </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,16,0,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <CheckBox x:Name="ChkWs" Style="{StaticResource Switch}" VerticalAlignment="Top" Margin="0,1,14,0" Click="Opt_Click"/>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="{DynamicResource mem.opt.ws}" FontWeight="SemiBold"/>
+                <TextBlock Text="{DynamicResource mem.opt.wsText}" Style="{StaticResource OptRowText}"/>
+              </StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <CheckBox x:Name="ChkStandby" Style="{StaticResource Switch}" VerticalAlignment="Top" Margin="0,1,14,0" Click="Opt_Click"/>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="{DynamicResource mem.opt.standby}" FontWeight="SemiBold"/>
+                <TextBlock Text="{DynamicResource mem.opt.standbyText}" Style="{StaticResource OptRowText}"/>
+              </StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <CheckBox x:Name="ChkModified" Style="{StaticResource Switch}" VerticalAlignment="Top" Margin="0,1,14,0" Click="Opt_Click"/>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="{DynamicResource mem.opt.modified}" FontWeight="SemiBold"/>
+                <TextBlock Text="{DynamicResource mem.opt.modifiedText}" Style="{StaticResource OptRowText}"/>
+              </StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,0">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <CheckBox x:Name="ChkCache" Style="{StaticResource Switch}" VerticalAlignment="Top" Margin="0,1,14,0" Click="Opt_Click"/>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="{DynamicResource mem.opt.cache}" FontWeight="SemiBold"/>
+                <TextBlock Text="{DynamicResource mem.opt.cacheText}" Style="{StaticResource OptRowText}"/>
+              </StackPanel>
+            </Grid>
+            <Grid Margin="0,14,0,4">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <CheckBox x:Name="ChkCombine" Style="{StaticResource Switch}" VerticalAlignment="Top" Margin="0,1,14,0" Click="Opt_Click"/>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="{DynamicResource mem.opt.combine}" FontWeight="SemiBold"/>
+                <TextBlock Text="{DynamicResource mem.opt.combineText}" Style="{StaticResource OptRowText}"/>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Column="2">
+          <!-- Limpieza automática -->
+          <Border Style="{StaticResource Card}">
+            <StackPanel>
+              <Grid>
+                <StackPanel Orientation="Horizontal">
+                  <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE916;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                  <TextBlock Text="{DynamicResource mem.autoTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </StackPanel>
+                <CheckBox x:Name="ChkAuto" Style="{StaticResource Switch}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Auto_Click"/>
+              </Grid>
+              <TextBlock Text="{DynamicResource mem.autoText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
+              <Grid Margin="0,14,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="SldThreshold" Minimum="5" Maximum="50" SmallChange="1" LargeChange="5" IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center" ValueChanged="Threshold_Changed"/>
+                <TextBlock x:Name="TxtThreshold" Grid.Column="1" FontWeight="SemiBold" Margin="14,0,0,0" VerticalAlignment="Center" MinWidth="44" TextAlignment="Right"/>
+              </Grid>
+              <TextBlock x:Name="TxtAutoState" Style="{StaticResource Caption}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+          </Border>
+
+          <!-- Lo que más RAM usa -->
+          <Border Style="{StaticResource Card}" Margin="0,16,0,0" Padding="22,18,16,12">
+            <StackPanel>
+              <Grid Margin="0,0,6,8">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <Border Style="{StaticResource IconTile}" VerticalAlignment="Top"><TextBlock Text="&#xE7FC;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource mem.topTitle}" Style="{StaticResource H2}"/>
+                  <TextBlock Text="{DynamicResource mem.topText}" Style="{StaticResource Caption}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+              </Grid>
+              <ItemsControl x:Name="TopList">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid Margin="0,6">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <StackPanel VerticalAlignment="Center">
+                        <TextBlock FontWeight="SemiBold" FontSize="12.5" TextTrimming="CharacterEllipsis">
+                          <Run Text="{Binding Name, Mode=OneWay}"/><Run Text="{Binding CountText, Mode=OneWay}" Foreground="{StaticResource TextDim}"/>
+                        </TextBlock>
+                        <Grid Margin="0,5,0,0">
+                          <Border Height="4" CornerRadius="2" Background="#232937"/>
+                          <Border Height="4" CornerRadius="2" Background="{StaticResource AccentGradient}" HorizontalAlignment="Left" Width="{Binding BarWidth}"/>
+                        </Grid>
+                      </StackPanel>
+                      <TextBlock Grid.Column="1" Text="{Binding SizeText}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,10,0" MinWidth="64" TextAlignment="Right"/>
+                      <Button Grid.Column="2" Style="{StaticResource BtnGhost}" Padding="9,5" FontSize="12" Content="{DynamicResource mem.trim}" Click="Trim_Click" ToolTip="{DynamicResource mem.trimTip}"/>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

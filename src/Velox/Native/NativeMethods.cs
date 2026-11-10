@@ -436,6 +436,73 @@ namespace Velox.Native
 
         public static int PurgeStandby() { return MemoryCommand(4); }
         public static int FlushModified() { return MemoryCommand(3); }
+        /// <summary>Saca a la lista en espera las páginas de todos los procesos (no los cierra; las recuperan al usarlas).</summary>
+        public static int EmptyWorkingSets() { return MemoryCommand(2); }
+        /// <summary>Vacía solo la parte de baja prioridad de la lista en espera (prioridad 0).</summary>
+        public static int PurgeLowPriorityStandby() { return MemoryCommand(5); }
+
+        // SystemCombinePhysicalMemoryInformation (130): une páginas idénticas (Windows 10+)
+        [StructLayout(LayoutKind.Sequential)]
+        struct MEMORY_COMBINE_INFORMATION_EX { public IntPtr Handle; public UIntPtr PagesCombined; public uint Flags; }
+
+        [DllImport("ntdll.dll", EntryPoint = "NtSetSystemInformation")]
+        static extern int NtSetCombine(int infoClass, ref MEMORY_COMBINE_INFORMATION_EX info, int length);
+
+        public static int CombinePages(out long pagesCombined)
+        {
+            EnablePrivilege("SeProfileSingleProcessPrivilege");
+            var info = new MEMORY_COMBINE_INFORMATION_EX();
+            int status = NtSetCombine(130, ref info, Marshal.SizeOf(typeof(MEMORY_COMBINE_INFORMATION_EX)));
+            pagesCombined = (long)info.PagesCombined.ToUInt64();
+            return status;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool SetSystemFileCacheSize(UIntPtr minimum, UIntPtr maximum, uint flags);
+
+        /// <summary>Vacía el conjunto de trabajo de la caché de archivos del sistema. Devuelve el código de error (0 = bien).</summary>
+        public static int TrimFileCache()
+        {
+            EnablePrivilege("SeIncreaseQuotaPrivilege");
+            var all = new UIntPtr(ulong.MaxValue);
+            return SetSystemFileCacheSize(all, all, 0) ? 0 : Marshal.GetLastWin32Error();
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)] static extern IntPtr OpenProcess(uint access, bool inherit, int pid);
+        [DllImport("kernel32.dll", EntryPoint = "K32EmptyWorkingSet", SetLastError = true)] static extern bool EmptyWorkingSet(IntPtr process);
+
+        /// <summary>Recorta la memoria de un proceso (sus páginas pasan a la lista en espera). true si se pudo.</summary>
+        public static bool TrimProcess(int pid)
+        {
+            IntPtr h = OpenProcess(0x1000 | 0x0100, false, pid); // QUERY_LIMITED_INFORMATION | SET_QUOTA
+            if (h == IntPtr.Zero) return false;
+            try { return EmptyWorkingSet(h); }
+            finally { CloseHandle(h); }
+        }
+
+        /// <summary>Listas de memoria física en bytes. Ceros y código de error si no se pueden leer.</summary>
+        public static int GetDetail(out double free, out double standby, out double modified, out double standbyLow)
+        {
+            free = standby = modified = standbyLow = 0;
+            EnablePrivilege("SeProfileSingleProcessPrivilege");
+            int size = 22 * IntPtr.Size;
+            IntPtr buf = Marshal.AllocHGlobal(size);
+            try
+            {
+                int ret;
+                int status = NtQuerySystemInformation(80, buf, size, out ret);
+                if (status != 0) return status;
+                Func<int, double> at = delegate (int i) { return (double)(ulong)Marshal.ReadIntPtr(buf, i * IntPtr.Size).ToInt64(); };
+                free = (at(0) + at(1)) * 4096.0;
+                modified = (at(2) + at(3)) * 4096.0;
+                double sb = 0;
+                for (int i = 5; i < 13; i++) sb += at(i);
+                standby = sb * 4096.0;
+                standbyLow = at(5) * 4096.0;
+                return 0;
+            }
+            finally { Marshal.FreeHGlobal(buf); }
+        }
 
         [DllImport("ntdll.dll")] static extern int NtQuerySystemInformation(int infoClass, IntPtr info, int length, out int returnLength);
 

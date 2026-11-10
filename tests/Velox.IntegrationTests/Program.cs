@@ -9,6 +9,7 @@ using Velox.Core.Backup;
 using Velox.Core.Optimizations;
 using Velox.Core.Scan;
 using Velox.Core.Sys;
+using Velox.Core.Tweaks;
 using Velox.Native;
 
 namespace Velox.IntegrationTests
@@ -16,7 +17,8 @@ namespace Velox.IntegrationTests
     /// <summary>
     /// Para cada optimización disponible: foto del sistema → activar → desactivar (o al revés si ya estaba
     /// activa) → foto → compara. Usa una copia de seguridad temporal, nunca la real de %ProgramData%\Velox.
-    /// Uso: Velox.IntegrationTests.exe [salida.txt] [--skip=Id1,Id2]
+    /// Incluye los ajustes de «Personalizar Windows» (TweakCatalog). --tweaks prueba solo esos.
+    /// Uso: Velox.IntegrationTests.exe [salida.txt] [--skip=Id1,Id2] [--tweaks]
     /// </summary>
     static class Program
     {
@@ -53,9 +55,11 @@ namespace Velox.IntegrationTests
                 BackupStore.Load();
 
                 var sys = SystemScanner.Scan(null);
-                W("Optimizations: " + Catalog.All.Count + " | laptop=" + sys.IsLaptop + " disk=" + sys.DiskType + " plan=" + sys.PowerScheme);
+                W("Optimizations: " + Catalog.All.Count + " | Windows tweaks: " + TweakCatalog.All.Count + " | laptop=" + sys.IsLaptop + " disk=" + sys.DiskType + " plan=" + sys.PowerScheme);
 
-                foreach (var o in Catalog.All)
+                var all = args.Contains("--tweaks") ? TweakCatalog.All.Select(t => t.Opt).ToList()
+                                                    : Catalog.All.Concat(TweakCatalog.All.Select(t => t.Opt)).ToList();
+                foreach (var o in all)
                 {
                     if (skip.Contains(o.Id)) { W("[--] " + o.Id + ": skipped"); continue; }
                     if (!OptimizationEngine.IsAvailable(o, sys)) { W("[--] " + o.Id + ": not available on this PC"); continue; }
@@ -115,8 +119,13 @@ namespace Velox.IntegrationTests
         static SortedDictionary<string, string> Snapshot()
         {
             var d = new SortedDictionary<string, string>();
-            foreach (var o in Catalog.All)
+            foreach (var o in Catalog.All.Concat(TweakCatalog.All.Select(t => t.Opt)))
                 foreach (var it in o.Reg) d["reg " + it.Path + "|" + it.Name] = RegStr(it.Path, it.Name);
+            foreach (var k in TweakCatalog.TrackedKeys)
+            {
+                d["key " + k] = Reg.KeyExists(k).ToString();
+                d["reg " + k + "|(default)"] = RegStr(k, "");
+            }
 
             var extra = new List<string[]>
             {

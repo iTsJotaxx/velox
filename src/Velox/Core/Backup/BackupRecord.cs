@@ -8,6 +8,7 @@ namespace Velox.Core.Backup
     /// <summary>
     /// Valor original guardado antes de un cambio. Campos según Kind:
     ///   Reg        Path, Name, Existed, ValueKind, Data
+    ///   RegKey     Path = clave, Existed = ya existía (si no, al deshacer se borra entera)
     ///   Svc        Name, IntA = Start (null si no había), Existed/ValueKind/Data = DelayedAutostart original
     ///   Task       Path = ruta completa de la tarea, Flag = estaba activada
     ///   PowerVal   Path = plan, Name = subgrupo, Extra = ajuste, IntA = AC, IntB = DC

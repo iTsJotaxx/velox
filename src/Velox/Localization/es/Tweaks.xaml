@@ -1,0 +1,64 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Tweaks (es) -->
+  <sys:String x:Key="ui.nav.tweaks">Personalizar Windows</sys:String>
+  <sys:String x:Key="tweaks.title">Personalizar Windows</sys:String>
+  <sys:String x:Key="tweaks.subtitle">Opciones útiles que Windows esconde. Se activan al momento con su interruptor y se deshacen igual (Velox guarda cómo estaba todo).</sys:String>
+  <sys:String x:Key="tweaks.count">{0} de {1} activadas</sys:String>
+  <sys:String x:Key="tweaks.badge.on">Activado</sys:String>
+  <sys:String x:Key="tweaks.badge.explorer">Reinicia el Explorador</sys:String>
+  <sys:String x:Key="tweaks.badge.win11">Solo Windows 11</sys:String>
+  <sys:String x:Key="tweaks.badge.na">No disponible aquí</sys:String>
+  <sys:String x:Key="tweaks.explorerNotice">Algunos cambios se ven del todo al reiniciar el Explorador de Windows (la barra de tareas y las carpetas se cierran y se abren solas en unos segundos).</sys:String>
+  <sys:String x:Key="tweaks.restartExplorer">Reiniciar el Explorador</sys:String>
+  <sys:String x:Key="tweaks.enabled">Activado: {0}</sys:String>
+  <sys:String x:Key="tweaks.disabled">Desactivado: {0}</sys:String>
+  <sys:String x:Key="tweaks.failed">No se pudo cambiar «{0}»: {1}</sys:String>
+  <sys:String x:Key="tweaks.notApplied">Windows no ha aceptado el cambio de «{0}» (puede estar bloqueado por una directiva).</sys:String>
+
+  <sys:String x:Key="tweakgrp.taskbar">Barra de tareas</sys:String>
+  <sys:String x:Key="tweakgrp.taskbar.desc">Botones y opciones de la barra de abajo</sys:String>
+  <sys:String x:Key="tweakgrp.explorer">Explorador de archivos</sys:String>
+  <sys:String x:Key="tweakgrp.explorer.desc">Cómo se ven tus carpetas y el clic derecho</sys:String>
+  <sys:String x:Key="tweakgrp.look">Apariencia</sys:String>
+  <sys:String x:Key="tweakgrp.look.desc">Tema y pantalla de bloqueo</sys:String>
+  <sys:String x:Key="tweakgrp.system">Sistema</sys:String>
+  <sys:String x:Key="tweakgrp.system.desc">Arranque y mensajes de Windows</sys:String>
+
+  <sys:String x:Key="tweak.EndTask.name">«Finalizar tarea» en el clic derecho de la barra de tareas</sys:String>
+  <sys:String x:Key="tweak.EndTask.desc">Haz clic derecho en el icono de una aplicación de la barra de tareas y ciérrala del todo aunque esté colgada, sin abrir el Administrador de tareas.</sys:String>
+  <sys:String x:Key="tweak.TaskbarLeft.name">Botón Inicio a la izquierda</sys:String>
+  <sys:String x:Key="tweak.TaskbarLeft.desc">Alinea el botón Inicio y los iconos a la izquierda, como en Windows 10.</sys:String>
+  <sys:String x:Key="tweak.ClockSeconds.name">Segundos en el reloj</sys:String>
+  <sys:String x:Key="tweak.ClockSeconds.desc">El reloj de la barra de tareas muestra también los segundos.</sys:String>
+  <sys:String x:Key="tweak.HideTaskView.name">Ocultar el botón Vista de tareas</sys:String>
+  <sys:String x:Key="tweak.HideTaskView.desc">Quita de la barra el botón de escritorios virtuales (sigue funcionando con Win + Tab).</sys:String>
+
+  <sys:String x:Key="tweak.FileExt.name">Mostrar las extensiones de archivo</sys:String>
+  <sys:String x:Key="tweak.FileExt.desc">Ves «foto.jpg» en vez de «foto». Más seguro: así se nota si un «documento.pdf.exe» es en realidad un programa.</sys:String>
+  <sys:String x:Key="tweak.Hidden.name">Mostrar archivos y carpetas ocultos</sys:String>
+  <sys:String x:Key="tweak.Hidden.desc">Muestra lo que Windows oculta, como la carpeta AppData. Los archivos protegidos del sistema siguen ocultos.</sys:String>
+  <sys:String x:Key="tweak.ThisPC.name">Abrir el Explorador en «Este equipo»</sys:String>
+  <sys:String x:Key="tweak.ThisPC.desc">Al abrir el Explorador ves directamente tus discos en lugar de Inicio / Acceso rápido.</sys:String>
+  <sys:String x:Key="tweak.FullPath.name">Ruta completa en el título</sys:String>
+  <sys:String x:Key="tweak.FullPath.desc">La ventana del Explorador muestra la ruta completa de la carpeta abierta.</sys:String>
+  <sys:String x:Key="tweak.Checkboxes.name">Casillas para seleccionar archivos</sys:String>
+  <sys:String x:Key="tweak.Checkboxes.desc">Aparece una casilla en cada archivo para seleccionar varios sin mantener Ctrl.</sys:String>
+  <sys:String x:Key="tweak.Compact.name">Vista compacta</sys:String>
+  <sys:String x:Key="tweak.Compact.desc">Menos espacio entre elementos: caben más archivos en la ventana.</sys:String>
+  <sys:String x:Key="tweak.NoSyncAds.name">Quitar anuncios del Explorador</sys:String>
+  <sys:String x:Key="tweak.NoSyncAds.desc">Oculta las sugerencias de OneDrive y Microsoft 365 que aparecen dentro del Explorador.</sys:String>
+  <sys:String x:Key="tweak.ClassicMenu.name">Menú del clic derecho clásico</sys:String>
+  <sys:String x:Key="tweak.ClassicMenu.desc">Vuelve el menú completo de Windows 10 al hacer clic derecho, sin pasar por «Mostrar más opciones».</sys:String>
+
+  <sys:String x:Key="tweak.DarkMode.name">Modo oscuro</sys:String>
+  <sys:String x:Key="tweak.DarkMode.desc">Tema oscuro para Windows y para las aplicaciones que lo admiten.</sys:String>
+  <sys:String x:Key="tweak.LockScreenTips.name">Sin consejos en la pantalla de bloqueo</sys:String>
+  <sys:String x:Key="tweak.LockScreenTips.desc">Quita las curiosidades, sugerencias y anuncios que Windows pone sobre la pantalla de bloqueo.</sys:String>
+
+  <sys:String x:Key="tweak.StartupDelay.name">Sin espera al abrir los programas de inicio</sys:String>
+  <sys:String x:Key="tweak.StartupDelay.desc">Windows retrasa unos segundos los programas que se abren al iniciar sesión; esto quita esa espera.</sys:String>
+  <sys:String x:Key="tweak.VerboseStatus.name">Mensajes detallados al arrancar y apagar</sys:String>
+  <sys:String x:Key="tweak.VerboseStatus.desc">En lugar de «Espere» verás qué está haciendo Windows. Útil para saber qué hace lento el arranque o el apagado.</sys:String>
+</ResourceDictionary>

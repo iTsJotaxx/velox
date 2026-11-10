@@ -11,6 +11,17 @@ namespace Velox
     public partial class App : Application
     {
         public static string StartPage { get; set; } = "summary";
+        /// <summary>--disk=ruta: abre «Espacio en disco» analizando esa carpeta.</summary>
+        public static string DiskPath { get; set; }
+#if UITEST
+        /// <summary>Solo pruebas: guarda una imagen de la ventana en esta ruta y cierra la app.</summary>
+        public static string ShotPath { get; set; }
+        public static int ShotDelay { get; set; } = 6;
+        /// <summary>Solo pruebas: en «Espacio en disco», entra N veces en la carpeta más grande.</summary>
+        public static int DiskEnter { get; set; }
+        /// <summary>Solo pruebas: acción extra antes de la captura (p. ej. "clean" en Memoria).</summary>
+        public static string TestAction { get; set; }
+#endif
 
         protected override void OnStartup(StartupEventArgs e)
         {

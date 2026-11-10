@@ -1,0 +1,61 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Disk (es) -->
+  <sys:String x:Key="ui.nav.disk">Espacio en disco</sys:String>
+  <sys:String x:Key="disk.title">Espacio en disco</sys:String>
+  <sys:String x:Key="disk.subtitle">Mira de un vistazo qué ocupa tu disco. Cada bloque es proporcional a su tamaño y su color indica el tipo de archivo. Haz clic en una carpeta para entrar y clic derecho para más opciones.</sys:String>
+  <sys:String x:Key="disk.pick">Analizar una carpeta</sys:String>
+  <sys:String x:Key="disk.pickTitle">Elige la carpeta que quieres analizar</sys:String>
+  <sys:String x:Key="disk.rescan">Volver a analizar</sys:String>
+  <sys:String x:Key="disk.driveTip">Analizar esta unidad</sys:String>
+  <sys:String x:Key="disk.localDisk">Disco local</sys:String>
+  <sys:String x:Key="disk.driveFree">{0} libres de {1}</sys:String>
+  <sys:String x:Key="disk.back">Atrás</sys:String>
+  <sys:String x:Key="disk.up">Subir a la carpeta superior</sys:String>
+  <sys:String x:Key="disk.total">{0}  ·  {1} archivos  ·  {2} carpetas</sys:String>
+  <sys:String x:Key="disk.hoverHint">Pasa el ratón por el mapa para ver los detalles. Clic en una carpeta para entrar, clic derecho para abrir, mostrar o enviar a la papelera.</sys:String>
+  <sys:String x:Key="disk.emptyTitle">Elige qué analizar</sys:String>
+  <sys:String x:Key="disk.emptyText">Pulsa una unidad de arriba o «Analizar una carpeta». Velox recorre todos los archivos y te enseña dónde se va el espacio.</sys:String>
+  <sys:String x:Key="disk.scanning">Analizando {0}</sys:String>
+  <sys:String x:Key="disk.scanProgress">{0} archivos  ·  {1} carpetas  ·  {2}</sys:String>
+  <sys:String x:Key="disk.scanFailed">No se pudo analizar: {0}</sys:String>
+  <sys:String x:Key="disk.scanCancelled">Análisis cancelado.</sys:String>
+  <sys:String x:Key="disk.top">Lo que más ocupa</sys:String>
+  <sys:String x:Key="disk.byType">Por tipo de archivo</sys:String>
+  <sys:String x:Key="disk.smallFiles">{0} archivos pequeños</sys:String>
+  <sys:String x:Key="disk.contains">{0} archivos, {1} carpetas</sys:String>
+  <sys:String x:Key="disk.link">enlace (no se analiza)</sys:String>
+  <sys:String x:Key="disk.denied">sin permiso de lectura</sys:String>
+  <sys:String x:Key="disk.copied">Ruta copiada al portapapeles.</sys:String>
+
+  <sys:String x:Key="disk.kind.video">Vídeo</sys:String>
+  <sys:String x:Key="disk.kind.image">Imágenes</sys:String>
+  <sys:String x:Key="disk.kind.audio">Audio</sys:String>
+  <sys:String x:Key="disk.kind.archive">Comprimidos</sys:String>
+  <sys:String x:Key="disk.kind.program">Programas</sys:String>
+  <sys:String x:Key="disk.kind.document">Documentos</sys:String>
+  <sys:String x:Key="disk.kind.code">Código y datos</sys:String>
+  <sys:String x:Key="disk.kind.system">Sistema y caché</sys:String>
+  <sys:String x:Key="disk.kind.diskimage">Imágenes de disco</sys:String>
+  <sys:String x:Key="disk.kind.other">Otros</sys:String>
+  <sys:String x:Key="disk.kind.folder">Carpeta vacía</sys:String>
+
+  <sys:String x:Key="disk.menu.enter">Ver dentro</sys:String>
+  <sys:String x:Key="disk.menu.open">Abrir</sys:String>
+  <sys:String x:Key="disk.menu.explorer">Mostrar en el Explorador</sys:String>
+  <sys:String x:Key="disk.menu.copyPath">Copiar ruta</sys:String>
+  <sys:String x:Key="disk.menu.recycle">Enviar a la papelera</sys:String>
+
+  <sys:String x:Key="disk.del.title">¿Enviar «{0}» a la papelera?</sys:String>
+  <sys:String x:Key="disk.del.text">Se liberarán {0} cuando vacíes la papelera. Hasta entonces puedes recuperarlo.</sys:String>
+  <sys:String x:Key="disk.del.folderDetail">Contiene {0} archivos y {1} carpetas.</sys:String>
+  <sys:String x:Key="disk.del.done">«{0}» enviado a la papelera ({1}).</sys:String>
+  <sys:String x:Key="disk.del.errorTitle">No se pudo enviar a la papelera</sys:String>
+  <sys:String x:Key="disk.del.failed">Windows no pudo moverlo a la papelera (código {0}). Puede que esté en uso o protegido.</sys:String>
+  <sys:String x:Key="disk.del.partial">Una parte no se pudo mover (archivos en uso o protegidos). Lo demás está en la papelera.</sys:String>
+  <sys:String x:Key="disk.del.missing">Ya no existe en el disco.</sys:String>
+  <sys:String x:Key="disk.del.notAllowed">Esto no se puede borrar desde aquí.</sys:String>
+  <sys:String x:Key="disk.del.root">No se puede borrar la carpeta analizada entera.</sys:String>
+  <sys:String x:Key="disk.del.system">Es una carpeta o archivo del sistema: Velox no lo borra para no estropear Windows.</sys:String>
+</ResourceDictionary>

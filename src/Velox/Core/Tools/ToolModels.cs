@@ -36,12 +36,6 @@ namespace Velox.Core.Tools
         public string CpuText => Cpu < 0 ? "-" : Cpu.ToString("0.0") + " %";
     }
 
-    public sealed class MemoryLists
-    {
-        public double StandbyGB { get; set; }
-        public double FreeGB { get; set; }
-    }
-
     public enum RestorePointResult { Created, SkippedRecent, Failed }
 
     public sealed class RestorePointOutcome

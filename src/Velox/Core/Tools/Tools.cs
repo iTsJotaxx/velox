@@ -59,40 +59,7 @@ namespace Velox.Core.Tools
         }
     }
 
-    public static class MemoryTool
-    {
-        const double GB = 1024.0 * 1024.0 * 1024.0;
-
-        /// <summary>Consulta directa al kernel (no depende de los contadores de rendimiento). Ceros si falla.</summary>
-        public static MemoryLists GetLists()
-        {
-            var r = new MemoryLists();
-            try
-            {
-                double standby, free;
-                if (Mem.GetLists(out standby, out free) == 0)
-                {
-                    r.StandbyGB = Math.Round(standby / GB, 2);
-                    r.FreeGB = Math.Round(free / GB, 2);
-                }
-            }
-            catch (Exception ex) { Log.Warn("Memory lists unavailable: " + ex.Message); }
-            return r;
-        }
-
-        /// <summary>Vacía la lista en espera. Devuelve (antes, después).</summary>
-        public static Tuple<MemoryLists, MemoryLists> PurgeStandby()
-        {
-            var before = GetLists();
-            Mem.FlushModified();
-            int status = Mem.PurgeStandby();
-            if (status != 0)
-                throw new InvalidOperationException(Loc.F("tools.err.memRejected", status.ToString("X8")));
-            var after = GetLists();
-            Log.Info("Standby memory freed.");
-            return Tuple.Create(before, after);
-        }
-    }
+    // MemoryTool (liberar RAM) está en MemoryTool.cs.
 
     public static class TempCleaner
     {

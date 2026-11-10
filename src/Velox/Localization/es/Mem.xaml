@@ -1,0 +1,61 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <!-- Memory (es) -->
+  <sys:String x:Key="ui.nav.memory">Memoria RAM</sys:String>
+  <sys:String x:Key="mem.title">Memoria RAM</sys:String>
+  <sys:String x:Key="mem.subtitle">Libera RAM sin cerrar nada: Windows guarda en memoria cachés y páginas que no se están usando. Velox las suelta para que quede RAM libre para tus juegos y programas.</sys:String>
+  <sys:String x:Key="mem.inUse">en uso</sys:String>
+  <sys:String x:Key="mem.headline">{0} libres de {1}</sys:String>
+  <sys:String x:Key="mem.subline">{0} disponibles en total: {1} están en caché (en espera) y se pueden liberar al instante.</sys:String>
+  <sys:String x:Key="mem.noLists">Sin permisos de administrador no se puede ver el detalle de las listas de memoria.</sys:String>
+  <sys:String x:Key="mem.legend.use">En uso</sys:String>
+  <sys:String x:Key="mem.legend.useTip">Memoria que usan ahora los programas y Windows.</sys:String>
+  <sys:String x:Key="mem.legend.mod">Modificada</sys:String>
+  <sys:String x:Key="mem.legend.modTip">Datos que hay que guardar en disco antes de poder reutilizar esa memoria.</sys:String>
+  <sys:String x:Key="mem.legend.stb">En espera</sys:String>
+  <sys:String x:Key="mem.legend.stbTip">Caché de Windows: archivos y programas usados hace poco. Cuenta como disponible, pero a veces Windows tarda en soltarla.</sys:String>
+  <sys:String x:Key="mem.legend.free">Libre</sys:String>
+  <sys:String x:Key="mem.legend.freeTip">Memoria vacía, lista para usar al instante.</sys:String>
+  <sys:String x:Key="mem.cleanNow">Liberar RAM ahora</sys:String>
+  <sys:String x:Key="mem.lastNone">Ningún programa se cierra.</sys:String>
+  <sys:String x:Key="mem.last">Última limpieza a las {0}: +{1} libres (quedaron {2} libres).</sys:String>
+  <sys:String x:Key="mem.noneSelected">Activa al menos una opción en «Qué se limpia».</sys:String>
+  <sys:String x:Key="mem.done">RAM liberada: +{0}. Ahora hay {1} libres.</sys:String>
+  <sys:String x:Key="mem.donePartial">RAM liberada: +{0} (con avisos)</sys:String>
+  <sys:String x:Key="mem.partialText">Algunos pasos no se pudieron hacer. Lo demás se ha liberado igualmente.</sys:String>
+
+  <sys:String x:Key="mem.optsTitle">Qué se limpia</sys:String>
+  <sys:String x:Key="mem.optsText">Se aplica al pulsar «Liberar RAM ahora» (y en Herramientas).</sys:String>
+  <sys:String x:Key="mem.opt.ws">Memoria de los programas abiertos</sys:String>
+  <sys:String x:Key="mem.opt.wsText">Los programas sueltan la memoria que no están usando (no se cierran). Es lo que más RAM libera; al volver a un programa puede tardar un instante en recuperarla.</sys:String>
+  <sys:String x:Key="mem.opt.standby">Caché en espera</sys:String>
+  <sys:String x:Key="mem.opt.standbyText">Vacía la caché de Windows. Es la opción clásica contra los tirones en juegos con poca RAM.</sys:String>
+  <sys:String x:Key="mem.opt.modified">Memoria modificada</sys:String>
+  <sys:String x:Key="mem.opt.modifiedText">Guarda en disco los datos pendientes para que esa memoria también se pueda liberar.</sys:String>
+  <sys:String x:Key="mem.opt.cache">Caché de archivos del sistema</sys:String>
+  <sys:String x:Key="mem.opt.cacheText">Reduce la memoria que Windows dedica a guardar archivos leídos recientemente.</sys:String>
+  <sys:String x:Key="mem.opt.combine">Combinar memoria repetida</sys:String>
+  <sys:String x:Key="mem.opt.combineText">Junta en una sola las páginas de memoria idénticas (Windows 10 y 11).</sys:String>
+
+  <sys:String x:Key="mem.autoTitle">Limpieza automática</sys:String>
+  <sys:String x:Key="mem.autoText">Mientras Velox esté abierto, vacía la caché en espera cuando la RAM disponible baje del límite (como mucho una vez por minuto). No toca la memoria de los programas.</sys:String>
+  <sys:String x:Key="mem.autoOff">Desactivada.</sys:String>
+  <sys:String x:Key="mem.autoOn">Activa: actuará cuando quede menos de un {0} % de RAM disponible.</sys:String>
+  <sys:String x:Key="mem.autoLast">Activa (límite {0} %). Última limpieza automática a las {1}: +{2} libres.</sys:String>
+
+  <sys:String x:Key="mem.topTitle">Lo que más RAM usa</sys:String>
+  <sys:String x:Key="mem.topText">«Recortar» hace que ese programa suelte la memoria que no usa, sin cerrarlo.</sys:String>
+  <sys:String x:Key="mem.trim">Recortar</sys:String>
+  <sys:String x:Key="mem.trimTip">Libera la memoria que este programa no está usando (no se cierra)</sys:String>
+  <sys:String x:Key="mem.trimmed">{0} ha soltado {1}.</sys:String>
+
+  <sys:String x:Key="mem.step.workingSets">Memoria de los programas</sys:String>
+  <sys:String x:Key="mem.step.modified">Memoria modificada</sys:String>
+  <sys:String x:Key="mem.step.fileCache">Caché de archivos</sys:String>
+  <sys:String x:Key="mem.step.standby">Caché en espera</sys:String>
+  <sys:String x:Key="mem.step.combine">Combinar memoria</sys:String>
+  <sys:String x:Key="mem.err.allFailed">Windows no permitió liberar memoria (¿Velox se abrió sin permisos de administrador?):
+{0}</sys:String>
+  <sys:String x:Key="mem.err.trim">No se pudo recortar la memoria de {0} (es un proceso protegido del sistema).</sys:String>
+</ResourceDictionary>

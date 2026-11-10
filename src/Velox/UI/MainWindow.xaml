@@ -35,46 +35,62 @@
             </StackPanel>
           </StackPanel>
 
-          <!-- Monitor en vivo -->
-          <Border DockPanel.Dock="Bottom" Margin="14,0,14,14" Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Padding="14,12,14,8">
+          <!-- Monitor en vivo (compacto, 2 x 2) -->
+          <Border DockPanel.Dock="Bottom" Margin="14,6,14,14" Background="{StaticResource CardBg}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="12" Padding="12,10,12,6">
             <StackPanel>
-              <TextBlock Text="{DynamicResource ui.monitor.title}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="0,0,0,8"/>
-              <Grid Margin="0,0,0,8">
-                <TextBlock Text="CPU" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtCpu" Text="--" HorizontalAlignment="Right" FontSize="12" FontWeight="SemiBold"/>
-              </Grid>
-              <ProgressBar x:Name="BarCpu" Height="4" Margin="0,-4,0,10"/>
-              <Grid Margin="0,0,0,8">
-                <TextBlock Text="RAM" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtRam" Text="--" HorizontalAlignment="Right" FontSize="12" FontWeight="SemiBold"/>
-              </Grid>
-              <ProgressBar x:Name="BarRam" Height="4" Margin="0,-4,0,10" Foreground="{StaticResource Success}"/>
-              <Grid Margin="0,0,0,8">
-                <TextBlock Text="GPU" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtGpu" Text="--" HorizontalAlignment="Right" FontSize="12" FontWeight="SemiBold"/>
-              </Grid>
-              <ProgressBar x:Name="BarGpu" Height="4" Margin="0,-4,0,10" Foreground="{StaticResource Violet}"/>
-              <Grid Margin="0,0,0,8">
-                <TextBlock Text="VRAM" Style="{StaticResource Caption}"/>
-                <TextBlock x:Name="TxtVram" Text="--" HorizontalAlignment="Right" FontSize="12" FontWeight="SemiBold"/>
-              </Grid>
-              <ProgressBar x:Name="BarVram" Height="4" Margin="0,-4,0,8" Foreground="{StaticResource Warning}"/>
+              <TextBlock Text="{DynamicResource ui.monitor.title}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="0,0,0,6"/>
+              <UniformGrid Columns="2">
+                <StackPanel Margin="0,0,7,6">
+                  <Grid>
+                    <TextBlock Text="CPU" Style="{StaticResource Caption}"/>
+                    <TextBlock x:Name="TxtCpu" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                  </Grid>
+                  <ProgressBar x:Name="BarCpu" Height="4" Margin="0,4,0,0"/>
+                </StackPanel>
+                <StackPanel Margin="7,0,0,6">
+                  <Grid>
+                    <TextBlock Text="GPU" Style="{StaticResource Caption}"/>
+                    <TextBlock x:Name="TxtGpu" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                  </Grid>
+                  <ProgressBar x:Name="BarGpu" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Violet}"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,7,6">
+                  <Grid>
+                    <TextBlock Text="RAM" Style="{StaticResource Caption}"/>
+                    <TextBlock x:Name="TxtRam" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                  </Grid>
+                  <ProgressBar x:Name="BarRam" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Success}"/>
+                </StackPanel>
+                <StackPanel Margin="7,0,0,6">
+                  <Grid>
+                    <TextBlock Text="VRAM" Style="{StaticResource Caption}"/>
+                    <TextBlock x:Name="TxtVram" Text="--" HorizontalAlignment="Right" FontSize="11.5" FontWeight="SemiBold"/>
+                  </Grid>
+                  <ProgressBar x:Name="BarVram" Height="4" Margin="0,4,0,0" Foreground="{StaticResource Warning}"/>
+                </StackPanel>
+              </UniformGrid>
             </StackPanel>
           </Border>
 
-          <StackPanel>
-            <TextBlock Text="{DynamicResource ui.nav.section}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,0,0,8"/>
-            <RadioButton x:Name="NavSummary" Style="{StaticResource NavItem}" Tag="&#xE80F;" Content="{DynamicResource ui.nav.summary}" Click="Nav_Click" CommandParameter="summary"/>
-            <RadioButton x:Name="NavOptimizations" Style="{StaticResource NavItem}" Tag="&#xE945;" Content="{DynamicResource ui.nav.optimizations}" Click="Nav_Click" CommandParameter="optimizations"/>
-            <RadioButton x:Name="NavStartup" Style="{StaticResource NavItem}" Tag="&#xE7E8;" Content="{DynamicResource ui.nav.startup}" Click="Nav_Click" CommandParameter="startup"/>
-            <RadioButton x:Name="NavProcesses" Style="{StaticResource NavItem}" Tag="&#xE7FC;" Content="{DynamicResource ui.nav.processes}" Click="Nav_Click" CommandParameter="processes"/>
-            <RadioButton x:Name="NavDrivers" Style="{StaticResource NavItem}" Tag="&#xE772;" Content="{DynamicResource ui.nav.drivers}" Click="Nav_Click" CommandParameter="drivers"/>
-            <RadioButton x:Name="NavDiagnostics" Style="{StaticResource NavItem}" Tag="&#xE9D9;" Content="{DynamicResource ui.nav.diagnostics}" Click="Nav_Click" CommandParameter="diagnostics"/>
-            <RadioButton x:Name="NavTools" Style="{StaticResource NavItem}" Tag="&#xE90F;" Content="{DynamicResource ui.nav.tools}" Click="Nav_Click" CommandParameter="tools"/>
-            <TextBlock Text="{DynamicResource ui.nav.section2}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,16,0,8"/>
-            <RadioButton x:Name="NavLog" Style="{StaticResource NavItem}" Tag="&#xE81C;" Content="{DynamicResource ui.nav.log}" Click="Nav_Click" CommandParameter="log"/>
-            <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}" Tag="&#xE713;" Content="{DynamicResource ui.nav.settings}" Click="Nav_Click" CommandParameter="settings"/>
-          </StackPanel>
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
+            <StackPanel>
+              <TextBlock Text="{DynamicResource ui.nav.section}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,0,0,6"/>
+              <RadioButton x:Name="NavSummary" Style="{StaticResource NavItem}" Tag="&#xE80F;" Content="{DynamicResource ui.nav.summary}" Click="Nav_Click" CommandParameter="summary"/>
+              <RadioButton x:Name="NavOptimizations" Style="{StaticResource NavItem}" Tag="&#xE945;" Content="{DynamicResource ui.nav.optimizations}" Click="Nav_Click" CommandParameter="optimizations"/>
+              <RadioButton x:Name="NavStartup" Style="{StaticResource NavItem}" Tag="&#xE7E8;" Content="{DynamicResource ui.nav.startup}" Click="Nav_Click" CommandParameter="startup"/>
+              <RadioButton x:Name="NavProcesses" Style="{StaticResource NavItem}" Tag="&#xE7FC;" Content="{DynamicResource ui.nav.processes}" Click="Nav_Click" CommandParameter="processes"/>
+              <RadioButton x:Name="NavDrivers" Style="{StaticResource NavItem}" Tag="&#xE772;" Content="{DynamicResource ui.nav.drivers}" Click="Nav_Click" CommandParameter="drivers"/>
+              <TextBlock Text="{DynamicResource ui.nav.sectionSystem}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
+              <RadioButton x:Name="NavMemory" Style="{StaticResource NavItem}" Tag="&#xEEA0;" Content="{DynamicResource ui.nav.memory}" Click="Nav_Click" CommandParameter="memory"/>
+              <RadioButton x:Name="NavDisk" Style="{StaticResource NavItem}" Tag="&#xEDA2;" Content="{DynamicResource ui.nav.disk}" Click="Nav_Click" CommandParameter="disk"/>
+              <RadioButton x:Name="NavTweaks" Style="{StaticResource NavItem}" Tag="&#xE771;" Content="{DynamicResource ui.nav.tweaks}" Click="Nav_Click" CommandParameter="tweaks"/>
+              <RadioButton x:Name="NavDiagnostics" Style="{StaticResource NavItem}" Tag="&#xE9D9;" Content="{DynamicResource ui.nav.diagnostics}" Click="Nav_Click" CommandParameter="diagnostics"/>
+              <RadioButton x:Name="NavTools" Style="{StaticResource NavItem}" Tag="&#xE90F;" Content="{DynamicResource ui.nav.tools}" Click="Nav_Click" CommandParameter="tools"/>
+              <TextBlock Text="{DynamicResource ui.nav.section2}" Style="{StaticResource Caption}" FontWeight="SemiBold" Margin="26,12,0,6"/>
+              <RadioButton x:Name="NavLog" Style="{StaticResource NavItem}" Tag="&#xE81C;" Content="{DynamicResource ui.nav.log}" Click="Nav_Click" CommandParameter="log"/>
+              <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}" Tag="&#xE713;" Content="{DynamicResource ui.nav.settings}" Click="Nav_Click" CommandParameter="settings"/>
+            </StackPanel>
+          </ScrollViewer>
         </DockPanel>
       </Border>
 

@@ -22,6 +22,10 @@ namespace Velox.Core.Backup
                     else Reg.Remove(r.Path, r.Name);
                     break;
 
+                case "RegKey":
+                    if (!r.Existed) Reg.DeleteKeyTree(r.Path);
+                    break;
+
                 case "Svc":
                     if (r.IntA.HasValue)
                     {

@@ -48,7 +48,13 @@ namespace Velox.UI
         {
             UpdateMaximized();
             Navigate(App.StartPage);
+            if (!string.IsNullOrEmpty(App.DiskPath) && _pages.TryGetValue("disk", out var dp) && dp is DiskView dv)
+                dv.StartScan(App.DiskPath, 0);
             _monitor.Start();
+            Core.Tools.MemoryAutoCleaner.Apply();
+#if UITEST
+            if (!string.IsNullOrEmpty(App.ShotPath)) RunTestShot();
+#endif
             await AppState.Current.ScanAsync();
         }
 
@@ -61,6 +67,7 @@ namespace Velox.UI
                 return;
             }
             _monitor.Stop();
+            Core.Tools.MemoryAutoCleaner.Stop();
             try { Native.MouseHz.Stop(); } catch { }
         }
 
@@ -76,6 +83,9 @@ namespace Velox.UI
                 case "processes": return new ProcessesView();
                 case "drivers": return new DriversView();
                 case "diagnostics": return new DiagnosticsView();
+                case "memory": return new MemoryView();
+                case "disk": return new DiskView();
+                case "tweaks": return new TweaksView();
                 case "tools": return new ToolsView();
                 case "log": return new LogView();
                 case "settings": return new SettingsView();
@@ -92,6 +102,9 @@ namespace Velox.UI
                 case "processes": return NavProcesses;
                 case "drivers": return NavDrivers;
                 case "diagnostics": return NavDiagnostics;
+                case "memory": return NavMemory;
+                case "disk": return NavDisk;
+                case "tweaks": return NavTweaks;
                 case "tools": return NavTools;
                 case "log": return NavLog;
                 case "settings": return NavSettings;
@@ -120,6 +133,51 @@ namespace Velox.UI
             if (sender is RadioButton rb && rb.CommandParameter is string key) Navigate(key);
         }
 
+#if UITEST
+        // ------------------------------------------------------------ Pruebas automáticas (solo compilación UITEST)
+
+        async void RunTestShot()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(App.ShotDelay));
+            try
+            {
+                if (_current == "disk" && App.DiskEnter > 0 && PageHost.Content is DiskView dv)
+                {
+                    for (int i = 0; i < App.DiskEnter; i++) { dv.TestEnterBiggest(); await Task.Delay(700); }
+                }
+                if (_current == "memory" && App.TestAction == "clean" && PageHost.Content is MemoryView mv)
+                {
+                    while (AppState.Current.IsBusy) await Task.Delay(250); // el escaneo inicial
+                    mv.TestClean();
+                    await Task.Delay(500);
+                    for (int i = 0; i < 240 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    await Task.Delay(1800);
+                }
+                if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
+                await Task.Delay(400);
+                UpdateLayout();
+                var dpi = VisualTreeHelper.GetDpi(this);
+                var target = (FrameworkElement)Content;
+                var rtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                    (int)Math.Ceiling(target.ActualWidth * dpi.DpiScaleX), (int)Math.Ceiling(target.ActualHeight * dpi.DpiScaleY),
+                    dpi.PixelsPerInchX, dpi.PixelsPerInchY, PixelFormats.Pbgra32);
+                var dv2 = new DrawingVisual();
+                using (var dc = dv2.RenderOpen())
+                {
+                    dc.DrawRectangle((Brush)FindResource("Bg"), null, new Rect(0, 0, target.ActualWidth, target.ActualHeight));
+                    dc.DrawRectangle(new VisualBrush(target), null, new Rect(0, 0, target.ActualWidth, target.ActualHeight));
+                }
+                rtb.Render(dv2);
+                var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
+                enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(rtb));
+                using (var fs = System.IO.File.Create(App.ShotPath)) enc.Save(fs);
+                Log.Info("UITEST shot saved: " + App.ShotPath);
+            }
+            catch (Exception ex) { Log.Error("UITEST shot", ex); }
+            Application.Current.Shutdown();
+        }
+
+#endif
         // ------------------------------------------------------------ Barra de título
 
         void Min_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;

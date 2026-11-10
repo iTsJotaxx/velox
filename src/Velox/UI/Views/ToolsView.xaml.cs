@@ -51,12 +51,17 @@ namespace Velox.UI.Views
 
         void RefreshMemory()
         {
-            Task.Run(() => MemoryTool.GetLists()).ContinueWith(t =>
+            Task.Run(() => MemoryTool.Snapshot()).ContinueWith(t =>
             {
                 if (t.IsFaulted) return;
-                TxtStandby.Text = t.Result.StandbyGB.ToString("0.0") + " GB";
-                TxtFree.Text = t.Result.FreeGB.ToString("0.0") + " GB";
+                ShowMemory(t.Result);
             }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        void ShowMemory(MemSnapshot s)
+        {
+            TxtStandby.Text = s.HasLists ? MemSnapshot.Gb(s.Standby) : "--";
+            TxtFree.Text = MemSnapshot.Gb(s.FreeOrAvailable);
         }
 
         void RefreshBackups()
@@ -128,14 +133,17 @@ namespace Velox.UI.Views
 
         async void Purge_Click(object sender, RoutedEventArgs e)
         {
-            Tuple<MemoryLists, MemoryLists> r = null;
-            if (await AppState.Current.RunBusy(Loc.T("ui.tools.memBusy"), async () => r = await Task.Run(() => MemoryTool.PurgeStandby())) && r != null)
+            MemCleanResult r = null;
+            var opts = MemCleanOptions.FromSettings();
+            if (!opts.Any) { Win.Navigate("memory"); return; }
+            if (await AppState.Current.RunBusy(Loc.T("ui.tools.memBusy"), async () => r = await Task.Run(() => MemoryTool.Clean(opts))) && r != null)
             {
-                TxtStandby.Text = r.Item2.StandbyGB.ToString("0.0") + " GB";
-                TxtFree.Text = r.Item2.FreeGB.ToString("0.0") + " GB";
-                Win.ShowToast(Loc.F("ui.tools.memDone", (r.Item2.FreeGB - r.Item1.FreeGB).ToString("0.0")), ToastKind.Success);
+                ShowMemory(r.After);
+                Win.ShowToast(Loc.F("ui.tools.memDone", MemSnapshot.Gb(r.Gained)), ToastKind.Success);
             }
         }
+
+        void MemMore_Click(object sender, RoutedEventArgs e) => Win.Navigate("memory");
 
         async void Temp_Click(object sender, RoutedEventArgs e)
         {
@@ -184,6 +192,7 @@ namespace Velox.UI.Views
                 {
                     int r = BackupStore.RestoreAll();
                     foreach (var o in Core.Optimizations.Catalog.All) { try { o.Sync?.Invoke(); } catch { } }
+                    foreach (var t in Core.Tweaks.TweakCatalog.All) { try { t.Opt.Sync?.Invoke(); } catch { } }
                     return r;
                 });
                 await AppState.Current.RefreshOptimizationsAsync();

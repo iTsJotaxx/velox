@@ -12,6 +12,17 @@ namespace Velox.Core
         [DataMember] public bool CreateRestorePoint { get; set; } = true;
         [DataMember] public bool ExpandAllCategories { get; set; }
 
+        // Qué hace «Liberar RAM» (sección Memoria)
+        [DataMember] public bool MemWorkingSets { get; set; } = true;
+        [DataMember] public bool MemModified { get; set; } = true;
+        [DataMember] public bool MemFileCache { get; set; } = true;
+        [DataMember] public bool MemStandby { get; set; } = true;
+        [DataMember] public bool MemCombine { get; set; } = true;
+        /// <summary>Limpieza automática de la lista en espera mientras Velox está abierto.</summary>
+        [DataMember] public bool AutoMemClean { get; set; }
+        /// <summary>% de RAM disponible por debajo del cual actúa la limpieza automática.</summary>
+        [DataMember] public int AutoMemThreshold { get; set; } = 20;
+
         public static Settings Current { get; private set; } = new Settings();
 
         public static void Load()
@@ -43,6 +54,12 @@ namespace Velox.Core
         }
 
         [OnDeserializing]
-        void OnDeserializing(StreamingContext c) { CreateRestorePoint = true; }
+        void OnDeserializing(StreamingContext c)
+        {
+            // El serializador no llama al constructor: valores por defecto para lo que no esté en el archivo
+            CreateRestorePoint = true;
+            MemWorkingSets = MemModified = MemFileCache = MemStandby = MemCombine = true;
+            AutoMemThreshold = 20;
+        }
     }
 }

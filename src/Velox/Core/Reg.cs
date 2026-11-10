@@ -127,6 +127,20 @@ namespace Velox.Core
                 k?.DeleteValue(name, false);
         }
 
+        public static void CreateKey(string path)
+        {
+            using (var b = OpenBase(path, out string sub))
+            using (var k = b.CreateSubKey(sub, true))
+                if (k == null) throw new InvalidOperationException("Cannot create " + path);
+        }
+
+        /// <summary>Borra una clave con todo su contenido (si existe).</summary>
+        public static void DeleteKeyTree(string path)
+        {
+            using (var b = OpenBase(path, out string sub))
+                b.DeleteSubKeyTree(sub, false);
+        }
+
         public static bool ValuesEqual(object current, object expected, RegistryValueKind kind)
         {
             if (current == null || expected == null) return current == null && expected == null;

@@ -8,11 +8,11 @@ namespace Velox.Localization
 {
     /// <summary>
     /// Textos en español e inglés. Cada idioma tiene varios diccionarios XAML en Localization\{idioma}\
-    /// (UI, Opts, Tools, Diag, Findings). En XAML: {DynamicResource clave}; en código: Loc.T("clave").
+    /// (UI, Opts, Tools, Diag, Findings, Drivers, Disk, Tweaks, Mem). En XAML: {DynamicResource clave}; en código: Loc.T("clave").
     /// </summary>
     public static class Loc
     {
-        public static readonly string[] Files = { "UI", "Opts", "Tools", "Diag", "Findings", "Drivers" };
+        public static readonly string[] Files = { "UI", "Opts", "Tools", "Diag", "Findings", "Drivers", "Disk", "Tweaks", "Mem" };
         public static readonly string[] Supported = { "es", "en" };
 
         static Dictionary<string, string> _strings = new Dictionary<string, string>();

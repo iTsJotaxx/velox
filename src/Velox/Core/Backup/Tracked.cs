@@ -25,6 +25,20 @@ namespace Velox.Core.Backup
             }
         }
 
+        /// <summary>Crea una clave de registro; si no existía, al deshacer se borra entera.</summary>
+        public static void EnsureKey(string id, string path)
+        {
+            string key = "Key|" + path;
+            bool isNew = !BackupStore.ContainsKey(id, key);
+            BackupStore.Add(id, new BackupRecord { Kind = "RegKey", Key = key, Path = path, Existed = Reg.KeyExists(path) });
+            try { Reg.CreateKey(path); }
+            catch
+            {
+                if (isNew) BackupStore.RemoveKey(id, key);
+                throw;
+            }
+        }
+
         public static void SetService(string id, string name, ServiceMode mode)
         {
             var info = Services.GetStartInfo(name);

@@ -40,7 +40,16 @@ namespace Velox
 
                 // --page=optimizations abre directamente esa página (útil para atajos y capturas)
                 foreach (var a in args)
+                {
                     if (a.StartsWith("--page=", StringComparison.OrdinalIgnoreCase)) App.StartPage = a.Substring(7);
+                    else if (a.StartsWith("--disk=", StringComparison.OrdinalIgnoreCase)) { App.DiskPath = a.Substring(7).Trim('"'); App.StartPage = "disk"; }
+#if UITEST
+                    else if (a.StartsWith("--shot=", StringComparison.OrdinalIgnoreCase)) App.ShotPath = a.Substring(7).Trim('"');
+                    else if (a.StartsWith("--shot-delay=", StringComparison.OrdinalIgnoreCase)) App.ShotDelay = int.Parse(a.Substring(13));
+                    else if (a.StartsWith("--disk-enter=", StringComparison.OrdinalIgnoreCase)) App.DiskEnter = int.Parse(a.Substring(13));
+                    else if (a.StartsWith("--action=", StringComparison.OrdinalIgnoreCase)) App.TestAction = a.Substring(9);
+#endif
+                }
 
                 var app = new App();
                 app.InitializeComponent();

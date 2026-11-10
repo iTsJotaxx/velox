@@ -4,6 +4,7 @@
   <!-- Navegación y ventana -->
   <sys:String x:Key="ui.nav.section">GENERAL</sys:String>
   <sys:String x:Key="ui.nav.section2">VELOX</sys:String>
+  <sys:String x:Key="ui.nav.sectionSystem">SISTEMA</sys:String>
   <sys:String x:Key="ui.nav.summary">Resumen</sys:String>
   <sys:String x:Key="ui.nav.optimizations">Optimizaciones</sys:String>
   <sys:String x:Key="ui.nav.startup">Inicio de Windows</sys:String>
@@ -176,13 +177,14 @@
   <sys:String x:Key="ui.tools.hz125">Unos 125 Hz: la frecuencia básica de USB. Si es un ratón gaming, súbela a 1000 Hz en su programa.</sys:String>
   <sys:String x:Key="ui.tools.hzLow">Unos {0} Hz. Si tu ratón lo permite, súbela a 1000 Hz para reducir la latencia.</sys:String>
   <sys:String x:Key="ui.tools.hzGood">Unos {0} Hz: perfecto para jugar.</sys:String>
-  <sys:String x:Key="ui.tools.memTitle">Liberar memoria en espera</sys:String>
-  <sys:String x:Key="ui.tools.memText">Vacía la caché de memoria en espera de Windows. Útil si un juego da tirones con la RAM casi llena; Windows la vuelve a llenar con el uso, es normal.</sys:String>
+  <sys:String x:Key="ui.tools.memTitle">Liberar RAM</sys:String>
+  <sys:String x:Key="ui.tools.memText">Deja libre la RAM que Windows tiene ocupada en cachés sin cerrar ningún programa. Qué se limpia y la limpieza automática se configuran en la sección Memoria.</sys:String>
   <sys:String x:Key="ui.tools.memStandby">En espera</sys:String>
   <sys:String x:Key="ui.tools.memFree">Libre</sys:String>
   <sys:String x:Key="ui.tools.memButton">Liberar ahora</sys:String>
-  <sys:String x:Key="ui.tools.memBusy">Liberando memoria en espera...</sys:String>
-  <sys:String x:Key="ui.tools.memDone">Memoria liberada: {0} GB más libres.</sys:String>
+  <sys:String x:Key="ui.tools.memBusy">Liberando RAM...</sys:String>
+  <sys:String x:Key="ui.tools.memDone">RAM liberada: {0} más libres.</sys:String>
+  <sys:String x:Key="ui.tools.memMore">Más opciones</sys:String>
   <sys:String x:Key="ui.tools.tempTitle">Limpiar archivos temporales</sys:String>
   <sys:String x:Key="ui.tools.tempText">Borra los temporales de tu usuario y de Windows con más de 24 horas. Los que estén en uso se dejan.</sys:String>
   <sys:String x:Key="ui.tools.tempButton">Limpiar</sys:String>
