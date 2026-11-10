@@ -89,7 +89,8 @@ namespace Velox.IntegrationTests
                 };
                 var u = Winget.ParseUpgrades(lines);
                 Check("upgrade: rows of the first table only", u.Count == 4, string.Join(",", u.Select(x => x.Id)));
-                Check("upgrade: columns", u.Any(x => x.Id == "7zip.7zip" && x.Version == "23.01" && x.Available == "26.00" && x.Name.StartsWith("7-Zip")));
+                var z = u.FirstOrDefault(x => x.Id == "7zip.7zip");
+                Check("upgrade: columns", z != null && z.Version == "23.01" && z.Available == "26.00" && z.Source == "winget" && z.Name.StartsWith("7-Zip"), z == null ? "-" : z.Name + "|" + z.Version + "|" + z.Available + "|" + z.Source);
                 Check("upgrade: winget itself excluded", u.First(x => x.Id == "Microsoft.AppInstaller").Excluded);
                 Check("upgrade: .NET SDK unticked (runtime/kit)", u.First(x => x.Id == "Microsoft.DotNet.SDK.8").IsRuntime && !u.First(x => x.Id == "Microsoft.DotNet.SDK.8").SelectedByDefault);
                 Check("upgrade: app runtime unticked", !u.First(x => x.Id == "Microsoft.WindowsAppRuntime.1.5").SelectedByDefault);

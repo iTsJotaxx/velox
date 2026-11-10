@@ -417,7 +417,9 @@ namespace Velox.Core.Apps
                     : (l.Length > starts[c] ? l.Substring(starts[c]).Trim() : "");
                 string id = Col(1).Split(' ')[0];
                 if (!AppCatalog.IsValidId(id)) continue;
-                var u = new WingetUpgrade { Name = Col(0).TrimEnd('…'), Id = id, Version = Col(2), Available = Col(3), Source = starts.Count > 4 ? Col(4) : "winget" };
+                // winget a veces separa «Available» y «Source» con un solo espacio: entonces la última columna trae las dos
+                var tail = (starts.Count > 4 ? Col(3) + " " + Col(4) : Col(3)).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var u = new WingetUpgrade { Name = Col(0).TrimEnd('…'), Id = id, Version = Col(2).Split(' ')[0], Available = tail.Length > 0 ? tail[0] : "", Source = tail.Length > 1 ? tail[tail.Length - 1] : "winget" };
                 if (string.IsNullOrEmpty(u.Available)) continue;
                 Classify(u);
                 list.Add(u);
