@@ -165,7 +165,7 @@
       <Border Style="{StaticResource Card}" Width="560" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24,22">
         <StackPanel>
           <TextBlock x:Name="TxtRegionTitle" Style="{StaticResource H2}" FontSize="18"/>
-          <TextBlock Text="{DynamicResource apps.region.text}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,8,0,14"/>
+          <TextBlock x:Name="TxtRegionText" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,8,0,14"/>
           <ItemsControl x:Name="RegionList">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate>
@@ -181,7 +181,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                           </Grid.ColumnDefinitions>
-                          <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis"/>
+                          <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            <Border Style="{StaticResource Badge}" Background="{StaticResource SuccessSoft}" Visibility="{Binding IsRecommended, Converter={StaticResource BoolVis}}">
+                              <TextBlock Style="{StaticResource BadgeText}" Foreground="#5EE0AE" FontSize="10" Text="{DynamicResource apps.region.recommended}"/>
+                            </Border>
+                          </StackPanel>
                           <TextBlock x:Name="Mark" Grid.Column="1" Text="&#xE73E;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource AccentText}" Margin="8,0,0,0" Visibility="Hidden"/>
                         </Grid>
                       </Border>

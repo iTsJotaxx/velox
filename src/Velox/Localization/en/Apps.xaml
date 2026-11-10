@@ -86,7 +86,12 @@
   <sys:String x:Key="apps.cat.runtimes">Windows components</sys:String>
   <sys:String x:Key="apps.cat.custom">My apps</sys:String>
   <sys:String x:Key="apps.region.title">Choose the region for {0}</sys:String>
-  <sys:String x:Key="apps.region.text">Riot installs the client with your account&apos;s region. After confirming, the Riot installer opens: choose the folder and then, in the Riot Client, the game you want (League of Legends, VALORANT, TFT...). It starts downloading League of Legends; if you do not want it, you can cancel it from the client.</sys:String>
+  <sys:String x:Key="apps.region.detected">Your Windows is set to {0}, so {1} has been preselected. Change it if your Riot account belongs to another region: the game installs with that server (Riot Client included).</sys:String>
+  <sys:String x:Key="apps.region.unknown">Your country could not be detected. Choose your Riot account&apos;s region: the game installs with that server (Riot Client included).</sys:String>
+  <sys:String x:Key="apps.region.recommended">Recommended</sys:String>
+  <sys:String x:Key="apps.region.EU">Europe (EU)</sys:String>
+  <sys:String x:Key="apps.region.LATAM">Latin America (LATAM)</sys:String>
+  <sys:String x:Key="apps.region.AP">Asia-Pacific (AP)</sys:String>
   <sys:String x:Key="apps.region.confirm">Confirm region</sys:String>
   <sys:String x:Key="apps.status.interactive">Follow the steps in the installer window...</sys:String>
   <sys:String x:Key="apps.err.noRegion">no region was chosen</sys:String>

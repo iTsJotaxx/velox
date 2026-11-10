@@ -235,6 +235,8 @@ namespace Velox.UI.Views
             public AppVariant Variant { get; set; }
             public string Name => Variant.Name;
             public bool IsSelected { get => _sel; set => Set(ref _sel, value); }
+            /// <summary>La que corresponde al país de Windows.</summary>
+            public bool IsRecommended { get; set; }
         }
 
         AppRowVM _regionRow;
@@ -244,10 +246,17 @@ namespace Velox.UI.Views
         {
             if (row.App.Variants == null || !row.IsChecked || row.Variant != null || _regionRow != null) return;
             _regionRow = row;
-            // Por defecto: la región que encaja con el idioma de Windows (España y resto de Europa occidental: EUW)
-            string def = Loc.Language == "es" ? "EUW" : "NA";
-            RegionList.ItemsSource = row.App.Variants.Select(v => new RegionChoice { Variant = v, IsSelected = v.Code == def }).ToList();
+            // Preseleccionada: la del país configurado en Windows (Configuración > Hora e idioma > Región)
+            string iso = RegionDetect.CountryIso2();
+            string rec = RegionDetect.Suggest(row.App.Id, iso);
+            var choices = row.App.Variants.Select(v => new RegionChoice { Variant = v, IsRecommended = v.Code == rec, IsSelected = v.Code == rec }).ToList();
+            if (!choices.Any(c => c.IsSelected)) choices[0].IsSelected = true;
+            RegionList.ItemsSource = choices;
             TxtRegionTitle.Text = Loc.F("apps.region.title", row.App.Name);
+            TxtRegionText.Text = rec != null
+                ? Loc.F("apps.region.detected", RegionDetect.CountryName(iso), row.App.Variants.First(v => v.Code == rec).Name)
+                : Loc.T("apps.region.unknown");
+            Log.Info("Region picker for " + row.App.Name + ": Windows country " + (iso ?? "?") + " -> " + (rec ?? "no suggestion") + ".");
             RegionLayer.Visibility = Visibility.Visible;
         }
 

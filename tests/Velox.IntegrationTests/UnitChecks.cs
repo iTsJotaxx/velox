@@ -120,18 +120,33 @@ namespace Velox.IntegrationTests
                 Check("apps: id without dot rejected", !Velox.Core.Apps.AppCatalog.IsValidId("notepad"));
                 Check("apps: Microsoft Store id accepted", Velox.Core.Apps.AppCatalog.IsValidId("9NKSQGP7F2NH") && !Velox.Core.Apps.AppCatalog.IsValidId("9nksqgp7f2nh x"));
                 Check("apps: store apps marked msstore", Velox.Core.Apps.AppCatalog.BuiltIn.Where(a => System.Text.RegularExpressions.Regex.IsMatch(a.Id, "^[0-9A-Z]{12}$")).All(a => a.Source == "msstore"));
-                var riot = Velox.Core.Apps.AppCatalog.BuiltIn.FirstOrDefault(a => a.Id == "RiotGames.RiotClient");
-                Check("apps: Riot Client is one entry with regions", riot != null && riot.Interactive && riot.Variants != null && riot.Variants.Count == 14
-                      && riot.Variants.All(v => Velox.Core.Apps.AppCatalog.IsValidId(v.Id)) && riot.Variants.Select(v => v.Id).Distinct().Count() == 14);
-                Check("apps: no separate LoL/VALORANT entries", !Velox.Core.Apps.AppCatalog.BuiltIn.Any(a => a.Id.StartsWith("RiotGames.LeagueOfLegends") || a.Id.StartsWith("RiotGames.Valorant")));
-                if (riot != null)
+                var lol = Velox.Core.Apps.AppCatalog.BuiltIn.FirstOrDefault(a => a.Id == "RiotGames.LeagueOfLegends");
+                var val = Velox.Core.Apps.AppCatalog.BuiltIn.FirstOrDefault(a => a.Id == "RiotGames.Valorant");
+                Check("apps: LoL and VALORANT are separate entries with regions", lol?.Variants?.Count == 14 && val?.Variants?.Count == 6
+                      && lol.Variants.Concat(val.Variants).All(v => Velox.Core.Apps.AppCatalog.IsValidId(v.Id)) && !lol.Interactive && !val.Interactive);
+                if (lol != null)
                 {
-                    var noRegion = Velox.Core.Apps.Winget.Install(riot, false, null, System.Threading.CancellationToken.None);
-                    Check("apps: Riot without region is refused (nothing runs)", noRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed && noRegion.ExitCode == 0);
-                    var badRegion = Velox.Core.Apps.Winget.Install(riot, false, null, System.Threading.CancellationToken.None, "RiotGames.Valorant.EU");
-                    Check("apps: Riot with a region outside the list is refused", badRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed);
+                    var noRegion = Velox.Core.Apps.Winget.Install(lol, false, null, System.Threading.CancellationToken.None);
+                    Check("apps: LoL without region is refused (nothing runs)", noRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed && noRegion.ExitCode == 0);
+                    var badRegion = Velox.Core.Apps.Winget.Install(lol, false, null, System.Threading.CancellationToken.None, "RiotGames.Valorant.EU");
+                    Check("apps: LoL with a region from another game is refused", badRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed);
                 }
-                var table = new List<string>
+                // País de Windows -> servidor recomendado
+                foreach (var c in new[] { "ES:EUW:EU", "DE:EUW:EU", "GB:EUW:EU", "PL:EUNE:EU", "SE:EUNE:EU", "TR:TR:EU", "RU:RU:EU", "US:NA:NA", "CA:NA:NA",
+                                          "MX:LA1:LATAM", "CO:LA1:LATAM", "AR:LA2:LATAM", "CL:LA2:LATAM", "BR:BR:BR", "JP:JP:AP", "KR:KR:KR",
+                                          "AU:OC1:AP", "SG:SG2:AP", "TW:TW2:AP", "VN:VN2:AP" })
+                {
+                    var p = c.Split(':');
+                    string l2 = Velox.Core.Apps.RegionDetect.Suggest("RiotGames.LeagueOfLegends", p[0]);
+                    string v2 = Velox.Core.Apps.RegionDetect.Suggest("RiotGames.Valorant", p[0]);
+                    Check("region " + p[0] + " -> LoL " + p[1] + " / VALORANT " + p[2], l2 == p[1] && v2 == p[2], l2 + " / " + v2);
+                }
+                Check("region: every suggestion is a real variant",
+                      new[] { "ES", "PL", "US", "MX", "AR", "BR", "TR", "RU", "AU", "JP", "KR", "SG", "TW", "VN" }.All(i =>
+                          lol.Variants.Any(v => v.Code == Velox.Core.Apps.RegionDetect.Suggest(lol.Id, i)) &&
+                          val.Variants.Any(v => v.Code == Velox.Core.Apps.RegionDetect.Suggest(val.Id, i))));
+                Check("region: unknown country gives no suggestion", Velox.Core.Apps.RegionDetect.Suggest(lol.Id, "AQ") == null);
+                Console.WriteLine("  (info) Windows country: " + Velox.Core.Apps.RegionDetect.CountryIso2());                var table = new List<string>
                 {
                     "Name                       Id                         Version                 Match",
                     "------------------------------------------------------------------------------------------",

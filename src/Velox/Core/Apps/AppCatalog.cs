@@ -173,14 +173,19 @@ namespace Velox.Core.Apps
             A("games", "Ubisoft.Connect", "Ubisoft Connect");
             A("games", "GOG.Galaxy", "GOG Galaxy");
             A("games", "Blizzard.BattleNet", "Battle.net");
-            // Riot no publica un instalador solo del cliente: cada instalador es el Riot Client preparado para un juego
-            // y una región. Se usa el de League of Legends de la región elegida, con su ventana, y desde el cliente se
-            // instala el juego que se quiera (LoL, VALORANT, TFT...).
+            // Riot publica un instalador por juego y región (cada uno incluye el Riot Client). Al marcarlos se pide confirmar
+            // la región, preseleccionada según el país de Windows (RegionDetect).
             l.Add(new AppEntry
             {
-                Id = "RiotGames.RiotClient", Name = "Riot Client", Category = "games", Interactive = true,
+                Id = "RiotGames.LeagueOfLegends", Name = "League of Legends", Category = "games",
                 Variants = new[] { "EUW", "EUNE", "NA", "LA1", "LA2", "BR", "TR", "RU", "OC1", "JP", "KR", "SG2", "TW2", "VN2" }
                     .Select(c => new AppVariant { Code = c, Id = "RiotGames.LeagueOfLegends." + c }).ToList(),
+            });
+            l.Add(new AppEntry
+            {
+                Id = "RiotGames.Valorant", Name = "VALORANT", Category = "games",
+                Variants = new[] { "EU", "NA", "LATAM", "BR", "KR", "AP" }
+                    .Select(c => new AppVariant { Code = c, Id = "RiotGames.Valorant." + c }).ToList(),
             });
             A("games", "Guru3D.Afterburner", "MSI Afterburner");
 
