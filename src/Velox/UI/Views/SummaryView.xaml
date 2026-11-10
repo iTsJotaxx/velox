@@ -17,6 +17,9 @@
         </Button>
       </Grid>
 
+      <!-- Avisos: ajustes que han vuelto a su valor base y comprobación tras reiniciar -->
+      <StackPanel x:Name="PanelNotices" Margin="0,18,0,0" Visibility="Collapsed"/>
+
       <!-- Hoja de reglajes: el equipo (cabecera) y los cambios (tabla) -->
       <Border Margin="0,22,0,0" Style="{StaticResource Card}" Padding="0">
         <StackPanel>
@@ -57,6 +60,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
               <TextBlock Text="&#xE81C;" FontFamily="{StaticResource Icons}" FontSize="13" Foreground="{StaticResource TextDim}" VerticalAlignment="Center" Margin="0,0,8,0"/>
               <TextBlock x:Name="TxtSaved" Style="{StaticResource Figure}" FontWeight="Normal" FontSize="13" Foreground="{StaticResource TextMuted}" VerticalAlignment="Center"/>
+              <Button Style="{StaticResource BtnGhost}" Margin="10,0,0,0" Click="History_Click" Content="{DynamicResource hist.open}"/>
               <Button x:Name="BtnBackToBase" Style="{StaticResource BtnBase}" Margin="14,0,0,0" Padding="14,8" Click="BackToBase_Click" Content="{DynamicResource ui.sum.backToBase}"/>
             </StackPanel>
           </Grid>

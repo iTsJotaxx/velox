@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Velox.Core.Backup;
 using Velox.Core.Scan;
 using Velox.Localization;
@@ -48,6 +49,11 @@ namespace Velox.Core.Optimizations
         /// </summary>
         public Func<SystemInfo, bool> Locked { get; set; }
         public string ManualUri { get; set; }
+        /// <summary>
+        /// Solo donde Windows dice si el cambio está funcionando de verdad tras reiniciar (no solo el valor guardado):
+        /// devuelve true si el efecto está en marcha. null = solo se comprueba que el valor siga puesto.
+        /// </summary>
+        public Func<bool> VerifyAfterReboot { get; set; }
         /// <summary>Detección extra (además de Reg).</summary>
         public Func<bool> Detect { get; set; }
         /// <summary>Cambios no declarativos (id de la optimización, info del equipo). Usar Tracked.* para guardar copia.</summary>
@@ -118,7 +124,8 @@ namespace Velox.Core.Optimizations
             try { o.Sync(); } catch (Exception ex) { Log.Warn("Sync " + o.Id + ": " + ex.Message); }
         }
 
-        public static void Apply(Optimization o, SystemInfo s)
+        /// <param name="source">Quién lo pide, para el historial: ui, recommended, reapply, profile, headless...</param>
+        public static void Apply(Optimization o, SystemInfo s, string source = "ui")
         {
             try
             {
@@ -130,31 +137,85 @@ namespace Velox.Core.Optimizations
                 }
                 o.Apply?.Invoke(o.Id, s);
             }
-            catch
+            catch (Exception ex)
             {
                 // Si falla a medias, se deshace lo que ya se había cambiado
                 try { BackupStore.Restore(o.Id); Sync(o); } catch { }
+                History.Add(o.Id, true, source, false, ex.Message);
                 throw;
             }
             Sync(o);
+            History.Add(o.Id, true, source);
+            if (o.Restart != RestartNeed.None) RebootCheck.Track(o.Id, true);
             Log.Info("Enabled: " + o.Id);
         }
 
-        public static void Revert(Optimization o, SystemInfo s)
+        public static void Revert(Optimization o, SystemInfo s, string source = "ui")
         {
-            bool hadBackup = BackupStore.Restore(o.Id);
-            if (IsApplied(o))
+            try
             {
-                foreach (var it in o.Reg)
+                bool hadBackup = BackupStore.Restore(o.Id);
+                if (IsApplied(o))
                 {
-                    if (it.Default == null) Core.Reg.Remove(it.Path, it.Name);
-                    else Core.Reg.Set(it.Path, it.Name, it.Default, it.Kind);
+                    foreach (var it in o.Reg)
+                    {
+                        if (it.Default == null) Core.Reg.Remove(it.Path, it.Name);
+                        else Core.Reg.Set(it.Path, it.Name, it.Default, it.Kind);
+                    }
+                    o.Default?.Invoke(s);
+                    if (!hadBackup) Log.Info(o.Id + ": no previous backup, Windows defaults applied.");
                 }
-                o.Default?.Invoke(s);
-                if (!hadBackup) Log.Info(o.Id + ": no previous backup, Windows defaults applied.");
+            }
+            catch (Exception ex)
+            {
+                History.Add(o.Id, false, source, false, ex.Message);
+                throw;
             }
             Sync(o);
+            History.Add(o.Id, false, source);
+            if (o.Restart != RestartNeed.None) RebootCheck.Track(o.Id, false);
             Log.Info("Disabled: " + o.Id);
         }
+
+        /// <summary>Optimizaciones y ajustes de Windows por id (los ajustes empiezan por «tw.»).</summary>
+        public static Optimization Find(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+            return Catalog.All.FirstOrDefault(o => string.Equals(o.Id, id, StringComparison.OrdinalIgnoreCase))
+                ?? Tweaks.TweakCatalog.All.Select(t => t.Opt).FirstOrDefault(o => string.Equals(o.Id, id, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Ajustes que Velox dejó aplicados y que ya no lo están: Windows Update, otro programa o la propia persona los ha
+        /// devuelto a su valor base. Condición: queda copia del original, la última acción registrada fue activarlo, está
+        /// disponible, no lo bloquea Windows y ahora no está aplicado.
+        /// Si la última acción fue desactivarlo y aun así queda copia es que una restauración falló a medias: no cuenta.
+        /// </summary>
+        public static List<Optimization> Reverted(SystemInfo s)
+        {
+            var list = new List<Optimization>();
+            if (s == null) return list;
+            foreach (var id in BackupStore.Ids())
+            {
+                if (Catalog.Retired.Contains(id) || id.StartsWith("game:", StringComparison.OrdinalIgnoreCase)) continue;
+                var o = Find(id);
+                if (o == null) continue;
+                if (History.LastAction(id) == "off") continue;
+                if (!IsAvailable(o, s) || IsLocked(o, s)) continue;
+                if (!IsApplied(o)) list.Add(o);
+            }
+            return list;
+        }
+    }
+}
+
+namespace Velox.Core.Optimizations
+{
+    /// <summary>Un cambio a aplicar: activar (Enable) o devolver a la base una optimización o ajuste de Windows.</summary>
+    public sealed class OptChange
+    {
+        public Optimization Opt { get; }
+        public bool Enable { get; }
+        public OptChange(Optimization opt, bool enable) { Opt = opt; Enable = enable; }
     }
 }

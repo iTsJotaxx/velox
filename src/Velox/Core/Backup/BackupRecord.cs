@@ -17,6 +17,7 @@ namespace Velox.Core.Backup
     ///   Refresh    Path = pantalla, IntA = Hz anteriores
     ///   ClientAnim Flag = animaciones activas antes
     ///   Hibernate  Flag = hibernación activa antes
+    ///   Dns        Path = adaptador ({GUID}), Name = su nombre, Data = DNS IPv4 fijados antes (vacío = los del router)
     /// </summary>
     [DataContract(Name = "Record", Namespace = "")]
     public sealed class BackupRecord

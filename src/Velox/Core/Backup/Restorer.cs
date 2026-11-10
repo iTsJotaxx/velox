@@ -77,6 +77,11 @@ namespace Velox.Core.Backup
                     PowerCfg.SetHibernation(r.Flag == true);
                     break;
 
+                case "Dns":
+                    // Path = adaptador ({GUID}), Data = DNS fijados antes (vacío = los del router)
+                    Tools.DnsTool.RestoreAdapter(r.Path, r.Data);
+                    break;
+
                 default:
                     throw new InvalidOperationException("Unknown backup kind " + r.Kind);
             }

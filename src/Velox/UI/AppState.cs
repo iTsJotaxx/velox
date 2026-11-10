@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Velox.Core;
+using Velox.Core.Backup;
 using Velox.Core.Optimizations;
 using Velox.Core.Scan;
 using Velox.Core.Tools;
@@ -63,7 +64,9 @@ namespace Velox.UI
             Sys = sys;
             Findings = await Task.Run(() => Core.Scan.Findings.Build(sys));
             await Optimizations.RefreshAsync(sys);
-            Log.Info("Scan completed.");
+            await RefreshRevertedAsync();
+            if (!_rebootChecked) { _rebootChecked = true; RebootVerdicts = await Task.Run(() => CheckAfterReboot()); Raise(nameof(RebootVerdicts)); }
+            Log.Info("Scan completed." + (Reverted.Count > 0 ? " Reverted since last time: " + string.Join(", ", Reverted.Select(o => o.Id)) + "." : ""));
             ScanCompleted?.Invoke();
         });
 
@@ -86,17 +89,28 @@ namespace Velox.UI
             catch (Exception ex) { Log.Warn("Live system info: " + ex.Message); }
         }
 
-        /// <summary>Confirma y aplica los cambios pendientes (con punto de restauración si está activado).</summary>
-        public async Task ApplyPendingAsync()
+        /// <summary>Confirma y aplica los cambios pendientes de Optimizaciones (con punto de restauración si está activado).</summary>
+        public async Task ApplyPendingAsync(string source = "ui")
         {
             var pending = Optimizations.GetPending();
             if (pending.Count == 0) { Win?.ShowToast(Loc.T("ui.opts.nothingPending")); return; }
+            await ApplyChangesAsync(pending.Select(p => new OptChange(p.Opt, p.IsChecked)).ToList(), source,
+                Loc.F("ui.opts.confirmTitle", pending.Count), Loc.T("ui.opts.confirmText"));
+        }
 
-            var lines = pending.Select(p => (p.IsChecked ? "+  " + Loc.T("ui.opts.lineEnable") : "–  " + Loc.T("ui.opts.lineDisable")) + " " + p.Name
-                                            + (p.IsChecked && p.IsRisky ? "   ⚠ " + Loc.T("ui.badge.risk") : ""));
-            bool ok = await Win.ConfirmAsync(Loc.F("ui.opts.confirmTitle", pending.Count), Loc.T("ui.opts.confirmText"),
-                string.Join("\n", lines), Loc.T("ui.btn.apply"), Loc.T("ui.btn.cancel"));
-            if (!ok) return;
+        /// <summary>
+        /// Aplica una lista de cambios (optimizaciones y ajustes de Windows): confirmación con las líneas y los ⚠ de riesgo,
+        /// punto de restauración, cada cambio con su copia, historial y relectura del estado. Lo usan Optimizaciones, el
+        /// modo Recomendado, los ajustes revertidos y los perfiles. Devuelve true si se llegó a aplicar algo.
+        /// </summary>
+        public async Task<bool> ApplyChangesAsync(List<OptChange> changes, string source, string title, string text)
+        {
+            if (changes == null || changes.Count == 0) return false;
+            var lines = changes.Select(c => (c.Enable ? "+  " + Loc.T("ui.opts.lineEnable") : "–  " + Loc.T("ui.opts.lineDisable")) + " " + c.Opt.Name
+                                            + (c.Enable && c.Opt.IsRisky ? "   ⚠ " + Loc.T("ui.badge.risk") : ""));
+            bool ok = await Win.ConfirmAsync(title, text, string.Join("\n", lines), Loc.T("ui.btn.apply"), Loc.T("ui.btn.cancel"),
+                                             changes.Any(c => c.Enable && c.Opt.IsRisky));
+            if (!ok) return false;
             if (Settings.Current.CreateRestorePoint && !_restorePointDone) await Win.OfferSystemProtectionAsync();
 
             var failed = new List<string>();
@@ -117,40 +131,104 @@ namespace Velox.UI
                 }
 
                 var sys = Sys;
-                foreach (var p in pending)
+                foreach (var c in changes)
                 {
-                    BusyText = (p.IsChecked ? Loc.T("ui.busy.enabling") : Loc.T("ui.busy.disabling")) + " " + p.Name;
-                    bool enable = p.IsChecked;
+                    BusyText = (c.Enable ? Loc.T("ui.busy.enabling") : Loc.T("ui.busy.disabling")) + " " + c.Opt.Name;
                     try
                     {
-                        await Task.Run(() => { if (enable) OptimizationEngine.Apply(p.Opt, sys); else OptimizationEngine.Revert(p.Opt, sys); });
+                        await Task.Run(() => { if (c.Enable) OptimizationEngine.Apply(c.Opt, sys, source); else OptimizationEngine.Revert(c.Opt, sys, source); });
                         done++;
-                        if (p.Opt.Restart == RestartNeed.Reboot) NeedsReboot = true;
-                        else if (p.Opt.Restart == RestartNeed.Logoff) NeedsLogoff = true;
+                        if (c.Opt.Restart == RestartNeed.Reboot) NeedsReboot = true;
+                        else if (c.Opt.Restart == RestartNeed.Logoff) NeedsLogoff = true;
                     }
                     catch (Exception ex)
                     {
-                        failed.Add(p.Name + ": " + ex.Message);
-                        Log.Error("Apply " + p.Opt.Id, ex);
+                        failed.Add(c.Opt.Name + ": " + ex.Message);
+                        Log.Error("Apply " + c.Opt.Id, ex);
                     }
                 }
                 BusyText = Loc.T("ui.busy.checking");
                 await RefreshLiveSysAsync();
                 await Optimizations.RefreshAsync(sys);
+                await RefreshRevertedAsync();
             });
 
             // Cancelado (o había otra tarea en curso): no se aplicó nada, así que no hay resultado que anunciar
-            if (!ran || cancelled) return;
+            if (!ran || cancelled) return false;
+            ChangesApplied?.Invoke();
             if (failed.Count == 0) Win.ShowToast(Loc.F("ui.opts.appliedOk", done), ToastKind.Success);
             else await Win.ConfirmAsync(Loc.F("ui.opts.appliedSome", done, failed.Count), Loc.T("ui.opts.failedText"), string.Join("\n", failed), Loc.T("ui.btn.ok"), null);
+            return done > 0;
         }
+
+        /// <summary>Después de aplicar o deshacer (para que las páginas que no son Optimizaciones se refresquen).</summary>
+        public event Action ChangesApplied;
+        public void RaiseChangesApplied() => ChangesApplied?.Invoke();
 
         public async Task ApplyRecommendedAsync()
         {
             int n = Optimizations.SelectRecommended();
             Win?.Navigate("optimizations");
-            if (n > 0) await ApplyPendingAsync();
+            if (n > 0) await ApplyPendingAsync("recommended");
             else Win?.ShowToast(Loc.T("ui.opts.alreadyRecommended"), ToastKind.Success);
+        }
+
+        // ------------------------------------------------------------ Ajustes revertidos y comprobación tras reiniciar
+
+        /// <summary>Ajustes que Velox dejó aplicados y que ya no lo están (Windows Update, otro programa o la persona).</summary>
+        public List<Optimization> Reverted { get; private set; } = new List<Optimization>();
+        /// <summary>Resultado de la comprobación tras reiniciar (una vez por arranque de Velox).</summary>
+        public List<RebootVerdict> RebootVerdicts { get; private set; } = new List<RebootVerdict>();
+        bool _rebootChecked;
+
+        /// <summary>Recalcula los ajustes revertidos en segundo plano y avisa en el hilo de la interfaz.</summary>
+        public async Task RefreshRevertedAsync()
+        {
+            var sys = Sys;
+            Reverted = await Task.Run(() =>
+            {
+                try { return OptimizationEngine.Reverted(sys); }
+                catch (Exception ex) { Log.Warn("Reverted check: " + ex.Message); return new List<Optimization>(); }
+            });
+            Raise(nameof(Reverted));
+        }
+
+        /// <summary>Se llama una vez por arranque de Velox, en segundo plano (no toca la interfaz).</summary>
+        static List<RebootVerdict> CheckAfterReboot()
+        {
+            try
+            {
+                return RebootCheck.CheckNow(
+                    id => { var o = OptimizationEngine.Find(id); return o == null ? (bool?)null : OptimizationEngine.IsApplied(o); },
+                    id => { var o = OptimizationEngine.Find(id); try { return o?.VerifyAfterReboot == null ? (bool?)null : o.VerifyAfterReboot(); } catch { return null; } });
+            }
+            catch (Exception ex) { Log.Warn("Reboot check: " + ex.Message); return new List<RebootVerdict>(); }
+        }
+
+        public void DismissRebootVerdicts() { RebootVerdicts = new List<RebootVerdict>(); Raise(nameof(RebootVerdicts)); }
+
+        /// <summary>Vuelve a aplicar los ajustes que se han revertido (con la misma confirmación de siempre).</summary>
+        public async Task ReapplyRevertedAsync()
+        {
+            var list = Reverted.ToList();
+            if (list.Count == 0) return;
+            await ApplyChangesAsync(list.Select(o => new OptChange(o, true)).ToList(), "reapply",
+                Loc.F("ui.rev.confirmTitle", list.Count), Loc.T("ui.rev.confirmText"));
+        }
+
+        /// <summary>«Dejarlos así»: se acepta el valor base y se descarta la copia (queda en el historial).</summary>
+        public async Task AcceptRevertedAsync()
+        {
+            var list = Reverted.ToList();
+            if (list.Count == 0) return;
+            await RunBusy(Loc.T("ui.busy.applying"), async () =>
+            {
+                var sys = Sys;
+                await Task.Run(() => { foreach (var o in list) { try { OptimizationEngine.Revert(o, sys, "accept-base"); } catch (Exception ex) { Log.Warn("Accept base " + o.Id + ": " + ex.Message); } } });
+                await Optimizations.RefreshAsync(sys);
+                await RefreshRevertedAsync();
+            });
+            ChangesApplied?.Invoke();
         }
     }
 }

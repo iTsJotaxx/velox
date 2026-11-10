@@ -103,6 +103,7 @@ namespace Velox.UI
                 case "tweaks": return new TweaksView();
                 case "tools": return new ToolsView();
                 case "log": return new LogView();
+                case "history": return new HistoryView();
                 case "settings": return new SettingsView();
                 default: return new SummaryView();
             }
@@ -124,6 +125,7 @@ namespace Velox.UI
                 case "tweaks": return NavTweaks;
                 case "tools": return NavTools;
                 case "log": return NavSettings; // el registro se abre desde Ajustes
+                case "history": return NavSummary; // el historial se abre desde el Resumen y Ajustes
                 case "settings": return NavSettings;
                 default: return NavSummary;
             }
@@ -377,17 +379,44 @@ namespace Velox.UI
             {
                 done = await Task.Run(() =>
                 {
+                    var before = Core.Backup.BackupStore.Ids();
                     int r = Core.Backup.BackupStore.RestoreAll();
+                    var left = new HashSet<string>(Core.Backup.BackupStore.Ids(), StringComparer.OrdinalIgnoreCase);
+                    foreach (var id in before)
+                    {
+                        Core.Backup.History.Add(id, false, "undo-all", !left.Contains(id));
+                        var o = Core.Optimizations.OptimizationEngine.Find(id);
+                        if (o != null && o.Restart != Core.Optimizations.RestartNeed.None) Core.Backup.RebootCheck.Track(id, false);
+                    }
                     foreach (var o in Core.Optimizations.Catalog.All) { try { o.Sync?.Invoke(); } catch { } }
                     foreach (var t in Core.Tweaks.TweakCatalog.All) { try { t.Opt.Sync?.Invoke(); } catch { } }
                     return r;
                 });
                 await AppState.Current.RefreshLiveSysAsync();
                 await AppState.Current.RefreshOptimizationsAsync();
+                await AppState.Current.RefreshRevertedAsync();
             });
             if (!ran) return false; // había otra tarea en curso: no se ha deshecho nada
             AppState.Current.NeedsReboot = true;
+            AppState.Current.RaiseChangesApplied();
             ShowToast(Loc.F("ui.tools.undoDone", done), ToastKind.Success);
+            return true;
+        }
+
+        /// <summary>Devuelve el DNS original de cada adaptador (Herramientas e Historial).</summary>
+        public async Task<bool> RestoreDnsAsync()
+        {
+            if (!Core.Tools.DnsTool.HasBackup) return false;
+            string error = null;
+            bool ran = await AppState.Current.RunBusy(Loc.T("dns.busyRestore"), async () =>
+            {
+                try { await Task.Run(() => Core.Tools.DnsTool.RestoreOriginal()); }
+                catch (Exception ex) { error = ex.Message; }
+            });
+            if (!ran) return false;
+            AppState.Current.RaiseChangesApplied();
+            if (error != null) { await ConfirmAsync(Loc.T("dns.err.title"), error, null, Loc.T("ui.btn.ok"), null); return false; }
+            ShowToast(Loc.T("dns.restored"), ToastKind.Success);
             return true;
         }
 

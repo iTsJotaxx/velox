@@ -35,8 +35,9 @@ namespace Velox
 
             Settings.Load();
             BackupStore.Load();
+            History.Load();
             foreach (var id in Core.Optimizations.Catalog.Retired)
-                try { if (BackupStore.Restore(id)) Log.Info("Retired optimization restored to its original value: " + id + "."); } catch (Exception ex) { Log.Warn("Retired " + id + ": " + ex.Message); }
+                try { if (BackupStore.Restore(id)) { History.Add(id, false, "retired"); Log.Info("Retired optimization restored to its original value: " + id + "."); } } catch (Exception ex) { Log.Warn("Retired " + id + ": " + ex.Message); }
             Loc.SetLanguage(Settings.Current.Language ?? Loc.SystemLanguage());
 
             var w = new UI.MainWindow();

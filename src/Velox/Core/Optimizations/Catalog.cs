@@ -236,6 +236,8 @@ namespace Velox.Core.Optimizations
                 Available = s => HvciActive() || Reg.GetInt(HvciPath, "Enabled") == 0,
                 Detect = () => Reg.GetInt(HvciPath, "Enabled") == 0,
                 Apply = (id, s) => Tracked.SetReg(id, HvciPath, "Enabled", 0, DWord),
+                // Tras reiniciar, Windows dice si la integridad de memoria está funcionando de verdad
+                VerifyAfterReboot = () => !HvciRunning(),
                 Default = s => Reg.Set(HvciPath, "Enabled", 1, DWord),
             };
             yield return new Optimization
@@ -256,9 +258,11 @@ namespace Velox.Core.Optimizations
         const string MemMgmtPath = @"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management";
 
         /// <summary>¿La integridad de memoria (HVCI) está activada o funcionando ahora?</summary>
-        static bool HvciActive()
+        static bool HvciActive() => Reg.GetInt(HvciPath, "Enabled") == 1 || HvciRunning();
+
+        /// <summary>¿Windows tiene la integridad de memoria funcionando ahora mismo (no solo configurada)?</summary>
+        internal static bool HvciRunning()
         {
-            if (Reg.GetInt(HvciPath, "Enabled") == 1) return true;
             try
             {
                 using (var s = new System.Management.ManagementObjectSearcher(@"root\Microsoft\Windows\DeviceGuard", "SELECT SecurityServicesRunning FROM Win32_DeviceGuard"))

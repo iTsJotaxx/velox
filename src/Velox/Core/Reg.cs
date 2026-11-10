@@ -166,6 +166,14 @@ namespace Velox.Core
             catch { return false; }
         }
 
+        /// <summary>Lee un valor como texto. Devuelve null si no existe.</summary>
+        public static string GetString(string path, string name)
+        {
+            var st = Get(path, name);
+            if (!st.Existed || st.Value == null) return null;
+            return st.Value is string[] a ? string.Join(",", a) : Convert.ToString(st.Value);
+        }
+
         /// <summary>Lee un DWORD (o una cadena numérica). Devuelve null si no existe o no es un número.</summary>
         public static int? GetInt(string path, string name)
         {
