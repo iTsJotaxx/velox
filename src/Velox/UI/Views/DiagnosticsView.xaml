@@ -5,6 +5,11 @@
     <StackPanel Margin="32,4,32,30">
       <TextBlock Text="{DynamicResource ui.diag.title}" Style="{StaticResource H1}"/>
       <TextBlock Text="{DynamicResource ui.diag.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0" MaxWidth="760" HorizontalAlignment="Left"/>
+      <!-- Informe de salud: lo que Velox ya sabe, por áreas (sin nota global) -->
+      <TextBlock Text="{DynamicResource health.title}" Style="{StaticResource H2}" Margin="0,24,0,10"/>
+      <Border Style="{StaticResource Card}" Padding="20,4,20,4">
+        <StackPanel x:Name="HealthRows"/>
+      </Border>
       <StackPanel x:Name="Groups" Margin="0,8,0,0"/>
     </StackPanel>
   </ScrollViewer>

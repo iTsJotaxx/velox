@@ -15,10 +15,78 @@ namespace Velox.UI.Views
         {
             InitializeComponent();
             Build();
+            AppState.Current.ScanCompleted += () => Dispatcher.BeginInvoke(new System.Action(RenderHealth));
         }
 
-        public void OnShown() => Build();
-        public void RefreshTexts() => Build();
+        public void OnShown() { Build(); RenderHealth(); }
+        public void RefreshTexts() { Build(); RenderHealth(); }
+
+        // ------------------------------------------------------------ Informe de salud
+
+        bool _healthLoading;
+
+        async void RenderHealth()
+        {
+            if (_healthLoading) return;
+            var st = AppState.Current;
+            var sys = st.Sys;
+            if (sys == null)
+            {
+                HealthRows.Children.Clear();
+                HealthRows.Children.Add(new TextBlock { Text = Loc.T("ui.sum.scanning"), Style = Res<Style>("Muted"), Margin = new Thickness(0, 12, 0, 12) });
+                return;
+            }
+            _healthLoading = true;
+            var inputs = new Core.Scan.HealthInputs
+            {
+                DiskFreeGB = sys.DiskFreeGB, DiskSizeGB = sys.DiskSizeGB, DiskType = sys.DiskType, RamTotalGB = sys.RamTotalGB,
+                RecommendedPending = st.Optimizations.Scanned ? st.Optimizations.RecommendedDiff : 0,
+                Reverted = st.Reverted?.Count ?? 0, UptimeDays = sys.UptimeDays, StartupApps = sys.StartupEnabled,
+            };
+            try
+            {
+                await System.Threading.Tasks.Task.Run(() =>
+                {
+                    var disks = Core.Scan.HealthReport.ReadDiskHealth();
+                    inputs.DisksUnhealthy = disks.Item1; inputs.DisksTotal = disks.Item2;
+                    var mem = Core.Tools.MemoryTool.Snapshot();
+                    if (mem.Total > 0) inputs.RamAvailablePct = mem.AvailablePct;
+                    inputs.RebootPending = Core.Drivers.DriverSafety.RebootPendingReason() != null;
+                    inputs.DefenderRealtime = Core.Scan.HealthReport.ReadDefenderRealtime();
+                });
+            }
+            finally { _healthLoading = false; }
+
+            HealthRows.Children.Clear();
+            var items = Core.Scan.HealthReport.Build(inputs);
+            for (int i = 0; i < items.Count; i++)
+            {
+                var it = items[i];
+                var g = new Grid();
+                g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(22) });
+                g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(190) });
+                g.ColumnDefinitions.Add(new ColumnDefinition());
+                g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                // Verde = bien, ámbar = pide atención (cada color con un solo significado)
+                g.Children.Add(new System.Windows.Shapes.Ellipse { Width = 8, Height = 8, Fill = Res<Brush>(it.Attention ? "Warning" : "Success"), VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left });
+                var name = new TextBlock { Text = it.Name, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center };
+                Grid.SetColumn(name, 1); g.Children.Add(name);
+                var text = new TextBlock { Text = it.Text, Style = Res<Style>("Muted"), FontSize = 12.5, TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 14, 0) };
+                Grid.SetColumn(text, 2); g.Children.Add(text);
+                if (it.Page != null)
+                {
+                    var b = new Button { Content = it.ActionText, Style = Res<Style>("BtnBase"), Padding = new Thickness(12, 6, 12, 6), Tag = it.Page, VerticalAlignment = VerticalAlignment.Center };
+                    b.Click += (s, e) => Win.Navigate((string)((Button)s).Tag);
+                    System.Windows.Automation.AutomationProperties.SetName(b, it.ActionText + " (" + it.Name + ")");
+                    Grid.SetColumn(b, 3); g.Children.Add(b);
+                }
+                HealthRows.Children.Add(new Border
+                {
+                    BorderBrush = Res<Brush>("Rule"), BorderThickness = new Thickness(0, i == 0 ? 0 : 1, 0, 0),
+                    Padding = new Thickness(0, 12, 0, 12), MinHeight = 52, Child = g,
+                });
+            }
+        }
 
         T Res<T>(string key) => (T)FindResource(key);
         MainWindow Win => (MainWindow)Window.GetWindow(this);
