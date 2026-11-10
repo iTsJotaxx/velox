@@ -14,16 +14,20 @@
       <TextBlock Text="{DynamicResource ui.tools.subtitle}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
       <WrapPanel Margin="0,22,0,0">
 
-        <!-- Temporales -->
+        <!-- Limpieza profunda: analizar → elegir → limpiar -->
         <Border Style="{StaticResource ToolCard}">
           <StackPanel>
             <StackPanel Orientation="Horizontal">
               <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE74D;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-              <TextBlock Text="{DynamicResource ui.tools.tempTitle}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+              <TextBlock Text="{DynamicResource clean.title}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
             </StackPanel>
-            <TextBlock Text="{DynamicResource ui.tools.tempText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
-            <TextBlock x:Name="TxtTemp" FontWeight="SemiBold" Margin="0,12,0,0" Visibility="Collapsed"/>
-            <Button x:Name="BtnTemp" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.tempButton}" Click="Temp_Click"/>
+            <TextBlock Text="{DynamicResource clean.text}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0" TextWrapping="Wrap"/>
+            <StackPanel x:Name="CleanList" Margin="0,12,0,0" Visibility="Collapsed"/>
+            <TextBlock x:Name="TxtTemp" FontWeight="SemiBold" Margin="0,12,0,0" Visibility="Collapsed" TextWrapping="Wrap"/>
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+              <Button x:Name="BtnAnalyze" Style="{StaticResource BtnBase}" Content="{DynamicResource clean.analyze}" Click="Analyze_Click"/>
+              <Button x:Name="BtnTemp" Style="{StaticResource BtnBase}" Margin="8,0,0,0" Click="Temp_Click" Visibility="Collapsed"/>
+            </StackPanel>
           </StackPanel>
         </Border>
 
@@ -37,6 +41,23 @@
             <TextBlock Text="{DynamicResource ui.tools.rpText}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0"/>
             <TextBlock x:Name="TxtRp" Style="{StaticResource Body}" FontSize="12.5" Margin="0,12,0,0" Visibility="Collapsed"/>
             <Button x:Name="BtnRp" Style="{StaticResource BtnBase}" HorizontalAlignment="Left" Margin="0,16,0,0" Content="{DynamicResource ui.tools.rpButton}" Click="Rp_Click"/>
+          </StackPanel>
+        </Border>
+
+        <!-- DNS en un clic: medir, cambiar y volver al original -->
+        <Border Style="{StaticResource ToolCard}">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE774;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+              <TextBlock Text="{DynamicResource dns.title}" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{DynamicResource dns.text}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,12,0,0" TextWrapping="Wrap"/>
+            <TextBlock x:Name="TxtDnsNow" Style="{StaticResource Figure}" FontWeight="Normal" FontSize="13" Margin="0,12,0,0" TextWrapping="Wrap"/>
+            <StackPanel x:Name="DnsList" Margin="0,8,0,0" Visibility="Collapsed"/>
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+              <Button x:Name="BtnDnsMeasure" Style="{StaticResource BtnBase}" Content="{DynamicResource dns.measure}" Click="DnsMeasure_Click"/>
+              <Button x:Name="BtnDnsRestore" Style="{StaticResource BtnGhost}" Margin="8,0,0,0" Content="{DynamicResource dns.restore}" Click="DnsRestore_Click" Visibility="Collapsed"/>
+            </StackPanel>
           </StackPanel>
         </Border>
 
