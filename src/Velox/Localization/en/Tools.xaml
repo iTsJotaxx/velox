@@ -29,7 +29,6 @@
   <sys:String x:Key="tools.err.protectedKill">“{0}” is a system process and cannot be closed from here.</sys:String>
   <sys:String x:Key="tools.err.protectedPriority">“{0}” is a system process and its priority cannot be changed from here.</sys:String>
   <sys:String x:Key="tools.err.gamePath">The path of this process's executable cannot be read.</sys:String>
-  <sys:String x:Key="tools.err.memRejected">Windows rejected the operation (NTSTATUS 0x{0}).</sys:String>
   <sys:String x:Key="tools.restore.created">Restore point created.</sys:String>
   <sys:String x:Key="tools.restore.skipped">Windows did not create a new restore point because one from the last 24 hours already exists. That one will serve as your starting point.</sys:String>
   <sys:String x:Key="tools.restore.failed">The restore point could not be created: {0}</sys:String>
