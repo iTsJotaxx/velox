@@ -82,6 +82,7 @@ namespace Velox.UI
                 case "startup": return new StartupView();
                 case "processes": return new ProcessesView();
                 case "apps": return new AppsView();
+                case "uninstall": return new UninstallView();
                 case "drivers": return new DriversView();
                 case "diagnostics": return new DiagnosticsView();
                 case "memory": return new MemoryView();
@@ -102,6 +103,7 @@ namespace Velox.UI
                 case "startup": return NavStartup;
                 case "processes": return NavProcesses;
                 case "apps": return NavApps;
+                case "uninstall": return NavUninstall;
                 case "drivers": return NavDrivers;
                 case "diagnostics": return NavDiagnostics;
                 case "memory": return NavMemory;
@@ -169,6 +171,31 @@ namespace Velox.UI
                         await Task.Delay(1500);
                         for (int i = 0; i < 2400 && AppState.Current.IsBusy; i++) await Task.Delay(500); // hasta 20 min
                         await Task.Delay(12000); // relectura de lo instalado
+                    }
+                }
+                if (_current == "uninstall" && App.TestAction != null && PageHost.Content is UninstallView uv)
+                {
+                    // --action=store | select:Nombre1,Nombre2 | uninstall:Nombre1,Nombre2;autoconfirm
+                    string act = App.TestAction.Split(';')[0];
+                    await Task.Delay(4000);
+                    if (act == "store") { uv.TestStore(); await Task.Delay(8000); }
+                    else if (act.StartsWith("storeuninstall:"))
+                    {
+                        uv.TestStore(); await Task.Delay(9000);
+                        uv.TestSelect(act.Substring(15).Split(','));
+                        uv.TestUninstall();
+                        await Task.Delay(1500);
+                        for (int i = 0; i < 1200 && AppState.Current.IsBusy; i++) await Task.Delay(500);
+                        await Task.Delay(2000);
+                    }
+                    else if (act.StartsWith("select:")) uv.TestSelect(act.Substring(7).Split(','));
+                    else if (act.StartsWith("uninstall:"))
+                    {
+                        uv.TestSelect(act.Substring(10).Split(','));
+                        uv.TestUninstall();
+                        await Task.Delay(1500);
+                        for (int i = 0; i < 1200 && AppState.Current.IsBusy; i++) await Task.Delay(500);
+                        await Task.Delay(2000);
                     }
                 }
                 if (_current == "drivers" && App.TestAction == "safety" && PageHost.Content is DriversView drv)

@@ -124,7 +124,20 @@ namespace Velox.Core.Apps
 
         const int AdminContextNotAllowed = unchecked((int)0x8A150056);
 
-        static bool IsElevated()
+        /// <summary>Ejecuta un comando de winget y, si va elevado y winget se niega por estar instalado para el usuario, lo repite como usuario.</summary>
+        internal static int RunUninstallCommand(string args, TimeSpan timeout)
+        {
+            var r = Run(args, timeout, CancellationToken.None);
+            const int UserScopeAsAdmin = unchecked((int)0x8A15007D); // instalado para el usuario: no se quita como administrador
+            if (!r.TimedOut && (r.Code == UserScopeAsAdmin || r.Code == AdminContextNotAllowed) && IsElevated())
+            {
+                Log.Info("winget: user-scope package; running the uninstall as the signed-in user.");
+                r = RunAsUser(args, timeout, null);
+            }
+            return r.TimedOut ? -1 : r.Code;
+        }
+
+        internal static bool IsElevated()
         {
             using (var id = System.Security.Principal.WindowsIdentity.GetCurrent())
                 return new System.Security.Principal.WindowsPrincipal(id).IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);

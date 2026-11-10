@@ -132,6 +132,25 @@ namespace Velox.IntegrationTests
                       string.Join(" | ", hits.Select(h => h.Name + "/" + h.Id + "/" + h.Version)));
             }
 
+            // ---------------------------------------------------------------- Desinstalador
+            {
+                Velox.Core.Apps.Uninstaller.Split("\"C:\\Program Files\\App X\\uninst.exe\" /S", out var e1, out var a1);
+                Check("unin: quoted command split", e1 == @"C:\Program Files\App X\uninst.exe" && a1 == "/S", e1 + " | " + a1);
+                Velox.Core.Apps.Uninstaller.Split(@"C:\Program Files\App X\uninst.exe /S /X", out var e2, out var a2);
+                Check("unin: unquoted command with spaces split", e2 == @"C:\Program Files\App X\uninst.exe" && a2 == "/S /X", e2 + " | " + a2);
+                Velox.Core.Apps.Uninstaller.Split("MsiExec.exe /X{12345678-1234-1234-1234-123456789012}", out var e3, out var a3);
+                Check("unin: msiexec split", e3 == "MsiExec.exe" && a3.StartsWith("/X{"), e3 + " | " + a3);
+                string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                string la = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                Check("unin: program folder is a safe leftover", Velox.Core.Apps.Uninstaller.IsSafeLeftover(Path.Combine(pf, "SomeApp")));
+                Check("unin: Program Files itself is not", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(pf));
+                Check("unin: Common Files is not", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(Path.Combine(pf, "Common Files")));
+                Check("unin: LocalAppData\\Programs is not", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(Path.Combine(la, "Programs")));
+                Check("unin: Windows folder is not", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32")));
+                Check("unin: user profile is not", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));
+                Check("unin: D:\\Games is not (outside known roots)", !Velox.Core.Apps.Uninstaller.IsSafeLeftover(@"D:\Games\Something"));
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

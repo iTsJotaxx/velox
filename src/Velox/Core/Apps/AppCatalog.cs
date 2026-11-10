@@ -38,6 +38,8 @@ namespace Velox.Core.Apps
         public static readonly List<AppCategory> Categories = new List<AppCategory>
         {
             new AppCategory { Id = "web", Icon = "" },
+            new AppCategory { Id = "ai", Icon = "" },
+            new AppCategory { Id = "notes", Icon = "" },
             new AppCategory { Id = "chat", Icon = "" },
             new AppCategory { Id = "media", Icon = "" },
             new AppCategory { Id = "imaging", Icon = "" },
@@ -64,6 +66,24 @@ namespace Velox.Core.Apps
             A("web", "Opera.OperaGX", "Opera GX");
             A("web", "Vivaldi.Vivaldi", "Vivaldi");
             A("web", "LibreWolf.LibreWolf", "LibreWolf");
+
+            A("ai", "Anthropic.Claude", "Claude");
+            A("ai", "Anthropic.ClaudeCode", "Claude Code");
+            A("ai", "OpenAI.ChatGPT", "ChatGPT");
+            A("ai", "Perplexity.Comet", "Comet (Perplexity)");
+            A("ai", "Ollama.Ollama", "Ollama");
+            A("ai", "ElementLabs.LMStudio", "LM Studio");
+            A("ai", "Jan.Jan", "Jan");
+            A("ai", "nomic.gpt4all", "GPT4All");
+            A("ai", "CloudStack.Msty", "Msty");
+            A("ai", "Anysphere.Cursor", "Cursor");
+            A("ai", "Codeium.Windsurf", "Windsurf");
+
+            A("notes", "Obsidian.Obsidian", "Obsidian");
+            A("notes", "Notion.Notion", "Notion");
+            A("notes", "Logseq.Logseq", "Logseq");
+            A("notes", "Joplin.Joplin", "Joplin");
+            A("notes", "Anki.Anki", "Anki");
 
             A("chat", "Discord.Discord", "Discord");
             A("chat", "Telegram.TelegramDesktop", "Telegram");
@@ -95,7 +115,6 @@ namespace Velox.Core.Apps
             A("docs", "Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader");
             A("docs", "SumatraPDF.SumatraPDF", "SumatraPDF");
             A("docs", "Notepad++.Notepad++", "Notepad++");
-            A("docs", "Obsidian.Obsidian", "Obsidian");
 
             A("games", "Valve.Steam", "Steam");
             A("games", "EpicGames.EpicGamesLauncher", "Epic Games Launcher");
