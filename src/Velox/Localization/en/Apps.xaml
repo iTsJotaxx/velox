@@ -73,6 +73,7 @@
 
   <sys:String x:Key="apps.cat.web">Browsers</sys:String>
   <sys:String x:Key="apps.cat.ai">Artificial intelligence</sys:String>
+  <sys:String x:Key="apps.cat.aitools">AI add-ons</sys:String>
   <sys:String x:Key="apps.cat.notes">Notes and knowledge</sys:String>
   <sys:String x:Key="apps.cat.chat">Messaging</sys:String>
   <sys:String x:Key="apps.cat.media">Music and video</sys:String>

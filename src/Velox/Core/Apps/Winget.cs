@@ -76,6 +76,7 @@ namespace Velox.Core.Apps
         public static bool IsAvailable => Path != null;
 
         const string Common = "--source winget --accept-source-agreements --disable-interactivity";
+        const string NoSource = "--accept-source-agreements --disable-interactivity";
 
         // ------------------------------------------------------------ Ejecución
 
@@ -254,7 +255,8 @@ namespace Velox.Core.Apps
             string file = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "velox-winget-" + Guid.NewGuid().ToString("N") + ".json");
             try
             {
-                var r = Run("export -o \"" + file + "\" --include-versions " + Common, TimeSpan.FromMinutes(3), CancellationToken.None);
+                // Todos los orígenes (winget y Microsoft Store), para reconocer también WhatsApp, Instagram...
+                var r = Run("export -o \"" + file + "\" --include-versions " + NoSource, TimeSpan.FromMinutes(3), CancellationToken.None);
                 if (!File.Exists(file)) { Log.Warn("winget export produced no file (code 0x" + r.Code.ToString("X8") + ")."); return map; }
                 var root = MiniJson.Parse(File.ReadAllText(file, Encoding.UTF8)) as Dictionary<string, object>;
                 if (root != null && root.TryGetValue("Sources", out var sources) && sources is IEnumerable srcList)
@@ -285,7 +287,7 @@ namespace Velox.Core.Apps
             onStatus?.Invoke(Loc.T("apps.status.preparing"));
 
             var sw = Stopwatch.StartNew();
-            string args = "install --id \"" + app.Id + "\" --exact --silent --accept-package-agreements " + Common;
+            string args = "install --id \"" + app.Id + "\" --exact --silent --accept-package-agreements --source " + (app.SourceName == "msstore" ? "msstore" : "winget") + " " + NoSource;
             var r = Run(args, InstallTimeout, ct, line => Progress(line, onStatus));
             // Algunos instaladores (Spotify...) se niegan a funcionar como administrador: se repite como usuario normal
             if (!r.TimedOut && r.Code == AdminContextNotAllowed && IsElevated())

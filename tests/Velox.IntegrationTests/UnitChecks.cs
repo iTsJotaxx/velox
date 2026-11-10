@@ -118,6 +118,8 @@ namespace Velox.IntegrationTests
                 Check("apps: id with space rejected", !Velox.Core.Apps.AppCatalog.IsValidId("Evil.App --override x"));
                 Check("apps: id with quote rejected", !Velox.Core.Apps.AppCatalog.IsValidId("Evil.\"App"));
                 Check("apps: id without dot rejected", !Velox.Core.Apps.AppCatalog.IsValidId("notepad"));
+                Check("apps: Microsoft Store id accepted", Velox.Core.Apps.AppCatalog.IsValidId("9NKSQGP7F2NH") && !Velox.Core.Apps.AppCatalog.IsValidId("9nksqgp7f2nh x"));
+                Check("apps: store apps marked msstore", Velox.Core.Apps.AppCatalog.BuiltIn.Where(a => System.Text.RegularExpressions.Regex.IsMatch(a.Id, "^[0-9A-Z]{12}$")).All(a => a.Source == "msstore"));
                 var table = new List<string>
                 {
                     "Name                       Id                         Version                 Match",

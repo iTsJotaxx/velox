@@ -15,6 +15,9 @@ namespace Velox.Core.Apps
         [DataMember(Order = 1)] public string Id { get; set; }
         [DataMember(Order = 2)] public string Name { get; set; }
         [DataMember(Order = 3)] public string Category { get; set; }
+        /// <summary>Origen en winget: null = repositorio «winget»; "msstore" = Microsoft Store (WhatsApp, Instagram...).</summary>
+        [DataMember(Order = 4, EmitDefaultValue = false)] public string Source { get; set; }
+        public string SourceName => string.IsNullOrEmpty(Source) ? "winget" : Source;
         /// <summary>Añadida por el usuario (se guarda en %AppData%\Velox\apps.json y se puede quitar).</summary>
         public bool IsCustom { get; set; }
     }
@@ -39,6 +42,7 @@ namespace Velox.Core.Apps
         {
             new AppCategory { Id = "web", Icon = "" },
             new AppCategory { Id = "ai", Icon = "" },
+            new AppCategory { Id = "aitools", Icon = "" },
             new AppCategory { Id = "notes", Icon = "" },
             new AppCategory { Id = "chat", Icon = "" },
             new AppCategory { Id = "media", Icon = "" },
@@ -57,7 +61,7 @@ namespace Velox.Core.Apps
         static List<AppEntry> Build()
         {
             var l = new List<AppEntry>();
-            void A(string cat, string id, string name) => l.Add(new AppEntry { Id = id, Name = name, Category = cat });
+            void A(string cat, string id, string name, string source = null) => l.Add(new AppEntry { Id = id, Name = name, Category = cat, Source = source });
 
             A("web", "Google.Chrome", "Google Chrome");
             A("web", "Mozilla.Firefox", "Firefox");
@@ -67,11 +71,12 @@ namespace Velox.Core.Apps
             A("web", "Vivaldi.Vivaldi", "Vivaldi");
             A("web", "LibreWolf.LibreWolf", "LibreWolf");
 
+            // Inteligencia artificial: los asistentes (apps de chat)
             A("ai", "Anthropic.Claude", "Claude");
-            A("ai", "Anthropic.ClaudeCode", "Claude Code");
             A("ai", "OpenAI.ChatGPT", "ChatGPT");
+            A("ai", "Google.GeminiDesktop", "Gemini");
+            A("ai", "GitHub.CopilotApp", "GitHub Copilot");
             A("ai", "Perplexity.Comet", "Comet (Perplexity)");
-            A("ai", "Ollama.Ollama", "Ollama");
             A("ai", "ElementLabs.LMStudio", "LM Studio");
             A("ai", "Jan.Jan", "Jan");
             A("ai", "nomic.gpt4all", "GPT4All");
@@ -79,7 +84,19 @@ namespace Velox.Core.Apps
             A("ai", "Anysphere.Cursor", "Cursor");
             A("ai", "Codeium.Windsurf", "Windsurf");
 
-            A("notes", "Obsidian.Obsidian", "Obsidian");
+            // Complementos de IA: herramientas que amplían lo que hace la IA
+            A("aitools", "Obsidian.Obsidian", "Obsidian (vault de notas)");
+            A("aitools", "Anthropic.ClaudeCode", "Claude Code (terminal)");
+            A("aitools", "OpenAI.Codex", "Codex CLI (OpenAI)");
+            A("aitools", "GitHub.Copilot", "GitHub Copilot CLI");
+            A("aitools", "Ollama.Ollama", "Ollama (modelos locales)");
+            A("aitools", "Comfy.ComfyUI-Desktop", "ComfyUI (imágenes)");
+            A("aitools", "Upscayl.Upscayl", "Upscayl (mejorar imágenes)");
+            A("aitools", "ChidiWilliams.Buzz", "Buzz (transcribir audio)");
+            A("aitools", "WisprFlow.WisprFlow", "Wispr Flow (dictado)");
+            A("aitools", "Docker.DockerDesktop", "Docker (servidores MCP)");
+            A("aitools", "DigitalScholar.Zotero", "Zotero (investigación)");
+
             A("notes", "Notion.Notion", "Notion");
             A("notes", "Logseq.Logseq", "Logseq");
             A("notes", "Joplin.Joplin", "Joplin");
@@ -91,6 +108,8 @@ namespace Velox.Core.Apps
             A("chat", "Zoom.Zoom", "Zoom");
             A("chat", "SlackTechnologies.Slack", "Slack");
             A("chat", "Microsoft.Teams", "Microsoft Teams");
+            A("chat", "9NKSQGP7F2NH", "WhatsApp", "msstore");
+            A("chat", "9NBLGGH5L9XT", "Instagram", "msstore");
 
             A("media", "VideoLAN.VLC", "VLC");
             A("media", "Spotify.Spotify", "Spotify");
@@ -122,6 +141,8 @@ namespace Velox.Core.Apps
             A("games", "Ubisoft.Connect", "Ubisoft Connect");
             A("games", "GOG.Galaxy", "GOG Galaxy");
             A("games", "Blizzard.BattleNet", "Battle.net");
+            A("games", "RiotGames.LeagueOfLegends.EUW", "League of Legends (Riot)");
+            A("games", "RiotGames.Valorant.EU", "VALORANT (Riot)");
             A("games", "Guru3D.Afterburner", "MSI Afterburner");
 
             A("utils", "7zip.7zip", "7-Zip");
@@ -194,9 +215,13 @@ namespace Velox.Core.Apps
             catch (Exception ex) { Log.Warn("Custom apps could not be saved: " + ex.Message); }
         }
 
-        /// <summary>Identificador con la forma de winget (Editor.Programa...): letras, números y . - _ + sin espacios.</summary>
+        /// <summary>
+        /// Identificador de winget (Editor.Programa...: letras, números y . - _ + sin espacios) o de Microsoft Store
+        /// (12 letras mayúsculas y números, p. ej. 9NKSQGP7F2NH).
+        /// </summary>
         public static bool IsValidId(string id) =>
-            !string.IsNullOrWhiteSpace(id) && id.Length <= 128 && id.IndexOf('.') > 0 &&
-            id.All(c => char.IsLetterOrDigit(c) || c == '.' || c == '-' || c == '_' || c == '+');
+            !string.IsNullOrWhiteSpace(id) && id.Length <= 128 &&
+            ((id.IndexOf('.') > 0 && id.All(c => char.IsLetterOrDigit(c) || c == '.' || c == '-' || c == '_' || c == '+'))
+             || System.Text.RegularExpressions.Regex.IsMatch(id, "^[0-9A-Z]{12}$"));
     }
 }

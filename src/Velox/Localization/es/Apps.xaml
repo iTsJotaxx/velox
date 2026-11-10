@@ -73,6 +73,7 @@
 
   <sys:String x:Key="apps.cat.web">Navegadores</sys:String>
   <sys:String x:Key="apps.cat.ai">Inteligencia artificial</sys:String>
+  <sys:String x:Key="apps.cat.aitools">Complementos de IA</sys:String>
   <sys:String x:Key="apps.cat.notes">Notas y conocimiento</sys:String>
   <sys:String x:Key="apps.cat.chat">Mensajería</sys:String>
   <sys:String x:Key="apps.cat.media">Música y vídeo</sys:String>
