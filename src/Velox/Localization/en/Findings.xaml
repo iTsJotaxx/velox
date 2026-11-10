@@ -9,7 +9,7 @@
   <sys:String x:Key="find.ramLow">There is only {0} GB of RAM: 16 GB is recommended for current games.</sys:String>
   <sys:String x:Key="find.singleChannel">There is a single RAM module (single channel). With two identical modules (dual channel) minimum FPS improves noticeably.</sys:String>
   <sys:String x:Key="find.xmp">Your RAM ({0}) is running at {1} MT/s. If your modules are rated faster, enable the XMP/EXPO profile in the BIOS: it usually gives 5 to 15% more FPS.</sys:String>
-  <sys:String x:Key="find.hvci">Memory integrity (core isolation) is on. It protects against malware but can cost 5-10% of FPS. Velox does not touch it: it is changed in Windows Security › Device security.</sys:String>
+  <sys:String x:Key="find.hvci">Memory integrity (core isolation) is on. It protects against malware but can cost 5-10% of FPS. You can turn it off in Optimizations › Games (marked as Risk) or in Windows Security › Device security.</sys:String>
   <sys:String x:Key="find.perfCounters">Windows performance counters are turned off (probably by another optimizer). It saves almost nothing and some monitoring tools stop showing data; Velox measures by other means.</sys:String>
   <sys:String x:Key="find.hdd">Windows is installed on a mechanical hard drive. Moving to an SSD is the most noticeable upgrade you can make.</sys:String>
   <sys:String x:Key="find.diskLow">Low disk space on {0} ({1} GB free, {2}%). Below 15% the system slows down.</sys:String>

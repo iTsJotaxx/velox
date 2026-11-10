@@ -223,6 +223,25 @@ namespace Velox.IntegrationTests
                 Check("allow store: Solitaire", Protection.ProgramReason("Solitaire & Casual Games", "Microsoft Corporation", "Microsoft.MicrosoftSolitaireCollection_8wekyb3d8bbwe") == null);
             }
 
+            // ---------------------------------------------------------------- Optimizaciones con riesgo
+            {
+                var all = Velox.Core.Optimizations.Catalog.All;
+                var sys = new Velox.Core.Scan.SystemInfo { Hvci = true, RamTotalGB = 16 };
+                foreach (var id in new[] { "PrioritySeparation", "FullscreenOpt", "Mpo", "MemoryIntegrity", "CpuMitigations" })
+                    Check("catalog has " + id, all.Any(o => o.Id == id));
+                Check("ids are unique", all.Select(o => o.Id).Distinct().Count() == all.Count);
+                var risky = all.Where(o => o.IsRisky).ToList();
+                Check("risky set", new HashSet<string>(risky.Select(o => o.Id)).SetEquals(new[] { "MemoryIntegrity", "CpuMitigations", "WSearch" }),
+                      string.Join(",", risky.Select(o => o.Id)));
+                foreach (var o in risky)
+                {
+                    Check("risk kind known: " + o.Id, o.Risk == "security" || o.Risk == "features", o.Risk);
+                    Check("risky never recommended: " + o.Id, !Velox.Core.Optimizations.OptimizationEngine.IsRecommended(o, sys));
+                    Check("risky is user's call: " + o.Id, Velox.Core.Optimizations.OptimizationEngine.IsPreference(o, sys));
+                }
+                Check("security risks need a reboot", risky.Where(o => o.Risk == "security").All(o => o.Restart == Velox.Core.Optimizations.RestartNeed.Reboot));
+            }
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

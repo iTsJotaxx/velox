@@ -99,4 +99,21 @@
   <sys:String x:Key="opt.MenuDelay.desc">Los submenús se abren a los 50 ms en vez de a los 400 ms al pasar el ratón por encima.</sys:String>
   <sys:String x:Key="opt.SearchWeb.name">Búsqueda de Inicio sin resultados de internet</sys:String>
   <sys:String x:Key="opt.SearchWeb.desc">Quita las sugerencias y los resultados web de Bing al buscar en el menú Inicio, de modo que las búsquedas son más rápidas y solo muestran tus apps y archivos. Se aplica al volver a iniciar sesión.</sys:String>
+  <!-- Optimizaciones añadidas en 1.4 -->
+  <sys:String x:Key="opt.PrioritySeparation.name">Más CPU para el juego en primer plano</sys:String>
+  <sys:String x:Key="opt.PrioritySeparation.desc">Windows reparte la CPU dando más prioridad y turnos más cortos al programa que tienes delante (el juego). Ayuda a mantener los FPS estables cuando hay cosas en segundo plano.</sys:String>
+  <sys:String x:Key="opt.FullscreenOpt.name">Pantalla completa exclusiva real</sys:String>
+  <sys:String x:Key="opt.FullscreenOpt.desc">Desactiva las «optimizaciones de pantalla completa» de Windows para que los juegos en pantalla completa vayan en modo exclusivo. En algunos juegos DirectX 9/11 reduce el retraso de entrada; en otros no cambia nada. Cambiar de ventana con Alt+Tab puede tardar un poco más.</sys:String>
+  <sys:String x:Key="opt.Mpo.name">Desactivar la superposición multiplano (MPO)</sys:String>
+  <sys:String x:Key="opt.Mpo.desc">Corrige tirones, parpadeos y pantallazos negros que dan algunas gráficas (sobre todo NVIDIA) al usar varias pantallas o jugar en ventana. Si no tienes esos problemas, no hace falta.</sys:String>
+  <sys:String x:Key="opt.MemoryIntegrity.name">Desactivar la integridad de memoria</sys:String>
+  <sys:String x:Key="opt.MemoryIntegrity.desc">La integridad de memoria (Seguridad de Windows &gt; Aislamiento del núcleo) protege el núcleo de Windows contra malware, pero puede costar entre un 5 y un 15 % de FPS, sobre todo en procesadores de antes de 2019.</sys:String>
+  <sys:String x:Key="opt.CpuMitigations.name">Quitar las protecciones de Spectre y Meltdown</sys:String>
+  <sys:String x:Key="opt.CpuMitigations.desc">Desactiva las protecciones del procesador contra los fallos Spectre y Meltdown. En procesadores antiguos (Intel de 8.ª generación o anteriores) puede dar bastante más rendimiento; en los modernos casi no cambia.</sys:String>
+  <sys:String x:Key="risk.security">Reduce la protección de Windows: un programa malicioso lo tendría más fácil para tomar el control del equipo. Úsalo solo en un PC de juego en el que no instales programas de dudosa procedencia. Se puede deshacer en cualquier momento.</sys:String>
+  <sys:String x:Key="risk.features">Algunas funciones de Windows dejan de funcionar o van más lentas mientras esté activado. Se puede deshacer en cualquier momento.</sys:String>
+  <sys:String x:Key="ui.badge.risk">Riesgo</sys:String>
+  <sys:String x:Key="ui.risk.title">¿Activar «{0}»?</sys:String>
+  <sys:String x:Key="ui.risk.undo">Velox guarda cómo estaba: puedes desactivarlo cuando quieras o usar «Deshacer todo» en Herramientas.</sys:String>
+  <sys:String x:Key="ui.risk.accept">Entiendo el riesgo</sys:String>
 </ResourceDictionary>

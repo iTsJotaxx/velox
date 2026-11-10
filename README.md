@@ -23,7 +23,8 @@
 ## Features
 
 - **Scans your PC** (CPU, GPU, RAM, displays, disks, power plan, Windows security features) and **recommends** the right settings for *your* hardware: laptop or desktop, SSD or HDD, modern or older GPU...
-- **31 optimizations in 6 collapsible sections**: power and CPU, games and FPS, mouse and keyboard, network, background and RAM, and the Windows interface.
+- **36 optimizations in 6 collapsible sections**: power and CPU, games and FPS (foreground priority, fullscreen optimizations, MPO, HAGS, MMCSS...), mouse and keyboard, network, background and RAM, and the Windows interface.
+- **Risky settings are labelled**: the ones that trade security or Windows features for FPS (memory integrity, Spectre/Meltdown mitigations, Windows Search) carry a red *Risk* badge, are never part of Recommended mode, and Velox explains what you give up and asks for confirmation when you turn them on.
 - **Recommended or Custom mode**: apply the recommended setup in one click, or pick each switch yourself. Switching back to *Recommended* always restores the recommended setup. Settings that are a matter of taste on your PC (or have a minimal effect) are marked *Your call* and Recommended mode leaves them alone.
 - **Every switch shows the real state of Windows** and nothing changes until you press *Apply changes*.
 - **Safe by design**: Velox backs up every original value before changing it, creates a system restore point before the first change, and rolls back an optimization if it only half applies.
@@ -48,7 +49,7 @@
 
 ## What Velox will *not* do
 
-- It never touches Windows security: Defender, memory integrity, UAC and the firewall stay as they are. (If memory integrity costs you FPS, Velox tells you where to change it.)
+- It never touches Defender, UAC or the firewall. Memory integrity and CPU mitigations are only turned off if you choose so, with a *Risk* badge and a warning first, and the same switch turns them back on.
 - It does not disable Windows Update or uninstall built-in apps.
 - It does not change your mouse polling rate: that is set by the mouse itself. The built-in meter tells you what you have.
 - No placebo "tweaks" (`LargeSystemCache`, mouse data queue size, etc.), and nothing is recommended unless it actually helps on your hardware. Low-impact settings say so in their description, and some are explicitly *not* recommended (for example turning off Power Throttling, which can hurt CPUs with efficiency cores).

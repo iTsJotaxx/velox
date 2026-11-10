@@ -51,6 +51,15 @@ namespace Velox.Core.Optimizations
         /// <summary>Aplica al instante lo que hay en el registro (SystemParametersInfo, avisos...).</summary>
         public Action Sync { get; set; }
 
+        /// <summary>
+        /// Riesgo (null = ninguno): "security" (reduce la protección de Windows) o "features" (deja de funcionar algo de
+        /// Windows). Se marca con una etiqueta, pide confirmación al activarlo y el modo Recomendado nunca lo activa.
+        /// Texto: "risk.{Risk}".
+        /// </summary>
+        public string Risk { get; set; }
+        public bool IsRisky => Risk != null;
+        public string RiskText => Risk == null ? null : Loc.T("risk." + Risk);
+
         public string Name => Loc.T("opt." + Id + ".name");
         public string Description => Loc.T("opt." + Id + ".desc");
     }
@@ -80,12 +89,13 @@ namespace Velox.Core.Optimizations
 
         public static bool IsRecommended(Optimization o, SystemInfo s)
         {
-            if (s == null || o.Recommended == null) return false;
+            if (s == null || o.Recommended == null || o.IsRisky) return false; // lo arriesgado nunca se recomienda
             try { return o.Recommended(s); } catch { return false; }
         }
 
         public static bool IsPreference(Optimization o, SystemInfo s)
         {
+            if (s != null && o.IsRisky) return true; // el modo Recomendado no lo toca y no cuenta para la puntuación
             if (s == null || o.Preference == null) return false;
             try { return o.Preference(s); } catch { return false; }
         }

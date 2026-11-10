@@ -75,10 +75,12 @@ namespace Velox.UI
             var pending = Optimizations.GetPending();
             if (pending.Count == 0) { Win?.ShowToast(Loc.T("ui.opts.nothingPending")); return; }
 
-            var lines = pending.Select(p => (p.IsChecked ? "+  " + Loc.T("ui.opts.lineEnable") : "–  " + Loc.T("ui.opts.lineDisable")) + " " + p.Name);
+            var lines = pending.Select(p => (p.IsChecked ? "+  " + Loc.T("ui.opts.lineEnable") : "–  " + Loc.T("ui.opts.lineDisable")) + " " + p.Name
+                                            + (p.IsChecked && p.IsRisky ? "   ⚠ " + Loc.T("ui.badge.risk") : ""));
             bool ok = await Win.ConfirmAsync(Loc.F("ui.opts.confirmTitle", pending.Count), Loc.T("ui.opts.confirmText"),
                 string.Join("\n", lines), Loc.T("ui.btn.apply"), Loc.T("ui.btn.cancel"));
             if (!ok) return;
+            if (Settings.Current.CreateRestorePoint && !_restorePointDone) await Win.OfferSystemProtectionAsync();
 
             var failed = new List<string>();
             int done = 0;

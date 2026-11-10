@@ -99,4 +99,21 @@
   <sys:String x:Key="opt.MenuDelay.desc">Submenus open after 50 ms instead of 400 ms when you hover over them.</sys:String>
   <sys:String x:Key="opt.SearchWeb.name">Start search without web results</sys:String>
   <sys:String x:Key="opt.SearchWeb.desc">Removes Bing suggestions and web results from Start menu search, so searches are faster and only show your apps and files. Takes effect the next time you sign in.</sys:String>
+  <!-- Optimizations added in 1.4 -->
+  <sys:String x:Key="opt.PrioritySeparation.name">More CPU for the foreground game</sys:String>
+  <sys:String x:Key="opt.PrioritySeparation.desc">Windows shares the CPU giving more priority and shorter turns to the program in front of you (the game). It helps keep FPS steady when things run in the background.</sys:String>
+  <sys:String x:Key="opt.FullscreenOpt.name">True exclusive fullscreen</sys:String>
+  <sys:String x:Key="opt.FullscreenOpt.desc">Turns off Windows «fullscreen optimizations» so fullscreen games run in exclusive mode. In some DirectX 9/11 games it lowers input lag; in others it changes nothing. Alt+Tab may take a little longer.</sys:String>
+  <sys:String x:Key="opt.Mpo.name">Disable multiplane overlay (MPO)</sys:String>
+  <sys:String x:Key="opt.Mpo.desc">Fixes stutters, flickering and black screens some graphics cards (mainly NVIDIA) have with several monitors or windowed games. If you do not have those problems, you do not need it.</sys:String>
+  <sys:String x:Key="opt.MemoryIntegrity.name">Turn off memory integrity</sys:String>
+  <sys:String x:Key="opt.MemoryIntegrity.desc">Memory integrity (Windows Security &gt; Core isolation) protects the Windows kernel against malware, but it can cost 5 to 15 % FPS, especially on processors from before 2019.</sys:String>
+  <sys:String x:Key="opt.CpuMitigations.name">Remove Spectre and Meltdown protections</sys:String>
+  <sys:String x:Key="opt.CpuMitigations.desc">Turns off the processor protections against the Spectre and Meltdown flaws. On older processors (Intel 8th gen or earlier) it can give noticeably more performance; on modern ones it barely changes anything.</sys:String>
+  <sys:String x:Key="risk.security">Lowers Windows protection: malicious software would have an easier time taking over the PC. Use it only on a gaming PC where you do not install programs from dubious sources. It can be undone at any time.</sys:String>
+  <sys:String x:Key="risk.features">Some Windows features stop working or get slower while it is on. It can be undone at any time.</sys:String>
+  <sys:String x:Key="ui.badge.risk">Risk</sys:String>
+  <sys:String x:Key="ui.risk.title">Turn on «{0}»?</sys:String>
+  <sys:String x:Key="ui.risk.undo">Velox keeps how it was: you can turn it off whenever you want or use «Undo everything» in Tools.</sys:String>
+  <sys:String x:Key="ui.risk.accept">I understand the risk</sys:String>
 </ResourceDictionary>

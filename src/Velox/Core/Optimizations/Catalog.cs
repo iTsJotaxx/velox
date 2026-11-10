@@ -199,6 +199,75 @@ namespace Velox.Core.Optimizations
                     R(MmPath + @"\Tasks\Games", "SFIO Priority", "High", Str, "Normal"),
                 },
             };
+            yield return new Optimization
+            {
+                // 0x26: intervalos cortos y variables, con el máximo impulso al programa en primer plano (el juego)
+                Id = "PrioritySeparation", Category = "games", Impact = Impact.Low, Restart = RestartNeed.None,
+                Reg = new[] { Dw(@"HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl", "Win32PrioritySeparation", 0x26, 2).WhenMissing(2) },
+            };
+            yield return new Optimization
+            {
+                Id = "FullscreenOpt", Category = "games", Impact = Impact.Low, Restart = RestartNeed.None,
+                Recommended = s => false,
+                Preference = s => true,
+                Reg = new[]
+                {
+                    Dw(GameConfigStore, "GameDVR_FSEBehaviorMode", 2, 2).WhenMissing(2),
+                    Dw(GameConfigStore, "GameDVR_HonorUserFSEBehaviorMode", 1, 0).WhenMissing(0),
+                    Dw(GameConfigStore, "GameDVR_DXGIHonorFSEWindowsCompatible", 1, 0).WhenMissing(0),
+                    Dw(GameConfigStore, "GameDVR_FSEBehavior", 2, null),
+                },
+            };
+            yield return new Optimization
+            {
+                // Superposición multiplano: con algunas gráficas da tirones, parpadeos o pantallazos negros
+                Id = "Mpo", Category = "games", Impact = Impact.Low, Restart = RestartNeed.Reboot,
+                Recommended = s => false,
+                Preference = s => true,
+                Reg = new[] { Dw(@"HKLM\SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5, null) },
+            };
+            yield return new Optimization
+            {
+                // Integridad de memoria (HVCI, aislamiento del núcleo): cuesta FPS, sobre todo en CPU sin MBEC (anteriores a Intel 7.ª gen / Zen 2)
+                Id = "MemoryIntegrity", Category = "games", Impact = Impact.High, Restart = RestartNeed.Reboot,
+                Risk = "security",
+                Available = s => HvciActive() || Reg.GetInt(HvciPath, "Enabled") == 0,
+                Detect = () => Reg.GetInt(HvciPath, "Enabled") == 0,
+                Apply = (id, s) => Tracked.SetReg(id, HvciPath, "Enabled", 0, DWord),
+                Default = s => Reg.Set(HvciPath, "Enabled", 1, DWord),
+            };
+            yield return new Optimization
+            {
+                // Protecciones contra Spectre y Meltdown: en CPU antiguas cuestan bastante rendimiento
+                Id = "CpuMitigations", Category = "games", Impact = Impact.Medium, Restart = RestartNeed.Reboot,
+                Risk = "security",
+                Reg = new[]
+                {
+                    Dw(MemMgmtPath, "FeatureSettingsOverride", 3, null),
+                    Dw(MemMgmtPath, "FeatureSettingsOverrideMask", 3, null),
+                },
+            };
+        }
+
+        const string GameConfigStore = @"HKCU\System\GameConfigStore";
+        const string HvciPath = @"HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity";
+        const string MemMgmtPath = @"HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management";
+
+        /// <summary>¿La integridad de memoria (HVCI) está activada o funcionando ahora?</summary>
+        static bool HvciActive()
+        {
+            if (Reg.GetInt(HvciPath, "Enabled") == 1) return true;
+            try
+            {
+                using (var s = new System.Management.ManagementObjectSearcher(@"root\Microsoft\Windows\DeviceGuard", "SELECT SecurityServicesRunning FROM Win32_DeviceGuard"))
+                using (var res = s.Get())
+                    foreach (System.Management.ManagementBaseObject o in res)
+                        using (o)
+                            if (o["SecurityServicesRunning"] is Array arr)
+                                foreach (var v in arr) if (Convert.ToInt32(v) == 2) return true; // 2 = HVCI
+            }
+            catch { }
+            return false;
         }
 
         // ================================================================ Ratón y teclado
@@ -404,6 +473,7 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "WSearch", Category = "background", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Risk = "features", // la búsqueda del menú Inicio, del Explorador y de Outlook deja de ser instantánea
                 Available = s => Services.GetStartInfo("WSearch") != null,
                 Recommended = s => s.DiskType == "HDD",
                 Detect = () => Services.IsDisabledOrMissing("WSearch"),

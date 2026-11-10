@@ -19,8 +19,28 @@ namespace Velox.UI.Views
             ChkRestore.IsChecked = Settings.Current.CreateRestorePoint;
             if (Settings.Current.ExpandAllCategories) Vm.SetAllExpanded(true);
             Vm.Changed += Update;
+            Vm.RiskyEnabled += OnRiskyEnabled;
             AppState.Current.PropertyChanged += OnStateChanged;
             Update();
+        }
+
+        bool _askingRisk;
+
+        /// <summary>Aviso al activar una optimización con riesgo; si no se confirma, el interruptor vuelve atrás.</summary>
+        async void OnRiskyEnabled(OptItemVM item)
+        {
+            if (_askingRisk) return;
+            _askingRisk = true;
+            try
+            {
+                var w = (MainWindow)Window.GetWindow(this);
+                if (w == null) return;
+                bool ok = await w.ConfirmAsync(Loc.F("ui.risk.title", item.Name), item.RiskText, Loc.T("ui.risk.undo"),
+                                               Loc.T("ui.risk.accept"), Loc.T("ui.btn.cancel"), true);
+                if (!ok) item.IsChecked = false;
+                else Log.Info("Risky optimization selected by the user: " + item.Opt.Id + ".");
+            }
+            finally { _askingRisk = false; }
         }
 
         void OnStateChanged(object s, PropertyChangedEventArgs e)
@@ -76,6 +96,24 @@ namespace Velox.UI.Views
             Vm.ApplyFilter(TxtSearch.Text);
             Update();
         }
+
+#if UITEST
+        public void TestExpand(string category)
+        {
+            foreach (var c in Vm.Categories) c.IsExpanded = c.Cat.Id == category;
+            Update();
+        }
+
+        public void TestSearch(string text) => TxtSearch.Text = text;
+
+        public void TestToggle(string id)
+        {
+            foreach (var c in Vm.Categories)
+                foreach (var it in c.Items)
+                    if (it.Opt.Id == id) { c.IsExpanded = true; it.IsChecked = !it.IsChecked; }
+            Update();
+        }
+#endif
 
         void Expand_Click(object sender, RoutedEventArgs e)
         {

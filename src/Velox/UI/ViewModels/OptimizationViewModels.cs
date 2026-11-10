@@ -22,7 +22,14 @@ namespace Velox.UI.ViewModels
         public bool IsChecked
         {
             get => _isChecked;
-            set { if (Set(ref _isChecked, value)) { RaiseState(); _parent.OnItemToggled(this); } }
+            set
+            {
+                if (!Set(ref _isChecked, value)) return;
+                RaiseState();
+                _parent.OnItemToggled(this);
+                // Activar algo arriesgado a mano pide confirmación (la vista muestra el aviso y puede deshacerlo)
+                if (value && IsRisky && !IsApplied) _parent.OnRiskyEnabled(this);
+            }
         }
 
         /// <summary>Cambia el interruptor sin avisar al padre (cambios en bloque).</summary>
@@ -43,6 +50,8 @@ namespace Velox.UI.ViewModels
         public bool Scanned { get => _scanned; set { if (Set(ref _scanned, value)) RaiseState(); } }
 
         public string Name => Opt.Name;
+        public bool IsRisky => Opt.IsRisky;
+        public string RiskText => Opt.RiskText;
         public string Description => Opt.Description;
         public string ImpactText => Loc.T("ui.impact." + Opt.Impact.ToString().ToLowerInvariant());
         public string ImpactKind => Opt.Impact.ToString();
@@ -52,7 +61,7 @@ namespace Velox.UI.ViewModels
         public bool IsPending => IsAvailable && IsChecked != IsApplied;
         public bool ShowRecommended => Scanned && IsScored && IsRecommended;
         public bool ShowNotRecommended => Scanned && IsScored && !IsRecommended;
-        public bool ShowPreference => Scanned && IsAvailable && IsPreference;
+        public bool ShowPreference => Scanned && IsAvailable && IsPreference && !IsRisky; // los de riesgo ya llevan su etiqueta
 
         /// <summary>na | pending | on | off</summary>
         public string StatusKind => !IsAvailable ? "na" : IsPending ? "pending" : IsApplied ? "on" : "off";
@@ -96,6 +105,8 @@ namespace Velox.UI.ViewModels
         public string PendingText => Loc.F("ui.opts.catPending", Pending);
         public double ActivePct => Available == 0 ? 0 : 100.0 * Active / Available;
 
+        internal void OnRiskyEnabled(OptItemVM item) => _owner.OnRiskyEnabled(item);
+
         internal void OnItemToggled(OptItemVM item)
         {
             Recount();
@@ -123,6 +134,9 @@ namespace Velox.UI.ViewModels
 
         public ObservableCollection<CategoryVM> Categories { get; } = new ObservableCollection<CategoryVM>();
         public event Action Changed;
+        /// <summary>El usuario ha activado a mano una optimización con riesgo: la vista pide confirmación.</summary>
+        public event Action<OptItemVM> RiskyEnabled;
+        internal void OnRiskyEnabled(OptItemVM item) => RiskyEnabled?.Invoke(item);
 
         public OptimizationsVM()
         {

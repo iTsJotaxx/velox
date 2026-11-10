@@ -35,6 +35,12 @@
   <sys:String x:Key="ui.busy.checking">Checking the result...</sys:String>
   <sys:String x:Key="ui.rp.failedTitle">The restore point could not be created</sys:String>
   <sys:String x:Key="ui.rp.continue">Velox still keeps a backup of every value it changes, so everything can be undone from the app itself. Continue?</sys:String>
+  <sys:String x:Key="ui.rp.offTitle">System Protection is turned off</sys:String>
+  <sys:String x:Key="ui.rp.offText">Without it Windows cannot create restore points. Do you want Velox to turn it on for the Windows drive? It is the same option as System Properties › System Protection; Windows reserves a little disk space (managed automatically) to store the points.</sys:String>
+  <sys:String x:Key="ui.rp.enable">Turn on</sys:String>
+  <sys:String x:Key="ui.rp.notNow">Not now</sys:String>
+  <sys:String x:Key="ui.rp.enabled">System Protection turned on.</sys:String>
+  <sys:String x:Key="ui.rp.enableFailed">Windows did not allow turning on System Protection.</sys:String>
 
   <!-- States and badges -->
   <sys:String x:Key="ui.status.on">On</sys:String>
@@ -72,6 +78,8 @@
   <sys:String x:Key="ui.sum.tileGpu">GRAPHICS</sys:String>
   <sys:String x:Key="ui.sum.tileRam">MEMORY</sys:String>
   <sys:String x:Key="ui.sum.tileRamModules">{0} module(s)</sys:String>
+  <sys:String x:Key="ui.sum.gpuNone">Basic adapter</sys:String>
+  <sys:String x:Key="ui.sum.diskGeneric">Disk</sys:String>
   <sys:String x:Key="ui.sum.tileDisk">SYSTEM DRIVE</sys:String>
   <sys:String x:Key="ui.sum.tileDiskFree">{0} GB free of {1} GB</sys:String>
   <sys:String x:Key="ui.sum.findings">Findings</sys:String>

@@ -9,7 +9,7 @@
   <sys:String x:Key="find.ramLow">Solo hay {0} GB de RAM: para juegos actuales se recomiendan 16 GB.</sys:String>
   <sys:String x:Key="find.singleChannel">Hay un solo módulo de RAM (canal simple). Con dos módulos iguales (doble canal) los FPS mínimos suben notablemente.</sys:String>
   <sys:String x:Key="find.xmp">La RAM ({0}) funciona a {1} MT/s. Si tus módulos son más rápidos, activa el perfil XMP/EXPO en la BIOS: suele dar entre un 5 y un 15 % más de FPS.</sys:String>
-  <sys:String x:Key="find.hvci">La integridad de memoria (aislamiento del núcleo) está activada. Protege contra malware, pero puede costar un 5-10 % de FPS. Velox no la toca: se cambia en Seguridad de Windows › Seguridad del dispositivo.</sys:String>
+  <sys:String x:Key="find.hvci">La integridad de memoria (aislamiento del núcleo) está activada. Protege contra malware, pero puede costar un 5-10 % de FPS. Puedes desactivarla en Optimizaciones › Juegos (marcada como Riesgo), o en Seguridad de Windows › Seguridad del dispositivo.</sys:String>
   <sys:String x:Key="find.perfCounters">Los contadores de rendimiento de Windows están desactivados (probablemente por otro programa optimizador). Apenas ahorra nada y algunas herramientas de monitorización dejan de mostrar datos; Velox mide por otras vías.</sys:String>
   <sys:String x:Key="find.hdd">Windows está instalado en un disco duro mecánico. Pasar a un SSD es la mejora más notable que puedes hacer.</sys:String>
   <sys:String x:Key="find.diskLow">Queda poco espacio en {0} ({1} GB libres, {2} %). Por debajo del 15 % el sistema se ralentiza.</sys:String>

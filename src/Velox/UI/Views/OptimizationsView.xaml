@@ -34,6 +34,13 @@
                   <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Violet}" Text="{DynamicResource ui.badge.preference}"/>
                 </StackPanel>
               </Border>
+              <Border Style="{StaticResource Badge}" Background="{StaticResource DangerSoft}" Visibility="{Binding IsRisky, Converter={StaticResource BoolVis}}"
+                      ToolTip="{Binding RiskText}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource Icons}" FontSize="9" Foreground="{StaticResource Danger}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                  <TextBlock Style="{StaticResource BadgeText}" Foreground="{StaticResource Danger}" Text="{DynamicResource ui.badge.risk}"/>
+                </StackPanel>
+              </Border>
               <Border x:Name="ImpactBadge" Style="{StaticResource Badge}" Background="#20252F">
                 <TextBlock x:Name="ImpactTxt" Style="{StaticResource BadgeText}" Foreground="{StaticResource TextMuted}" Text="{Binding ImpactText}"/>
               </Border>

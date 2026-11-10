@@ -33,6 +33,7 @@
   <sys:String x:Key="tools.restore.skipped">Windows did not create a new restore point because one from the last 24 hours already exists. That one will serve as your starting point.</sys:String>
   <sys:String x:Key="tools.restore.failed">The restore point could not be created: {0}</sys:String>
   <sys:String x:Key="tools.restore.disabled">System Protection is turned off by a Windows policy.</sys:String>
+  <sys:String x:Key="tools.restore.off">System Protection is turned off for the Windows drive. Turn it on to be able to create restore points.</sys:String>
   <sys:String x:Key="tools.restore.timeout">Windows took more than 4 minutes to create the restore point; Velox stopped waiting.</sys:String>
   <sys:String x:Key="tools.restore.errCode">Windows returned error {0}. Check that System Protection is turned on for the system drive.</sys:String>
 </ResourceDictionary>

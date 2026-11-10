@@ -35,6 +35,12 @@
   <sys:String x:Key="ui.busy.checking">Comprobando el resultado...</sys:String>
   <sys:String x:Key="ui.rp.failedTitle">No se pudo crear el punto de restauración</sys:String>
   <sys:String x:Key="ui.rp.continue">Velox guarda igualmente una copia de cada valor que cambia, así que todo se puede deshacer desde la propia app. ¿Continuar?</sys:String>
+  <sys:String x:Key="ui.rp.offTitle">La Protección del sistema está desactivada</sys:String>
+  <sys:String x:Key="ui.rp.offText">Sin ella Windows no puede crear puntos de restauración. ¿Quieres que Velox la active en la unidad de Windows? Es la misma opción de Propiedades del sistema › Protección del sistema; Windows reserva un pequeño espacio del disco (se ajusta solo) para guardar los puntos.</sys:String>
+  <sys:String x:Key="ui.rp.enable">Activar</sys:String>
+  <sys:String x:Key="ui.rp.notNow">Ahora no</sys:String>
+  <sys:String x:Key="ui.rp.enabled">Protección del sistema activada.</sys:String>
+  <sys:String x:Key="ui.rp.enableFailed">Windows no dejó activar la Protección del sistema.</sys:String>
 
   <!-- Estados e insignias -->
   <sys:String x:Key="ui.status.on">Activa</sys:String>
@@ -72,6 +78,8 @@
   <sys:String x:Key="ui.sum.tileGpu">GRÁFICA</sys:String>
   <sys:String x:Key="ui.sum.tileRam">MEMORIA</sys:String>
   <sys:String x:Key="ui.sum.tileRamModules">{0} módulo(s)</sys:String>
+  <sys:String x:Key="ui.sum.gpuNone">Adaptador básico</sys:String>
+  <sys:String x:Key="ui.sum.diskGeneric">Disco</sys:String>
   <sys:String x:Key="ui.sum.tileDisk">DISCO DEL SISTEMA</sys:String>
   <sys:String x:Key="ui.sum.tileDiskFree">{0} GB libres de {1} GB</sys:String>
   <sys:String x:Key="ui.sum.findings">Hallazgos</sys:String>

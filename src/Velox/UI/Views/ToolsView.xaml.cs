@@ -160,6 +160,7 @@ namespace Velox.UI.Views
         async void Rp_Click(object sender, RoutedEventArgs e)
         {
             RestorePointOutcome r = null;
+            if (AppState.Current.IsIdle) await Win.OfferSystemProtectionAsync();
             await AppState.Current.RunBusy(Loc.T("ui.busy.restorePoint"), async () => r = await RestorePointTool.CreateAsync("Velox"));
             if (r == null) return;
             TxtRp.Text = r.Message;

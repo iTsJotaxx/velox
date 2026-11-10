@@ -183,7 +183,7 @@ namespace Velox.Core.Tools
                         rc = res == null ? 0 : Convert.ToUInt32(res["ReturnValue"]);
                 }
                 if (rc != 0)
-                    return Fail(Loc.F("tools.restore.errCode", rc));
+                    return ProtectionOff() ? Fail(Loc.T("tools.restore.off")) : Fail(Loc.F("tools.restore.errCode", rc));
 
                 // Si Windows saltó el punto por la regla de 24 h, devuelve 0 pero no crea ninguno
                 long after = MaxSequence(scope);
@@ -201,9 +201,44 @@ namespace Velox.Core.Tools
             }
             catch (Exception ex)
             {
+                // Con la Protección del sistema apagada, WMI lanza una excepción sin mensaje
+                if (ProtectionOff()) { Log.Warn("Restore point: System Protection is off."); return Fail(Loc.T("tools.restore.off")); }
                 Log.Error("Restore point", ex);
-                return Fail(ex.Message);
+                return Fail(string.IsNullOrWhiteSpace(ex.Message) ? ex.GetType().Name : ex.Message);
             }
+        }
+
+        const string SrKey = @"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore";
+        const string SrPolicy = @"HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore";
+
+        /// <summary>¿La Protección del sistema está apagada (y se puede activar: no la bloquea una directiva)?</summary>
+        public static bool ProtectionOff()
+        {
+            if (Reg.GetInt(SrPolicy, "DisableSR") == 1 || Reg.GetInt(SrPolicy, "DisableConfig") == 1) return false;
+            return Reg.GetInt(SrKey, "RPSessionInterval") == 0; // 0 = apagada en todas las unidades
+        }
+
+        /// <summary>Activa la Protección del sistema en la unidad de Windows (como el botón «Configurar» de Windows).</summary>
+        public static bool EnableProtection()
+        {
+            try
+            {
+                string drive = Path.GetPathRoot(Environment.SystemDirectory); // "C:\"
+                var scope = new ManagementScope(@"\\.\root\default");
+                scope.Connect();
+                using (var cls = new ManagementClass(scope, new ManagementPath("SystemRestore"), null))
+                using (var inParams = cls.GetMethodParameters("Enable"))
+                {
+                    inParams["Drive"] = drive;
+                    using (var res = cls.InvokeMethod("Enable", inParams, null))
+                    {
+                        uint rc = res == null ? 0 : Convert.ToUInt32(res["ReturnValue"]);
+                        Log.Info("System Protection enabled on " + drive + " (rc=" + rc + ").");
+                        return rc == 0;
+                    }
+                }
+            }
+            catch (Exception ex) { Log.Error("Enable System Protection", ex); return false; }
         }
 
         static RestorePointOutcome Fail(string detail)

@@ -116,6 +116,7 @@ namespace Velox.UI.Views
             var d = row.Device;
             if (!await SafeToChangeDrivers()) return;
             if (!await Win.ConfirmAsync(Loc.F("ui.drv.rollbackTitle", d.DeviceName), Loc.T("ui.drv.rollbackText"), null, Loc.T("ui.drv.rollback"), Loc.T("ui.btn.cancel"))) return;
+            await Win.OfferSystemProtectionAsync();
             string msg = null; string error = null;
             bool cancelled = false;
             await AppState.Current.RunBusy(Loc.T("ui.drv.rollbackBusy"), async () =>
@@ -211,6 +212,7 @@ namespace Velox.UI.Views
             string text = Loc.T("ui.drv.confirmText");
             if (selected.Any(u => u.Source == DriverSource.Nvidia)) text += "\n\n" + Loc.T("ui.drv.confirmNvidia");
             if (!await Win.ConfirmAsync(Loc.F("ui.drv.confirmTitle", selected.Count), text, string.Join("\n", lines), Loc.T("ui.drv.install"), Loc.T("ui.btn.cancel"))) return;
+            await Win.OfferSystemProtectionAsync();
 
             DriverInstallResult result = null;
             _installCts = new CancellationTokenSource();

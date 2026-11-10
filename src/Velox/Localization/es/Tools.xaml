@@ -33,6 +33,7 @@
   <sys:String x:Key="tools.restore.skipped">Windows no ha creado un punto nuevo porque ya existe uno de las últimas 24 horas. Ese servirá como punto de partida.</sys:String>
   <sys:String x:Key="tools.restore.failed">No se pudo crear el punto de restauración: {0}</sys:String>
   <sys:String x:Key="tools.restore.disabled">La Protección del sistema está desactivada por una directiva de Windows.</sys:String>
+  <sys:String x:Key="tools.restore.off">La Protección del sistema está desactivada en la unidad de Windows. Actívala para poder crear puntos de restauración.</sys:String>
   <sys:String x:Key="tools.restore.timeout">Windows tardó más de 4 minutos en crear el punto de restauración; se ha dejado de esperar.</sys:String>
   <sys:String x:Key="tools.restore.errCode">Windows devolvió el error {0}. Comprueba que la Protección del sistema esté activada para la unidad del sistema.</sys:String>
 </ResourceDictionary>

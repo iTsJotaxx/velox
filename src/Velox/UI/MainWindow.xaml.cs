@@ -198,11 +198,22 @@ namespace Velox.UI
                         await Task.Delay(2000);
                     }
                 }
+                if (_current == "optimizations" && App.TestAction != null && PageHost.Content is OptimizationsView ov)
+                {
+                    // --action=expand:categoría | risk:Id (despliega su categoría y la activa: sale el aviso)
+                    for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    string act = App.TestAction;
+                    if (act.StartsWith("expand:")) ov.TestExpand(act.Substring(7));
+                    else if (act.StartsWith("risk:")) ov.TestToggle(act.Substring(5));
+                    else if (act.StartsWith("search:")) ov.TestSearch(act.Substring(7));
+                    await Task.Delay(900);
+                }
                 if (_current == "drivers" && App.TestAction == "safety" && PageHost.Content is DriversView drv)
                 {
                     drv.TestSafety();
                     await Task.Delay(1500);
                 }
+                if (App.TestAction == "protection") { _ = OfferSystemProtectionAsync(); await Task.Delay(1200); }
                 if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
                 await Task.Delay(400);
                 Log.Info("UITEST: rendering");
@@ -355,6 +366,21 @@ namespace Velox.UI
         }
 
         // ------------------------------------------------------------ Diálogo de confirmación
+
+        bool _protectionAsked;
+
+        /// <summary>
+        /// Antes de crear un punto de restauración: si la Protección del sistema está apagada (no se puede crear ninguno),
+        /// ofrece activarla. Se pregunta una vez por sesión.
+        /// </summary>
+        public async Task OfferSystemProtectionAsync()
+        {
+            if (_protectionAsked || !await Task.Run(() => Core.Tools.RestorePointTool.ProtectionOff())) return;
+            _protectionAsked = true;
+            if (!await ConfirmAsync(Loc.T("ui.rp.offTitle"), Loc.T("ui.rp.offText"), null, Loc.T("ui.rp.enable"), Loc.T("ui.rp.notNow"))) return;
+            bool ok = await Task.Run(() => Core.Tools.RestorePointTool.EnableProtection());
+            ShowToast(ok ? Loc.T("ui.rp.enabled") : Loc.T("ui.rp.enableFailed"), ok ? ToastKind.Success : ToastKind.Error);
+        }
 
         /// <summary>Muestra un diálogo con el estilo de la app. cancelText = null → solo botón de aceptar.</summary>
         public Task<bool> ConfirmAsync(string title, string message, string details, string okText, string cancelText, bool danger = false)

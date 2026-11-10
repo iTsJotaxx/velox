@@ -45,7 +45,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="70">
+            <GridViewColumn Width="90">
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.proc.colCount}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Count}" Foreground="{StaticResource TextMuted}"/></DataTemplate></GridViewColumn.CellTemplate>
             </GridViewColumn>
@@ -61,7 +61,7 @@
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.proc.colPriority}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Priority}" Foreground="{StaticResource TextMuted}"/></DataTemplate></GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="380">
+            <GridViewColumn Width="360">
               <GridViewColumn.Header><TextBlock Text="{DynamicResource ui.proc.colDesc}"/></GridViewColumn.Header>
               <GridViewColumn.CellTemplate>
                 <DataTemplate><TextBlock Text="{Binding Description}" Foreground="{StaticResource TextDim}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}"/></DataTemplate>

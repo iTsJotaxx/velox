@@ -32,6 +32,10 @@ Options: `--no-wu`, `--no-nvidia`, `--only=<text>` (only devices whose name cont
 
 Note: right after a driver change, Windows keeps reporting the old version through WMI (`Win32_PnPSignedDriver`) until the next restart. The real version is the PnP property `DEVPKEY_Device_DriverVersion`.
 
+## Smoke test
+
+`Velox.IntegrationTests.exe result.txt --smoke` (as administrator) runs every other section for real and leaves the system as it was: system scan and findings, in-app diagnostics (ping, network info, DNS flush, disk health, battery), memory lists / free RAM / trim a process, temp files and shader cache cleaning, restore point, startup apps on/off (with a temporary entry), process priority and end task (on a copy of `PING.EXE`, and `csrss` must be refused), permanent game optimization, updater check, driver inventory/search/safety blockers, winget installed list and search, uninstall lists (desktop and Store), disk scan of the user profile and folder protection, Explorer restart and settings save/load. It never installs or uninstalls programs or drivers.
+
 ## Unit checks
 
 `Velox.IntegrationTests.exe result.txt --unit` runs pure-logic checks that change nothing on the system: firmware filter, version rules, Windows Update device matching, NVIDIA catalog names and download URLs, Windows Update / NVIDIA duplicates for the same GPU, and the temporary files cleaner (on a scratch folder). CI runs them on every build.

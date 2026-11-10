@@ -32,6 +32,8 @@ namespace Velox.IntegrationTests
             string outFile = args.FirstOrDefault(a => !a.StartsWith("--"));
             // Lógica pura, sin cambiar nada del sistema: se puede ejecutar sin administrador (y en CI)
             if (args.Contains("--unit")) return UnitChecks.Run(outFile);
+            // Prueba funcional de todas las secciones (como administrador; deja todo como estaba)
+            if (args.Contains("--smoke")) return SmokeTest.Run(outFile);
             // Modo drivers: instala de verdad con el motor de la interfaz (ver DriversTest.cs)
             if (args.Contains("--drivers"))
                 return DriversTest.Run(outFile, !args.Contains("--no-wu"), !args.Contains("--no-nvidia"),
@@ -150,6 +152,7 @@ namespace Velox.IntegrationTests
                 new[] { @"HKCU\Control Panel\Mouse", "MouseSpeed" },
                 new[] { @"HKCU\Control Panel\Keyboard", "KeyboardDelay" },
                 new[] { @"HKCU\Control Panel\Desktop", "MenuShowDelay" },
+                new[] { @"HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled" },
             };
             foreach (var k in CatalogHelpers.ActiveInterfaceKeys())
             {

@@ -79,10 +79,12 @@ namespace Velox.UI.Views
             if (s == null) return;
             var gpu = s.Gpus.FirstOrDefault(g => g.Dedicated) ?? s.Gpus.FirstOrDefault();
             AddTile("", Loc.T("ui.sum.tileCpu"), Shorten(s.Cpu), Loc.F("ui.sum.tileCpuSub", s.Cores, s.Threads));
-            AddTile("", Loc.T("ui.sum.tileGpu"), Shorten(gpu?.Name ?? "-"), gpu != null && gpu.VramGB > 0 ? gpu.VramGB.ToString("0.#") + " GB VRAM" : "");
+            AddTile("", Loc.T("ui.sum.tileGpu"), gpu == null ? Loc.T("ui.sum.gpuNone") : Shorten(gpu.Name), gpu != null && gpu.VramGB > 0 ? gpu.VramGB.ToString("0.#") + " GB VRAM" : "");
             AddTile("", Loc.T("ui.sum.tileRam"), s.RamTotalGB.ToString("0.#") + " GB " + s.RamType,
-                (s.RamSpeed > 0 ? s.RamSpeed + " MT/s · " : "") + Loc.F("ui.sum.tileRamModules", s.RamModules));
-            AddTile("", Loc.T("ui.sum.tileDisk"), s.DiskType + (string.IsNullOrEmpty(s.DiskBus) ? "" : " · " + s.DiskBus),
+                // En máquinas virtuales Windows no da módulos de RAM ni tipo de disco: no se muestran «0 módulos» ni «Unknown»
+                (s.RamSpeed > 0 ? s.RamSpeed + " MT/s" : "") + (s.RamSpeed > 0 && s.RamModules > 0 ? " · " : "")
+                + (s.RamModules > 0 ? Loc.F("ui.sum.tileRamModules", s.RamModules) : ""));
+            AddTile("", Loc.T("ui.sum.tileDisk"), (s.DiskType == "SSD" || s.DiskType == "HDD" ? s.DiskType : Loc.T("ui.sum.diskGeneric")) + (string.IsNullOrEmpty(s.DiskBus) ? "" : " · " + s.DiskBus),
                 Loc.F("ui.sum.tileDiskFree", s.DiskFreeGB.ToString("0"), s.DiskSizeGB.ToString("0")));
         }
 
