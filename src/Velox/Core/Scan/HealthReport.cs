@@ -63,7 +63,7 @@ namespace Velox.Core.Scan
                 list.Add(new HealthItem
                 {
                     Area = "disks", Attention = i.DisksUnhealthy > 0, Page = i.DisksUnhealthy > 0 ? "diagnostics" : null,
-                    Text = i.DisksUnhealthy > 0 ? Loc.F("health.disks.bad", i.DisksUnhealthy, i.DisksTotal) : Loc.F("health.disks.ok", i.DisksTotal),
+                    Text = i.DisksUnhealthy > 0 ? Loc.F("health.disks.bad", i.DisksUnhealthy, i.DisksTotal) : i.DisksTotal == 1 ? Loc.T("health.disks.ok1") : Loc.F("health.disks.ok", i.DisksTotal),
                 });
             if (i.RamAvailablePct >= 0)
                 list.Add(new HealthItem

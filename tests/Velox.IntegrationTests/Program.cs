@@ -65,6 +65,8 @@ namespace Velox.IntegrationTests
                                                     : Catalog.All.Concat(TweakCatalog.All.Select(t => t.Opt)).ToList();
                 foreach (var o in all)
                 {
+                    // Modo portátil: en un sobremesa no aparece, pero sus valores «con batería» existen en el plan y se pueden probar igual
+                    sys.IsLaptop = o.Category == "laptop" || sys.IsLaptopDetected;
                     if (skip.Contains(o.Id)) { W("[--] " + o.Id + ": skipped"); continue; }
                     if (!OptimizationEngine.IsAvailable(o, sys)) { W("[--] " + o.Id + ": not available on this PC"); continue; }
                     if (OptimizationEngine.IsLocked(o, sys)) { W("[--] " + o.Id + ": locked by Windows (change it in Settings)"); continue; }
@@ -165,7 +167,8 @@ namespace Velox.IntegrationTests
             string scheme = PowerCfg.ActiveScheme();
             d["power scheme"] = scheme;
             d["power schemes count"] = PowerCfg.ListSchemes().Count.ToString();
-            foreach (var s in new[] { new[] { PowerCfg.SubProcessor, PowerCfg.CpMinCores }, new[] { PowerCfg.SubUsb, PowerCfg.UsbSelectiveSuspend }, new[] { PowerCfg.SubPciExpress, PowerCfg.PciAspm } })
+            foreach (var s in new[] { new[] { PowerCfg.SubProcessor, PowerCfg.CpMinCores }, new[] { PowerCfg.SubUsb, PowerCfg.UsbSelectiveSuspend }, new[] { PowerCfg.SubPciExpress, PowerCfg.PciAspm },
+                                    new[] { PowerCfg.SubProcessor, "be337238-0d82-4146-a960-4f3749d470c7" }, new[] { "de830923-a562-41af-a086-e3a2c6bad2da", "e69653ca-cf7f-4f05-aa73-cb833fa90ad4" } })
             {
                 var v = PowerCfg.Query(scheme, s[0], s[1]);
                 d["power " + s[1]] = v == null ? "<none>" : v.AC + "/" + v.DC;

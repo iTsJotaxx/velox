@@ -269,6 +269,9 @@ namespace Velox.IntegrationTests
                 Check("startup name: uses file description", fn.Length > 1 && fn != "np_1234ABCD", fn);
             }
 
+            // ---------------------------------------------------------------- Funciones de la 1.5
+            UnitChecksV15.Run(Check, dir);
+
             // ---------------------------------------------------------------- Limpiar temporales: solo lo viejo
             {
                 string t = Path.Combine(dir, "tempclean");

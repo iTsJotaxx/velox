@@ -235,6 +235,11 @@ namespace Velox.UI.Views
             RenderDnsNow();
         }
 
+#if UITEST
+        public void TestAnalyze() => Analyze_Click(this, new RoutedEventArgs());
+        public void TestDns() => DnsMeasure_Click(this, new RoutedEventArgs());
+#endif
+
         // ------------------------------------------------------------ Limpieza profunda
 
         readonly System.Collections.Generic.List<Tuple<CheckBox, CleanMeasure>> _clean = new System.Collections.Generic.List<Tuple<CheckBox, CleanMeasure>>();

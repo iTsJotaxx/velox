@@ -153,4 +153,5 @@
   <sys:String x:Key="health.startup.many">{0} programs start with Windows: startup will be slow.</sys:String>
   <sys:String x:Key="health.security.ok">Microsoft Defender real-time protection is on.</sys:String>
   <sys:String x:Key="health.security.off">Microsoft Defender real-time protection is off.</sys:String>
+  <sys:String x:Key="health.disks.ok1">Windows sees the disk as healthy.</sys:String>
 </ResourceDictionary>

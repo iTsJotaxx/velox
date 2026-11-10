@@ -153,4 +153,5 @@
   <sys:String x:Key="health.startup.many">{0} programas se abren al iniciar Windows: el arranque será lento.</sys:String>
   <sys:String x:Key="health.security.ok">La protección en tiempo real de Microsoft Defender está activada.</sys:String>
   <sys:String x:Key="health.security.off">La protección en tiempo real de Microsoft Defender está desactivada.</sys:String>
+  <sys:String x:Key="health.disks.ok1">Windows ve sano el disco.</sys:String>
 </ResourceDictionary>

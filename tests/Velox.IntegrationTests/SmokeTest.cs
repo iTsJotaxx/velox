@@ -12,6 +12,7 @@ using Velox.Core.Diagnostics;
 using Velox.Core.Disk;
 using Velox.Core.Drivers;
 using Velox.Core.Scan;
+using Velox.Core.Sys;
 using Velox.Core.Tools;
 using Velox.Core.Update;
 using Velox.Localization;
@@ -47,6 +48,181 @@ namespace Velox.IntegrationTests
         }
 
         static void Assert(bool ok, string why) { if (!ok) throw new Exception(why); }
+
+        // ================================================================ Funciones de la 1.5
+
+        static void RunV15(string dir, SystemInfo sys)
+        {
+            // ---------------------------------------------------------------- Exportar e importar en el mismo equipo: nada que cambiar
+            Step("Perfil: exportar e importar aquí", () =>
+            {
+                var installed = Winget.IsAvailable ? Winget.GetInstalled() : new Dictionary<string, string>();
+                var p = Velox.Core.Profiles.ProfileStore.Capture(sys, "smoke", installed);
+                string f = Path.Combine(dir, "smoke.velox.json");
+                Velox.Core.Profiles.ProfileStore.Save(p, f);
+                var q = Velox.Core.Profiles.ProfileStore.Load(f);
+                var plan = Velox.Core.Profiles.ProfileStore.Plan(q, sys, installed);
+                Assert(plan.Changes.Count == 0, "importar lo exportado cambiaría: " + string.Join(", ", plan.Changes.Select(c => c.Opt.Id + "=" + c.Enable)));
+                Assert(plan.AppsToInstall.Count == 0, "propondría instalar: " + string.Join(", ", plan.AppsToInstall.Select(a => a.Id)));
+                return q.Optimizations.Count + " optimizaciones, " + q.Tweaks.Count + " ajustes, " + (q.Apps?.Count ?? 0) + " apps; 0 cambios al reimportar";
+            });
+
+            // ---------------------------------------------------------------- Ajuste revertido por «Windows» y vuelto a aplicar
+            Step("Ajustes revertidos: detectar y reaplicar", () =>
+            {
+                var o = new[] { "MenuDelay", "Tips", "SearchWeb", "ActivityHistory", "DeliveryOpt" }
+                    .Select(Velox.Core.Optimizations.OptimizationEngine.Find)
+                    .FirstOrDefault(x => x != null && Velox.Core.Optimizations.OptimizationEngine.IsAvailable(x, sys) && !Velox.Core.Optimizations.OptimizationEngine.IsApplied(x));
+                Assert(o != null, "no hay ningún ajuste inocuo sin aplicar para probar");
+                try
+                {
+                    Velox.Core.Optimizations.OptimizationEngine.Apply(o, sys, "ui");
+                    Assert(!Velox.Core.Optimizations.OptimizationEngine.Reverted(sys).Contains(o), "recién aplicado ya sale como revertido");
+                    // «Windows Update» lo devuelve a su valor: se escriben los originales sin pasar por Velox
+                    foreach (var rec in Velox.Core.Backup.BackupStore.Get(o.Id)) Velox.Core.Backup.Restorer.Restore(rec);
+                    Assert(Velox.Core.Optimizations.OptimizationEngine.Reverted(sys).Contains(o), "no detecta que se ha revertido");
+                    Velox.Core.Optimizations.OptimizationEngine.Apply(o, sys, "reapply");
+                    Assert(Velox.Core.Optimizations.OptimizationEngine.IsApplied(o) && !Velox.Core.Optimizations.OptimizationEngine.Reverted(sys).Contains(o), "no se reaplicó");
+                    var h = Velox.Core.Backup.History.All().Where(e => e.Id == o.Id).ToList();
+                    Assert(h.Count >= 2 && h[0].Source == "reapply", "historial incompleto");
+                }
+                finally { Velox.Core.Optimizations.OptimizationEngine.Revert(o, sys, "ui"); }
+                Assert(!Velox.Core.Optimizations.OptimizationEngine.IsApplied(o) && !Velox.Core.Backup.BackupStore.Has(o.Id), "no quedó como estaba");
+                Assert(Velox.Core.Backup.History.LastAction(o.Id) == "off", "el historial no registra el deshacer");
+                return o.Id + ": aplicado, revertido por fuera, detectado, reaplicado y deshecho";
+            });
+
+            // ---------------------------------------------------------------- DNS: cambiar, medir y volver (pase lo que pase)
+            Step("DNS: cambiar, medir y volver", () =>
+            {
+                var before = DnsTool.ActiveAdapters();
+                Assert(before.Count > 0, "sin adaptadores");
+                var original = before.ToDictionary(a => a.Id, a => a.StaticServers);
+                var cf = DnsTool.Providers.First(p => p.Id == "cloudflare");
+                double? ms;
+                try
+                {
+                    DnsTool.Set(cf, "ui");
+                    var now = DnsTool.ActiveAdapters();
+                    Assert(now.All(a => DnsTool.SplitServers(a.StaticServers).FirstOrDefault() == cf.Primary), "el registro no tiene 1.1.1.1");
+                    Assert(DnsTool.CurrentProvider(now)?.Id == "cloudflare", "Windows no usa 1.1.1.1");
+                    ms = DnsTool.Measure(cf.Primary);
+                    Assert(System.Net.Dns.GetHostAddresses("microsoft.com").Length > 0, "no resuelve nombres con el DNS nuevo");
+                }
+                finally
+                {
+                    if (DnsTool.HasBackup) DnsTool.RestoreOriginal("ui");
+                }
+                var after = DnsTool.ActiveAdapters();
+                foreach (var a in after)
+                    Assert(original.TryGetValue(a.Id, out var o) && DnsTool.SplitServers(o).SequenceEqual(DnsTool.SplitServers(a.StaticServers)),
+                           "el adaptador " + a.Name + " no volvió a su DNS (" + a.StaticServers + ")");
+                Assert(System.Net.Dns.GetHostAddresses("github.com").Length > 0, "no resuelve nombres tras volver");
+                return "Cloudflare " + (ms.HasValue ? ms.Value.ToString("0") + " ms" : "sin respuesta") + "; vuelto a " + DnsTool.Describe(original.Values.First());
+            });
+            Step("DNS: medir proveedores", () => string.Join(", ", DnsTool.Providers.Select(p => p.Name + " " + (DnsTool.Measure(p.Primary, 1)?.ToString("0") ?? "-") + " ms")));
+
+            // ---------------------------------------------------------------- Limpieza profunda
+            Step("Limpieza profunda: medir", () =>
+            {
+                var m = DeepCleaner.Categories().Select(DeepCleaner.Measure).ToList();
+                bool reboot = Velox.Core.Drivers.DriverSafety.RebootPendingReason() != null;
+                Assert(m.First(x => x.Category.Id == "wu").Blocked != null == reboot, "el bloqueo de Windows Update no sigue al reinicio pendiente");
+                return string.Join(" · ", m.Select(x => x.Category.Id + " " + Format.Bytes(x.Bytes) + (x.Blocked != null ? " (bloqueado)" : "")));
+            });
+            Step("Limpieza profunda: temporales e informes", () =>
+            {
+                long freed = 0;
+                foreach (var c in DeepCleaner.Categories().Where(c => c.Id == "temp" || c.Id == "reports")) freed += DeepCleaner.Clean(c);
+                foreach (var s in new[] { "wuauserv", "bits", "DoSvc" }) Assert(Services.StatusText(s) != "StopPending", s + " se quedó parándose");
+                return Format.Bytes(freed) + " liberados";
+            });
+
+            // ---------------------------------------------------------------- Informe de salud
+            Step("Informe de salud", () =>
+            {
+                var disks = Velox.Core.Scan.HealthReport.ReadDiskHealth();
+                var mem = MemoryTool.Snapshot();
+                var items = Velox.Core.Scan.HealthReport.Build(new Velox.Core.Scan.HealthInputs
+                {
+                    DiskFreeGB = sys.DiskFreeGB, DiskSizeGB = sys.DiskSizeGB, DisksUnhealthy = disks.Item1, DisksTotal = disks.Item2,
+                    RamAvailablePct = mem.AvailablePct, RamTotalGB = sys.RamTotalGB, UptimeDays = sys.UptimeDays, StartupApps = sys.StartupEnabled,
+                    RebootPending = Velox.Core.Drivers.DriverSafety.RebootPendingReason() != null, DefenderRealtime = Velox.Core.Scan.HealthReport.ReadDefenderRealtime(),
+                });
+                Assert(items.Count >= 5, "faltan áreas");
+                return string.Join(" · ", items.Select(i => i.Area + (i.Attention ? "!" : "")));
+            });
+
+            // ---------------------------------------------------------------- Actualizaciones de apps (con una de verdad)
+            Step("Apps: lista de actualizaciones", () =>
+            {
+                var u = Winget.GetUpgrades();
+                return u.Count + " (" + string.Join(", ", u.Select(x => x.Id + (x.Excluded ? " excluida" : x.SelectedByDefault ? "" : " desmarcada"))) + ")";
+            });
+            Step("Apps: actualizar 7-Zip de una versión vieja", () =>
+            {
+                string wg = Winget.Path;
+                Assert(wg != null, "winget no disponible");
+                bool hadIt = Winget.GetInstalled().ContainsKey("7zip.7zip");
+                Assert(!hadIt, "7-Zip ya estaba instalado: no se toca");
+                var inst = ProcessRunner.Run(wg, "install --id 7zip.7zip --exact --version 23.01 --silent --accept-package-agreements --accept-source-agreements --disable-interactivity --source winget", 600000);
+                try
+                {
+                    Assert(inst.ExitCode == 0, "no se pudo instalar la versión vieja (0x" + inst.ExitCode.ToString("X8") + ")");
+                    var up = Winget.GetUpgrades().FirstOrDefault(x => x.Id == "7zip.7zip");
+                    Assert(up != null && up.SelectedByDefault, "no aparece como actualizable");
+                    var res = Winget.Install(new AppEntry { Id = "7zip.7zip", Name = "7-Zip" }, true, null, CancellationToken.None);
+                    Assert(res.Outcome == AppInstallOutcome.Updated, "resultado " + res.Outcome + " " + res.Error);
+                    string ver = Winget.GetInstalled().TryGetValue("7zip.7zip", out var v) ? v : null;
+                    Assert(ver != null && ver != "23.01", "sigue en " + ver);
+                    return "23.01 → " + ver;
+                }
+                finally
+                {
+                    // Se deja como estaba: sin 7-Zip
+                    ProcessRunner.Run(wg, "uninstall --id 7zip.7zip --exact --silent --accept-source-agreements --disable-interactivity", 300000);
+                }
+            });
+
+            // ---------------------------------------------------------------- Modo sin ventana (el .exe de verdad)
+            Step("Modo sin ventana: Velox abierto → código 3", () =>
+            {
+                using (var m = new Mutex(true, @"Global\Velox_SingleInstance", out bool created))
+                {
+                    Assert(created, "Velox está abierto: ciérralo para esta prueba");
+                    int code = RunVelox("--apply-recommended");
+                    Assert(code == 3, "código " + code);
+                }
+                return "código 3";
+            });
+            Step("Modo sin ventana: --import cambia y vuelve", () =>
+            {
+                var o = new[] { "MenuDelay", "Tips", "SearchWeb" }.Select(Velox.Core.Optimizations.OptimizationEngine.Find)
+                    .First(x => x != null && Velox.Core.Optimizations.OptimizationEngine.IsAvailable(x, sys));
+                bool was = Velox.Core.Optimizations.OptimizationEngine.IsApplied(o);
+                string f1 = Path.Combine(dir, "flip.velox.json"), f2 = Path.Combine(dir, "back.velox.json");
+                Velox.Core.Profiles.ProfileStore.Save(new Velox.Core.Profiles.VeloxProfile { Name = "flip", Optimizations = { { o.Id, !was } } }, f1);
+                Velox.Core.Profiles.ProfileStore.Save(new Velox.Core.Profiles.VeloxProfile { Name = "back", Optimizations = { { o.Id, was } } }, f2);
+                int c1 = RunVelox("--import=\"" + f1 + "\" --no-restore-point");
+                bool mid = Velox.Core.Optimizations.OptimizationEngine.IsApplied(o);
+                int c2 = RunVelox("--import=\"" + f2 + "\" --no-restore-point");
+                bool end = Velox.Core.Optimizations.OptimizationEngine.IsApplied(o);
+                Assert(c1 == 0 && mid == !was, "primera importación: código " + c1 + ", aplicado " + mid);
+                Assert(c2 == 0 && end == was, "vuelta: código " + c2 + ", aplicado " + end);
+                int bad = RunVelox("--import=\"" + Path.Combine(dir, "no-existe.velox.json") + "\"");
+                Assert(bad == 2, "archivo inexistente: código " + bad);
+                return o.Id + " " + was + " → " + mid + " → " + end + "; archivo inexistente → 2";
+            });
+        }
+
+        /// <summary>Ejecuta el Velox.exe de esta carpeta sin ventana y devuelve su código de salida.</summary>
+        static int RunVelox(string args)
+        {
+            string exe = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Velox.exe");
+            var p = Process.Start(new ProcessStartInfo(exe, args) { UseShellExecute = false, CreateNoWindow = true });
+            if (!p.WaitForExit(300000)) { try { p.Kill(); } catch { } return -1; }
+            return p.ExitCode;
+        }
 
         public static int Run(string outFile)
         {
@@ -259,6 +435,8 @@ namespace Velox.IntegrationTests
                 Assert(Settings.Current.AutoMemThreshold == original, "no se restauró");
                 return "guardado, leído y restaurado";
             });
+
+            RunV15(dir, sys);
 
             W("Smoke: " + (_total - _fails) + "/" + _total + " OK");
             if (outFile != null) File.WriteAllText(outFile, Out.ToString(), Encoding.UTF8);

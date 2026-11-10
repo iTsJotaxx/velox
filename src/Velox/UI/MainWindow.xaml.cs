@@ -252,6 +252,14 @@ namespace Velox.UI
                         ((System.Windows.Input.Keyboard.FocusedElement as UIElement) ?? PageHost).MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Next));
                     await Task.Delay(500);
                 }
+                if (_current == "tools" && PageHost.Content is ToolsView tv2 && (App.TestAction == "clean" || App.TestAction == "dns"))
+                {
+                    for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    if (App.TestAction == "clean") tv2.TestAnalyze(); else tv2.TestDns();
+                    await Task.Delay(600);
+                    for (int i = 0; i < 240 && AppState.Current.IsBusy; i++) await Task.Delay(250);
+                    await Task.Delay(600);
+                }
                 if (App.TestAction == "wizard") { for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250); _ = Wizard.RunAsync(this); await Task.Delay(1200); }
                 if (App.TestAction == "reverted") { for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250); AppState.Current.TestFakeNotices(); (PageHost.Content as IPage)?.OnShown(); await Task.Delay(700); }
                 if (App.TestAction == "protection") { _ = OfferSystemProtectionAsync(); await Task.Delay(1200); }
