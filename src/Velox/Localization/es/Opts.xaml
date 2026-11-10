@@ -186,4 +186,14 @@
   <sys:String x:Key="opt.MenuDelay.velox">Menús a 50 ms</sys:String>
   <sys:String x:Key="opt.SearchWeb.base">Inicio busca en la web</sys:String>
   <sys:String x:Key="opt.SearchWeb.velox">Solo resultados locales</sys:String>
+  <sys:String x:Key="cat.laptop">Portátil (con batería)</sys:String>
+  <sys:String x:Key="cat.laptop.desc">Cómo se comporta el equipo al desenchufarlo. Windows los aplica solo con batería, aunque Velox esté cerrado; con el cargador no cambia nada.</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.name">Sin turbo con batería</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.desc">Con batería, el procesador no sube por encima de su frecuencia base. Se calienta menos, hace menos ruido y la batería dura bastante más; los juegos van más lentos desenchufado. Con el cargador sigue usando el turbo.</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.base">Turbo con batería</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.velox">Sin turbo con batería</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.name">Ahorro de energía al 30 %</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.desc">El ahorro de energía de Windows se activa solo al bajar del 30 % de batería, en vez de esperar al 20 %. Da un margen más cómodo si sueles apurar la batería.</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.base">Ahorro al 20 %</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.velox">Ahorro al 30 %</sys:String>
 </ResourceDictionary>

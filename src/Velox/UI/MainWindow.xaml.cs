@@ -69,6 +69,10 @@ namespace Velox.UI
             if (!string.IsNullOrEmpty(App.ShotPath)) RunTestShot();
 #endif
             await AppState.Current.ScanAsync();
+#if !UITEST
+            // Primer uso: tres preguntas para afinar la recomendación (en las capturas automáticas no se abre)
+            if (!Settings.Current.WizardDone && AppState.Current.Sys != null) await Wizard.RunAsync(this);
+#endif
         }
 
         void OnClosing(object sender, CancelEventArgs e)
@@ -247,6 +251,8 @@ namespace Velox.UI
                         ((System.Windows.Input.Keyboard.FocusedElement as UIElement) ?? PageHost).MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Next));
                     await Task.Delay(500);
                 }
+                if (App.TestAction == "wizard") { for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250); _ = Wizard.RunAsync(this); await Task.Delay(1200); }
+                if (App.TestAction == "reverted") { for (int i = 0; i < 120 && AppState.Current.IsBusy; i++) await Task.Delay(250); AppState.Current.TestFakeNotices(); (PageHost.Content as IPage)?.OnShown(); await Task.Delay(700); }
                 if (App.TestAction == "protection") { _ = OfferSystemProtectionAsync(); await Task.Delay(1200); }
                 if (App.TestAction != null && App.TestAction.StartsWith("dialog")) { _ = ConfirmAsync("Prueba de diálogo", "Mensaje de prueba", "Detalle 1\nDetalle 2", "Aceptar", "Cancelar", true); await Task.Delay(600); }
                 await Task.Delay(400);
@@ -506,8 +512,14 @@ namespace Velox.UI
         }
 
         /// <summary>Muestra un diálogo con el estilo de la app. cancelText = null → solo botón de aceptar.</summary>
-        public Task<bool> ConfirmAsync(string title, string message, string details, string okText, string cancelText, bool danger = false)
+        public Task<bool> ConfirmAsync(string title, string message, string details, string okText, string cancelText, bool danger = false) =>
+            ConfirmAsync(title, message, details, okText, cancelText, danger, null);
+
+        /// <summary>Igual, con contenido propio debajo del mensaje (las preguntas del asistente, un nombre...).</summary>
+        public Task<bool> ConfirmAsync(string title, string message, string details, string okText, string cancelText, bool danger, FrameworkElement custom)
         {
+            DlgCustom.Content = custom;
+            DlgCustom.Visibility = custom == null ? Visibility.Collapsed : Visibility.Visible;
 #if UITEST
             // Pruebas automáticas: acepta los diálogos sin mostrar nada
             if (App.TestAction != null && App.TestAction.Contains("autoconfirm")) { Log.Info("UITEST autoconfirm: " + title); return Task.FromResult(true); }

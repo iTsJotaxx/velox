@@ -45,6 +45,7 @@ namespace Velox.Core.Optimizations
             {
                 new Category { Id = "games", Icon = "" },
                 new Category { Id = "power", Icon = "" },
+                new Category { Id = "laptop", Icon = "E7F8" },
                 new Category { Id = "background", Icon = "" },
                 new Category { Id = "network", Icon = "" },
                 new Category { Id = "input", Icon = "" },
@@ -52,6 +53,7 @@ namespace Velox.Core.Optimizations
             });
 
             All.AddRange(Power());
+            All.AddRange(LaptopMode());
             All.AddRange(Games());
             All.AddRange(Input());
             All.AddRange(Network());
@@ -67,6 +69,40 @@ namespace Velox.Core.Optimizations
             s?.Cpu != null && s.Cpu.IndexOf("X3D", StringComparison.OrdinalIgnoreCase) >= 0 &&
             new[] { "7900", "7950", "9900", "9950" }.Any(m => s.Cpu.Contains(m));
         static bool LowDisk(SystemInfo s) => s != null && s.DiskFreePct < 20;
+
+        // ================================================================ Modo portátil (solo con batería)
+        // Valores «en batería» (DC) del plan de energía: Windows los usa solo al desenchufar, sin que Velox esté abierto.
+        // Con el cargador no cambia nada. Solo aparecen en portátiles (o si el asistente dice que lo es).
+        const string PerfBoostMode = "be337238-0d82-4146-a960-4f3749d470c7";
+        const string SubEnergySaver = "de830923-a562-41af-a086-e3a2c6bad2da";
+        const string EnergySaverThreshold = "e69653ca-cf7f-4f05-aa73-cb833fa90ad4";
+
+        static IEnumerable<Optimization> LaptopMode()
+        {
+            yield return new Optimization
+            {
+                // Sin turbo con batería: el procesador no sube por encima de su frecuencia base. Menos calor y bastante
+                // más autonomía; enchufado sigue igual
+                Id = "BatteryNoBoost", Category = "laptop", Impact = Impact.Medium, Restart = RestartNeed.None,
+                Recommended = s => false,
+                Preference = s => true,
+                Available = s => Laptop(s) && Active(PowerCfg.SubProcessor, PerfBoostMode) != null,
+                Detect = () => Active(PowerCfg.SubProcessor, PerfBoostMode)?.DC == 0,
+                Apply = (id, s) => Tracked.SetPowerValue(id, PowerCfg.SubProcessor, PerfBoostMode, null, 0),
+                Default = s => SetActiveValue(PowerCfg.SubProcessor, PerfBoostMode, null, 2),
+            };
+            yield return new Optimization
+            {
+                // El ahorro de energía de Windows entra al 30 % de batería en vez de esperar al 20 %
+                Id = "BatterySaverAt30", Category = "laptop", Impact = Impact.Low, Restart = RestartNeed.None,
+                Recommended = s => false,
+                Preference = s => true,
+                Available = s => Laptop(s) && Active(SubEnergySaver, EnergySaverThreshold) != null,
+                Detect = () => Active(SubEnergySaver, EnergySaverThreshold)?.DC >= 30,
+                Apply = (id, s) => Tracked.SetPowerValue(id, SubEnergySaver, EnergySaverThreshold, null, 30),
+                Default = s => SetActiveValue(SubEnergySaver, EnergySaverThreshold, null, 20),
+            };
+        }
 
         // ================================================================ Energía y procesador
         static IEnumerable<Optimization> Power()
@@ -108,7 +144,8 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "PowerThrottling", Category = "power", Impact = Impact.Low, Restart = RestartNeed.Reboot,
-                Recommended = s => false,
+                // Asistente: con OBS grabando en segundo plano, Windows no debe frenarlo (en CPU con núcleos de eficiencia sí lo haría)
+                Recommended = s => s.RecordsObs,
                 Reg = new[] { Dw(@"HKLM\SYSTEM\CurrentControlSet\Control\Power\PowerThrottling", "PowerThrottlingOff", 1, null) },
             };
             yield return new Optimization
@@ -210,8 +247,9 @@ namespace Velox.Core.Optimizations
             yield return new Optimization
             {
                 Id = "FullscreenOpt", Category = "games", Impact = Impact.Low, Restart = RestartNeed.None,
-                Recommended = s => false,
-                Preference = s => true,
+                // Asistente: en juegos competitivos la pantalla completa exclusiva quita algo de retraso de entrada en DX9/11
+                Recommended = s => s.Competitive,
+                Preference = s => !s.Competitive,
                 Reg = new[]
                 {
                     Dw(GameConfigStore, "GameDVR_FSEBehaviorMode", 2, 2).WhenMissing(2),

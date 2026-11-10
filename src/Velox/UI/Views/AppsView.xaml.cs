@@ -108,10 +108,46 @@ namespace Velox.UI.Views
 
         MainWindow Win => (MainWindow)Window.GetWindow(this);
 
+        /// <summary>Apps de un perfil importado que faltan: se marcan al abrir la página (no se instala nada solo).</summary>
+        public static List<Core.Profiles.ProfileApp> PendingImport { get; set; }
+
         public void OnShown()
         {
             NoWingetBanner.Visibility = Winget.IsAvailable ? Visibility.Collapsed : Visibility.Visible;
             if (_installed == null) RefreshInstalled();
+            if (PendingImport != null) { var list = PendingImport; PendingImport = null; SelectImported(list); }
+        }
+
+        /// <summary>
+        /// Marca las apps de un perfil. Las que no están en el catálogo se añaden a «Mis aplicaciones» (con su id de winget
+        /// ya validado); las de varias regiones (Riot) se marcan con la región que tenía el perfil.
+        /// </summary>
+        void SelectImported(List<Core.Profiles.ProfileApp> apps)
+        {
+            bool added = false;
+            foreach (var a in apps)
+            {
+                if (!AppCatalog.IsValidId(a.Id)) continue;
+                if (!_rows.Any(r => string.Equals(r.App.Id, a.Id, StringComparison.OrdinalIgnoreCase)))
+                {
+                    _custom.Add(new AppEntry { Id = a.Id, Name = string.IsNullOrWhiteSpace(a.Name) ? a.Id : a.Name.Trim(), Category = AppCatalog.CustomCategory, Source = a.Source == "msstore" ? "msstore" : null, IsCustom = true });
+                    added = true;
+                }
+            }
+            if (added) { AppCatalog.SaveCustom(_custom); Build(); RenderMine(); }
+            foreach (var a in apps)
+            {
+                var row = _rows.FirstOrDefault(r => string.Equals(r.App.Id, a.Id, StringComparison.OrdinalIgnoreCase));
+                if (row == null || !row.CanSelect) continue;
+                if (row.App.Variants != null)
+                {
+                    var v = row.App.Variants.FirstOrDefault(x => string.Equals(x.Id, a.Variant, StringComparison.OrdinalIgnoreCase));
+                    if (v == null) continue; // sin región válida no se puede instalar
+                    row.Variant = v;
+                }
+                row.IsChecked = true;
+            }
+            UpdateButtons();
         }
 
         public void RefreshTexts()

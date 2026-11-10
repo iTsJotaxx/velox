@@ -75,10 +75,63 @@
             <TextBlock x:Name="TxtDataPath" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,3,0,0"/>
           </StackPanel>
           <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <Button Style="{StaticResource BtnBase}" Content="{DynamicResource hist.open}" Click="ViewHistory_Click" Margin="0,0,8,0"/>
             <Button Style="{StaticResource BtnBase}" Content="{DynamicResource ui.set.viewLog}" Click="ViewLog_Click" Margin="0,0,8,0"/>
             <Button Style="{StaticResource BtnBase}" Content="{DynamicResource ui.set.openFolder}" Click="OpenData_Click"/>
           </StackPanel>
         </Grid>
+      </Border>
+
+      <!-- Perfiles y copia de la configuración (kit para después de formatear) -->
+      <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource IconTile}"><TextBlock Text="&#xE8F1;" FontFamily="{StaticResource Icons}" FontSize="17" Foreground="{StaticResource AccentText}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+            <StackPanel Grid.Column="1" Margin="14,0,16,0" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource prof.title}" FontSize="14" FontWeight="SemiBold"/>
+              <TextBlock Text="{DynamicResource prof.text}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,3,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+              <Button Style="{StaticResource BtnBase}" Content="{DynamicResource prof.export}" Click="Export_Click" Margin="0,0,8,0"/>
+              <Button Style="{StaticResource BtnBase}" Content="{DynamicResource prof.import}" Click="Import_Click"/>
+            </StackPanel>
+          </Grid>
+          <Border Height="1" Background="{StaticResource Rule}" Margin="0,16,0,12"/>
+          <!-- Guardar la configuración actual con un nombre -->
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="{StaticResource CardInner}" BorderBrush="{StaticResource Border}" BorderThickness="1" CornerRadius="6" Margin="52,0,10,0">
+              <Grid>
+                <TextBox x:Name="TxtProfileName" Padding="10,8" MaxLength="40" Background="Transparent" BorderThickness="0" Foreground="{StaticResource Text}" CaretBrush="{StaticResource Text}"
+                         TextChanged="ProfileName_Changed" KeyDown="ProfileName_KeyDown" AutomationProperties.Name="{DynamicResource prof.namePlaceholder}"/>
+                <TextBlock x:Name="ProfileNameHint" Text="{DynamicResource prof.namePlaceholder}" Foreground="{StaticResource TextDim}" Margin="12,8,0,0" IsHitTestVisible="False"/>
+              </Grid>
+            </Border>
+            <Button x:Name="BtnSaveProfile" Grid.Column="1" Style="{StaticResource BtnBase}" Content="{DynamicResource prof.save}" Click="SaveProfile_Click" IsEnabled="False"/>
+          </Grid>
+          <StackPanel x:Name="ProfileList" Margin="52,8,0,0"/>
+          <Border Height="1" Background="{StaticResource Rule}" Margin="0,12,0,12"/>
+          <!-- Preguntas del asistente -->
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="52,0,16,0" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource wiz.settingsTitle}" FontWeight="SemiBold"/>
+              <TextBlock x:Name="TxtAnswers" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,3,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+            <Button Grid.Column="1" Style="{StaticResource BtnBase}" Content="{DynamicResource wiz.settingsButton}" Click="Wizard_Click" VerticalAlignment="Center"/>
+          </Grid>
+        </StackPanel>
       </Border>
 
       <!-- Actualización de Velox -->

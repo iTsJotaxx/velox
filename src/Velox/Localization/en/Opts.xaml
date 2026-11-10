@@ -186,4 +186,14 @@
   <sys:String x:Key="opt.MenuDelay.velox">Menus at 50 ms</sys:String>
   <sys:String x:Key="opt.SearchWeb.base">Start searches the web</sys:String>
   <sys:String x:Key="opt.SearchWeb.velox">Local results only</sys:String>
+  <sys:String x:Key="cat.laptop">Laptop (on battery)</sys:String>
+  <sys:String x:Key="cat.laptop.desc">How the PC behaves when unplugged. Windows applies these only on battery, even with Velox closed; plugged in nothing changes.</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.name">No turbo on battery</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.desc">On battery the processor does not go above its base clock. It runs cooler and quieter and the battery lasts noticeably longer; games run slower unplugged. Plugged in it still uses turbo.</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.base">Turbo on battery</sys:String>
+  <sys:String x:Key="opt.BatteryNoBoost.velox">No turbo on battery</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.name">Energy saver at 30 %</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.desc">Windows energy saver turns on by itself below 30 % battery instead of waiting for 20 %. A more comfortable margin if you often run the battery low.</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.base">Saver at 20 %</sys:String>
+  <sys:String x:Key="opt.BatterySaverAt30.velox">Saver at 30 %</sys:String>
 </ResourceDictionary>

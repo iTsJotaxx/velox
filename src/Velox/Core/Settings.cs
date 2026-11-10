@@ -23,6 +23,15 @@ namespace Velox.Core
         /// <summary>% de RAM disponible por debajo del cual actúa la limpieza automática.</summary>
         [DataMember] public int AutoMemThreshold { get; set; } = 20;
 
+        // Asistente de primer uso (null = sin contestar: se usa lo que detecta Velox)
+        [DataMember] public bool WizardDone { get; set; }
+        /// <summary>¿Es un portátil? Corrige la detección automática si se equivoca.</summary>
+        [DataMember] public bool? UserLaptop { get; set; }
+        /// <summary>¿Juega a juegos competitivos (shooters, MOBA...)?</summary>
+        [DataMember] public bool? UserCompetitive { get; set; }
+        /// <summary>¿Graba o retransmite con OBS mientras juega?</summary>
+        [DataMember] public bool? UserObs { get; set; }
+
         public static Settings Current { get; private set; } = new Settings();
 
         public static void Load()

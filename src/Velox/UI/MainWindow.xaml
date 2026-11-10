@@ -150,6 +150,7 @@
                 <TextBlock x:Name="DlgDetails" Foreground="{StaticResource Text}" TextWrapping="Wrap" LineHeight="21"/>
               </ScrollViewer>
             </Border>
+            <ContentControl x:Name="DlgCustom" Margin="0,16,0,0" Visibility="Collapsed" Focusable="False"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
               <Button x:Name="DlgCancel" Style="{StaticResource BtnBase}" Margin="0,0,10,0" Click="DlgCancel_Click"/>
               <Button x:Name="DlgOk" Style="{StaticResource BtnPrimary}" Click="DlgOk_Click" IsDefault="True"/>

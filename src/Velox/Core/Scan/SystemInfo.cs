@@ -58,7 +58,25 @@ namespace Velox.Core.Scan
         public List<DisplayInfo> Displays { get; set; } = new List<DisplayInfo>();
 
         public bool IsLaptop { get; set; }
+        /// <summary>Lo que detectó Velox (IsLaptop puede corregirlo la persona en el asistente).</summary>
+        public bool IsLaptopDetected { get; set; }
         public bool OnBattery { get; set; }
+        /// <summary>Asistente: juega a juegos competitivos (shooters, MOBA...).</summary>
+        public bool Competitive { get; set; }
+        /// <summary>Asistente: graba o retransmite con OBS mientras juega.</summary>
+        public bool RecordsObs { get; set; }
+
+        /// <summary>
+        /// Aplica las respuestas del asistente sobre lo detectado. Se llama tras cada escaneo (también en el modo sin
+        /// ventana), así que la recomendación siempre las tiene en cuenta.
+        /// </summary>
+        public void ApplyAnswers(bool? laptop, bool? competitive, bool? obs)
+        {
+            IsLaptopDetected = IsLaptopDetected || IsLaptop;
+            IsLaptop = laptop ?? IsLaptopDetected;
+            Competitive = competitive == true;
+            RecordsObs = obs == true;
+        }
 
         public string DiskType { get; set; } = "Unknown";   // del disco del sistema: "SSD", "HDD", "Unknown"
         public string DiskModel { get; set; }

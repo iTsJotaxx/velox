@@ -65,6 +65,8 @@ namespace Velox.Core.Scan
             Safe("Startup", () => s.StartupEnabled = StartupManager.GetAll().Count(e => e.Enabled));
 
             s.ScanTime = DateTime.Now;
+            // Respuestas del asistente de primer uso (corrigen o afinan lo detectado)
+            s.ApplyAnswers(Settings.Current.UserLaptop, Settings.Current.UserCompetitive, Settings.Current.UserObs);
             return s;
         }
 
@@ -303,6 +305,7 @@ namespace Velox.Core.Scan
             bool desktopChassis = chassis.Any(c => desktopTypes.Contains(c));
             // Un SAI conectado por USB aparece como batería: solo cuenta si el chasis no es de sobremesa
             s.IsLaptop = laptopChassis || (batteryStatus.Count > 0 && !desktopChassis);
+            s.IsLaptopDetected = s.IsLaptop;
             s.OnBattery = batteryStatus.Any(b => b == 1);
         }
 

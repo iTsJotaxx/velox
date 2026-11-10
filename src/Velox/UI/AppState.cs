@@ -173,6 +173,59 @@ namespace Velox.UI
             else Win?.ShowToast(Loc.T("ui.opts.alreadyRecommended"), ToastKind.Success);
         }
 
+        // ------------------------------------------------------------ Perfiles e importar configuración
+
+        /// <summary>
+        /// Aplica un perfil o un archivo exportado: solo lo que difiere de este equipo, con la confirmación de siempre
+        /// (los ajustes de riesgo llevan ⚠ y el botón en rojo). Después guarda las opciones de Memoria y las respuestas del
+        /// asistente, y deja marcadas en Instalar las apps que falten (no instala nada sin que lo pidas).
+        /// </summary>
+        public async Task ImportProfileAsync(Core.Profiles.VeloxProfile p)
+        {
+            if (p == null || Sys == null) return;
+            Dictionary<string, string> installed = null;
+            if (p.Apps != null && p.Apps.Count > 0 && Core.Apps.Winget.IsAvailable)
+            {
+                if (!await RunBusy(Loc.T("prof.busyApps"), async () => installed = await Task.Run(() => Core.Apps.Winget.GetInstalled()))) return;
+            }
+            var plan = await Task.Run(() => Core.Profiles.ProfileStore.Plan(p, Sys, installed));
+            Log.Info("Profile " + p.Name + ": " + plan.Changes.Count + " change(s), " + plan.UnchangedCount + " already set, "
+                     + plan.Skipped.Count + " skipped, " + plan.AppsToInstall.Count + " app(s) to install.");
+
+            string skipped = plan.Skipped.Count == 0 ? "" : "\n\n" + Loc.F("prof.skipped", plan.Skipped.Count) + " " + string.Join(" · ", plan.Skipped.Take(6)) + (plan.Skipped.Count > 6 ? " …" : "");
+            if (plan.Changes.Count > 0)
+            {
+                bool applied = await ApplyChangesAsync(plan.Changes, "profile", Loc.F("prof.confirmTitle", p.Name, plan.Changes.Count),
+                    Loc.F("prof.confirmText", plan.UnchangedCount) + skipped);
+                if (!applied) return; // cancelado: tampoco se tocan las preferencias ni las apps
+            }
+            else Win?.ShowToast(Loc.F("prof.nothing", p.Name), ToastKind.Success);
+
+            var st = Settings.Current;
+            if (p.Memory != null)
+            {
+                st.MemWorkingSets = p.Memory.WorkingSets; st.MemModified = p.Memory.Modified; st.MemFileCache = p.Memory.FileCache;
+                st.MemStandby = p.Memory.Standby; st.MemCombine = p.Memory.Combine; st.AutoMemClean = p.Memory.AutoClean;
+                st.AutoMemThreshold = Math.Max(5, Math.Min(50, p.Memory.AutoThreshold));
+                MemoryAutoCleaner.Apply();
+            }
+            if (p.Answers != null)
+            {
+                st.UserLaptop = p.Answers.Laptop; st.UserCompetitive = p.Answers.Competitive; st.UserObs = p.Answers.Obs; st.WizardDone = true;
+                Sys.ApplyAnswers(st.UserLaptop, st.UserCompetitive, st.UserObs);
+                await RefreshOptimizationsAsync();
+            }
+            Settings.Save();
+            ChangesApplied?.Invoke();
+
+            if (plan.AppsToInstall.Count > 0)
+            {
+                Views.AppsView.PendingImport = plan.AppsToInstall;
+                Win?.Navigate("apps");
+                Win?.ShowToast(Loc.F("prof.appsMarked", plan.AppsToInstall.Count));
+            }
+        }
+
         // ------------------------------------------------------------ Ajustes revertidos y comprobación tras reiniciar
 
         /// <summary>Ajustes que Velox dejó aplicados y que ya no lo están (Windows Update, otro programa o la persona).</summary>
@@ -204,6 +257,20 @@ namespace Velox.UI
             }
             catch (Exception ex) { Log.Warn("Reboot check: " + ex.Message); return new List<RebootVerdict>(); }
         }
+
+#if UITEST
+        /// <summary>Solo capturas: simula dos ajustes revertidos y una comprobación tras reiniciar (no toca Windows).</summary>
+        public void TestFakeNotices()
+        {
+            Reverted = Catalog.All.Where(o => o.Id == "GameDVR" || o.Id == "Telemetry").ToList();
+            RebootVerdicts = new List<RebootVerdict>
+            {
+                new RebootVerdict { Id = "HAGS", On = true, Kept = true },
+                new RebootVerdict { Id = "MemoryIntegrity", On = true, Kept = true, Effective = true },
+            };
+            Raise(nameof(Reverted)); Raise(nameof(RebootVerdicts));
+        }
+#endif
 
         public void DismissRebootVerdicts() { RebootVerdicts = new List<RebootVerdict>(); Raise(nameof(RebootVerdicts)); }
 
