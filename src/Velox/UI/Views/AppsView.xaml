@@ -129,6 +129,28 @@
             <Button Grid.Column="2" Style="{StaticResource BtnBase}" Margin="16,0,0,0" Content="{DynamicResource apps.getWinget}" Click="GetWinget_Click"/>
           </Grid>
         </Border>
+        <!-- Actualizaciones de las apps instaladas (todas las que conoce winget, no solo las del catálogo) -->
+        <Border x:Name="UpdatesCard" Style="{StaticResource Card}" Padding="20,14" Margin="0,14,0,0" Visibility="Collapsed">
+          <StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="&#xE895;" FontFamily="{StaticResource Icons}" FontSize="16" Foreground="{StaticResource AccentText}" VerticalAlignment="Center" Margin="0,0,14,0"/>
+              <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock x:Name="TxtUpdatesTitle" FontWeight="SemiBold" FontSize="14"/>
+                <TextBlock x:Name="TxtUpdatesText" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,2,0,0" TextWrapping="Wrap"/>
+              </StackPanel>
+              <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="BtnUpdatesToggle" Style="{StaticResource BtnGhost}" Click="UpdatesToggle_Click" Margin="0,0,8,0"/>
+                <Button x:Name="BtnUpdate" Style="{StaticResource BtnBase}" Click="Update_Click"/>
+              </StackPanel>
+            </Grid>
+            <StackPanel x:Name="UpdatesList" Margin="30,12,0,0" Visibility="Collapsed"/>
+          </StackPanel>
+        </Border>
         <Border x:Name="ProgressCard" Style="{StaticResource Card}" Padding="18,14" Margin="0,14,0,0" Visibility="Collapsed">
           <Grid>
             <Grid.ColumnDefinitions>

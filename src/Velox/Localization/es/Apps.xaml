@@ -156,4 +156,20 @@
   <sys:String x:Key="unin.leftDone">{0} carpetas enviadas a la papelera ({1}).</sys:String>
   <sys:String x:Key="unin.err.store">Windows no permitió quitar esta aplicación</sys:String>
   <sys:String x:Key="unin.err.timeout">el desinstalador no terminó en 30 minutos</sys:String>
+  <sys:String x:Key="upd.checking">Buscando actualizaciones de tus apps...</sys:String>
+  <sys:String x:Key="upd.title1">1 app tiene versión nueva</sys:String>
+  <sys:String x:Key="upd.title">{0} apps tienen versión nueva</sys:String>
+  <sys:String x:Key="upd.text">De la web oficial de cada programa, en silencio. Revisa la lista y elige cuáles actualizar.</sys:String>
+  <sys:String x:Key="upd.textRuntime">De la web oficial de cada programa, en silencio. Los runtimes y kits de desarrollo quedan sin marcar: otros programas pueden depender de su versión.</sys:String>
+  <sys:String x:Key="upd.show">Ver lista</sys:String>
+  <sys:String x:Key="upd.hide">Ocultar</sys:String>
+  <sys:String x:Key="upd.choose">Elegir cuáles</sys:String>
+  <sys:String x:Key="upd.updateN">Actualizar ({0})</sys:String>
+  <sys:String x:Key="upd.runtime">Runtime o kit</sys:String>
+  <sys:String x:Key="upd.confirmTitle">¿Actualizar {0} app(s)?</sys:String>
+  <sys:String x:Key="upd.confirmText">Se descargan de la web oficial de cada programa (winget comprueba que el instalador es el original) y se actualizan una tras otra, sin ventanas. Cierra antes los programas que vayas a actualizar.</sys:String>
+  <sys:String x:Key="upd.confirmOk">Actualizar</sys:String>
+  <sys:String x:Key="upd.busy">Actualizando apps...</sys:String>
+  <sys:String x:Key="upd.progress">Actualizando {0} de {1}: {2}</sys:String>
+  <sys:String x:Key="upd.summary">{0} app(s) actualizadas, {1} con errores.</sys:String>
 </ResourceDictionary>

@@ -29,6 +29,21 @@ namespace Velox.Core.Apps
         public string Version { get; set; }
     }
 
+    /// <summary>Una app instalada con versión nueva disponible.</summary>
+    public sealed class WingetUpgrade
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Version { get; set; }
+        public string Available { get; set; }
+        public string Source { get; set; }
+        /// <summary>Runtime o kit de desarrollo: otros programas dependen de su versión (desmarcado de entrada).</summary>
+        public bool IsRuntime { get; set; }
+        /// <summary>No se actualiza desde Velox (winget a sí mismo).</summary>
+        public bool Excluded { get; set; }
+        public bool SelectedByDefault { get; set; }
+    }
+
     /// <summary>
     /// Instalación de aplicaciones con winget (el gestor de paquetes de Windows): descarga desde la web oficial de cada
     /// programa, comprueba el SHA-256 del instalador con el manifiesto del repositorio de Microsoft y lo instala en silencio.
@@ -357,6 +372,72 @@ namespace Velox.Core.Apps
                     if (l.Length > 4) return l.Length > 200 ? l.Substring(0, 200) : l;
                 }
             return "-";
+        }
+
+        // ------------------------------------------------------------ Actualizaciones
+
+        /// <summary>Paquetes con versión nueva en el repositorio de winget. Vacío si no se pudo leer.</summary>
+        public static List<WingetUpgrade> GetUpgrades()
+        {
+            try
+            {
+                var r = Run("upgrade " + Common, TimeSpan.FromSeconds(120), CancellationToken.None);
+                var list = ParseUpgrades(r.Lines);
+                Log.Info("winget: " + list.Count + " upgrade(s) available" + (list.Count > 0 ? " (" + string.Join(", ", list.Select(u => u.Id)) + ")" : "") + ".");
+                return list;
+            }
+            catch (Exception ex) { Log.Warn("winget upgrade: " + ex.Message); return new List<WingetUpgrade>(); }
+        }
+
+        /// <summary>
+        /// Lee la tabla de «winget upgrade» (Nombre, Id, Versión, Disponible, Origen) por la posición de las columnas. Solo la
+        /// primera tabla: la segunda («require explicit targeting») son paquetes fijados que winget no actualiza solo.
+        /// </summary>
+        internal static List<WingetUpgrade> ParseUpgrades(List<string> lines)
+        {
+            var list = new List<WingetUpgrade>();
+            if (lines == null) return list;
+            int sep = lines.FindIndex(l => Regex.IsMatch(l.Trim(), @"^-{10,}$"));
+            if (sep < 1) return list;
+            string head = lines[sep - 1];
+            // La cabecera puede llevar delante restos de la barra de progreso de winget: se mira desde la primera letra
+            var starts = new List<int>();
+            var first = Regex.Match(head, @"\S");
+            if (!first.Success) return list;
+            starts.Add(first.Index);
+            foreach (Match m in Regex.Matches(head, @"\s{2,}(\S)")) if (m.Groups[1].Index > first.Index) starts.Add(m.Groups[1].Index);
+            if (starts.Count < 4) return list;
+            for (int i = sep + 1; i < lines.Count; i++)
+            {
+                string l = lines[i];
+                if (string.IsNullOrWhiteSpace(l)) break; // fin de la primera tabla
+                if (l.Length <= starts[1]) continue;    // pie («3 upgrades available.») u otra línea suelta
+                string Col(int c) => c >= starts.Count ? "" : c + 1 < starts.Count
+                    ? (l.Length > starts[c] ? l.Substring(starts[c], Math.Min(l.Length, starts[c + 1]) - starts[c]).Trim() : "")
+                    : (l.Length > starts[c] ? l.Substring(starts[c]).Trim() : "");
+                string id = Col(1).Split(' ')[0];
+                if (!AppCatalog.IsValidId(id)) continue;
+                var u = new WingetUpgrade { Name = Col(0).TrimEnd('…'), Id = id, Version = Col(2), Available = Col(3), Source = starts.Count > 4 ? Col(4) : "winget" };
+                if (string.IsNullOrEmpty(u.Available)) continue;
+                Classify(u);
+                list.Add(u);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Qué se marca de entrada. winget (Microsoft.AppInstaller) no se actualiza desde aquí: se actualizaría a sí mismo
+        /// en mitad de la tarea; lo hace Microsoft Store. Runtimes y kits de desarrollo quedan desmarcados: otros programas
+        /// dependen de una versión concreta.
+        /// </summary>
+        internal static void Classify(WingetUpgrade u)
+        {
+            string id = u.Id ?? "";
+            if (id.Equals("Microsoft.AppInstaller", StringComparison.OrdinalIgnoreCase)) { u.Excluded = true; return; }
+            string[] runtimes = { "Microsoft.VCRedist", "Microsoft.DotNet.", "Microsoft.WindowsAppRuntime", "Microsoft.UI.Xaml", "Microsoft.VCLibs",
+                                  "Microsoft.DirectX", "Microsoft.WindowsSDK", "Microsoft.WindowsTerminal.Preview", "Oracle.JavaRuntime", "EclipseAdoptium." };
+            u.IsRuntime = runtimes.Any(p => id.StartsWith(p, StringComparison.OrdinalIgnoreCase));
+            u.SelectedByDefault = !u.IsRuntime;
         }
 
         // ------------------------------------------------------------ Buscar

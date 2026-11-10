@@ -156,4 +156,20 @@
   <sys:String x:Key="unin.leftDone">{0} folders sent to the Recycle Bin ({1}).</sys:String>
   <sys:String x:Key="unin.err.store">Windows did not allow removing this app</sys:String>
   <sys:String x:Key="unin.err.timeout">the uninstaller did not finish in 30 minutes</sys:String>
+  <sys:String x:Key="upd.checking">Looking for updates to your apps...</sys:String>
+  <sys:String x:Key="upd.title1">1 app has a new version</sys:String>
+  <sys:String x:Key="upd.title">{0} apps have a new version</sys:String>
+  <sys:String x:Key="upd.text">From each program's official website, silently. Review the list and choose which ones to update.</sys:String>
+  <sys:String x:Key="upd.textRuntime">From each program's official website, silently. Runtimes and developer kits are left unticked: other programs may depend on their version.</sys:String>
+  <sys:String x:Key="upd.show">Show list</sys:String>
+  <sys:String x:Key="upd.hide">Hide</sys:String>
+  <sys:String x:Key="upd.choose">Choose which</sys:String>
+  <sys:String x:Key="upd.updateN">Update ({0})</sys:String>
+  <sys:String x:Key="upd.runtime">Runtime or kit</sys:String>
+  <sys:String x:Key="upd.confirmTitle">Update {0} app(s)?</sys:String>
+  <sys:String x:Key="upd.confirmText">They are downloaded from each program's official website (winget checks the installer is the original) and updated one after another, with no windows. Close the programs you are updating first.</sys:String>
+  <sys:String x:Key="upd.confirmOk">Update</sys:String>
+  <sys:String x:Key="upd.busy">Updating apps...</sys:String>
+  <sys:String x:Key="upd.progress">Updating {0} of {1}: {2}</sys:String>
+  <sys:String x:Key="upd.summary">{0} app(s) updated, {1} with errors.</sys:String>
 </ResourceDictionary>

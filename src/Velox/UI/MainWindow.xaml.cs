@@ -182,6 +182,7 @@ namespace Velox.UI
                     string act = App.TestAction.Split(';')[0];
                     await Task.Delay(9000); // lectura de lo instalado (winget export)
                     if (act.StartsWith("select:")) av.TestSelect(act.Substring(7).Split(','));
+                    else if (act == "updates") { for (int i = 0; i < 160 && av.TestLoadingUpdates; i++) await Task.Delay(500); av.TestOpenUpdates(); await Task.Delay(800); }
                     else if (act.StartsWith("add:")) { av.TestOpenAdd(act.Substring(4)); await Task.Delay(6000); }
                     else if (act.StartsWith("install:"))
                     {

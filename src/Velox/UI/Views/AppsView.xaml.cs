@@ -156,6 +156,7 @@ namespace Velox.UI.Views
             foreach (var c in _cats) c.Refresh();
             UpdateButtons();
             UpdateInstalledState();
+            RenderUpgrades();
         }
 
         // ------------------------------------------------------------ Catálogo
@@ -230,6 +231,10 @@ namespace Velox.UI.Views
             bool idle = AppState.Current.IsIdle;
             BtnInstall.IsEnabled = idle && sel.Count > 0 && Winget.IsAvailable;
             BtnAdd.IsEnabled = idle;
+            int nUpd = _upgradeChecks.Values.Count(c => c.IsChecked == true);
+            BtnUpdate.Content = nUpd == 0 ? Loc.T("upd.choose") : Loc.F("upd.updateN", nUpd);
+            BtnUpdate.IsEnabled = idle && Winget.IsAvailable;
+            foreach (var c in _upgradeChecks.Values) c.IsEnabled = idle;
         }
 
         // ------------------------------------------------------------ Lo que ya está instalado
@@ -244,10 +249,142 @@ namespace Velox.UI.Views
                 _loadingInstalled = false;
                 _installed = t.IsFaulted ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) : t.Result;
                 foreach (var r in _rows) ApplyInstalled(r);
+                if (_upgrades == null) RefreshUpgrades(); // después de lo instalado: winget no admite dos consultas a la vez
                 UpdateInstalledState();
                 UpdateButtons();
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
+
+        // ------------------------------------------------------------ Actualizaciones de lo instalado
+
+        List<WingetUpgrade> _upgrades;
+        readonly Dictionary<string, CheckBox> _upgradeChecks = new Dictionary<string, CheckBox>(StringComparer.OrdinalIgnoreCase);
+        bool _loadingUpgrades, _upgradesOpen;
+
+        void RefreshUpgrades()
+        {
+            if (_loadingUpgrades || !Winget.IsAvailable) return;
+            _loadingUpgrades = true;
+            RenderUpgrades();
+            Task.Run(() => Winget.GetUpgrades()).ContinueWith(t =>
+            {
+                _loadingUpgrades = false;
+                _upgrades = t.IsFaulted ? new List<WingetUpgrade>() : t.Result;
+                RenderUpgrades();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        void RenderUpgrades()
+        {
+            if (_loadingUpgrades && _upgrades == null)
+            {
+                UpdatesCard.Visibility = Visibility.Visible;
+                TxtUpdatesTitle.Text = Loc.T("upd.checking");
+                TxtUpdatesText.Text = "";
+                BtnUpdate.Visibility = BtnUpdatesToggle.Visibility = Visibility.Collapsed;
+                UpdatesList.Visibility = Visibility.Collapsed;
+                return;
+            }
+            var list = (_upgrades ?? new List<WingetUpgrade>()).Where(u => !u.Excluded).ToList();
+            if (list.Count == 0) { UpdatesCard.Visibility = Visibility.Collapsed; return; }
+            UpdatesCard.Visibility = Visibility.Visible;
+            TxtUpdatesTitle.Text = list.Count == 1 ? Loc.T("upd.title1") : Loc.F("upd.title", list.Count);
+            TxtUpdatesText.Text = list.Any(u => u.IsRuntime) ? Loc.T("upd.textRuntime") : Loc.T("upd.text");
+            BtnUpdatesToggle.Visibility = Visibility.Visible;
+            BtnUpdatesToggle.Content = _upgradesOpen ? Loc.T("upd.hide") : Loc.T("upd.show");
+
+            // Se conserva lo que la persona haya marcado o desmarcado
+            var keep = _upgradeChecks.ToDictionary(kv => kv.Key, kv => kv.Value.IsChecked == true, StringComparer.OrdinalIgnoreCase);
+            _upgradeChecks.Clear();
+            UpdatesList.Children.Clear();
+            foreach (var u in list)
+            {
+                var g = new Grid { Margin = new Thickness(0, 3, 0, 3) };
+                g.ColumnDefinitions.Add(new ColumnDefinition());
+                g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                var cb = new CheckBox { Style = (Style)FindResource("Check"), IsChecked = keep.TryGetValue(u.Id, out bool k) ? k : u.SelectedByDefault, VerticalAlignment = VerticalAlignment.Center, Tag = u };
+                var label = new StackPanel { Orientation = Orientation.Horizontal };
+                label.Children.Add(new TextBlock { Text = u.Name, FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center });
+                if (u.IsRuntime)
+                    label.Children.Add(new Border { Style = (Style)FindResource("Badge"), Background = (Brush)FindResource("CardInner"), Margin = new Thickness(8, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center,
+                        Child = new TextBlock { Text = Loc.T("upd.runtime"), Style = (Style)FindResource("BadgeText"), Foreground = (Brush)FindResource("TextMuted") } });
+                cb.Content = label;
+                cb.Checked += (s, e) => UpdateButtons();
+                cb.Unchecked += (s, e) => UpdateButtons();
+                System.Windows.Automation.AutomationProperties.SetName(cb, u.Name + " " + u.Version + " → " + u.Available);
+                g.Children.Add(cb);
+                var ver = new TextBlock { Text = u.Version + "  →  " + u.Available, Style = (Style)FindResource("Figure"), FontWeight = FontWeights.Normal, FontSize = 13, Foreground = (Brush)FindResource("TextMuted"), VerticalAlignment = VerticalAlignment.Center, ToolTip = u.Id };
+                Grid.SetColumn(ver, 1); g.Children.Add(ver);
+                UpdatesList.Children.Add(g);
+                _upgradeChecks[u.Id] = cb;
+            }
+            UpdatesList.Visibility = _upgradesOpen ? Visibility.Visible : Visibility.Collapsed;
+            BtnUpdate.Visibility = Visibility.Visible;
+            UpdateButtons();
+        }
+
+        List<WingetUpgrade> SelectedUpgrades() =>
+            _upgradeChecks.Values.Where(c => c.IsChecked == true).Select(c => (WingetUpgrade)c.Tag).ToList();
+
+        void UpdatesToggle_Click(object sender, RoutedEventArgs e)
+        {
+            _upgradesOpen = !_upgradesOpen;
+            RenderUpgrades();
+        }
+
+        /// <summary>Actualiza las marcadas una tras otra, en silencio, con el mismo motor que Instalar (winget comprueba el SHA-256).</summary>
+        async void Update_Click(object sender, RoutedEventArgs e)
+        {
+            var sel = SelectedUpgrades();
+            if (sel.Count == 0) { _upgradesOpen = true; RenderUpgrades(); return; }
+            var lines = sel.Select(u => "↻  " + u.Name + "   " + u.Version + " → " + u.Available);
+            if (!await Win.ConfirmAsync(Loc.F("upd.confirmTitle", sel.Count), Loc.T("upd.confirmText"), string.Join("\n", lines), Loc.T("upd.confirmOk"), Loc.T("ui.btn.cancel")))
+                return;
+            int ok = 0, failed = 0; bool reboot = false;
+            var errors = new List<string>();
+            _cts = new CancellationTokenSource();
+            ProgressCard.Visibility = Visibility.Visible;
+            BtnStop.IsEnabled = true;
+            ProgressAll.Maximum = sel.Count;
+            ProgressAll.Value = 0;
+            await AppState.Current.RunBusy(Loc.T("upd.busy"), async () =>
+            {
+                for (int i = 0; i < sel.Count; i++)
+                {
+                    var u = sel[i];
+                    if (_cts.IsCancellationRequested) break;
+                    TxtProgressTitle.Text = Loc.F("upd.progress", i + 1, sel.Count, u.Name);
+                    TxtProgressDetail.Text = "";
+                    AppState.Current.SetBusyText(TxtProgressTitle.Text);
+                    Action<string> status = s => Dispatcher.BeginInvoke(new Action(() => TxtProgressDetail.Text = s));
+                    var entry = new AppEntry { Id = u.Id, Name = u.Name, Source = string.Equals(u.Source, "msstore", StringComparison.OrdinalIgnoreCase) ? "msstore" : null };
+                    AppInstallResult res;
+                    try { res = await Task.Run(() => Winget.Install(entry, true, status, _cts.Token)); }
+                    catch (OperationCanceledException) { break; }
+                    catch (Exception ex) { res = new AppInstallResult { Outcome = AppInstallOutcome.Failed, Error = ex.Message }; }
+                    if (res.Outcome == AppInstallOutcome.Failed) { failed++; errors.Add(u.Name + ": " + res.Error); }
+                    else { ok++; if (res.Outcome == AppInstallOutcome.RebootNeeded) reboot = true; }
+                    ProgressAll.Value = i + 1;
+                }
+            });
+            ProgressCard.Visibility = Visibility.Collapsed;
+            _cts.Dispose(); _cts = null;
+            if (reboot) AppState.Current.NeedsReboot = true;
+            string summary = Loc.F("upd.summary", ok, failed);
+            if (failed == 0) Win.ShowToast(summary, ToastKind.Success);
+            else await Win.ConfirmAsync(Loc.T("apps.summaryTitleErrors"), summary, string.Join("\n", errors), Loc.T("ui.btn.ok"), null);
+            // Vuelve a mirar qué queda por actualizar y las versiones instaladas
+            _upgrades = null; _upgradeChecks.Clear();
+            RefreshUpgrades();
+            _installed = null;
+            RefreshInstalled();
+        }
+
+#if UITEST
+        /// <summary>Solo capturas: despliega la lista de actualizaciones.</summary>
+        public void TestOpenUpdates() { _upgradesOpen = true; RenderUpgrades(); }
+        public bool TestLoadingUpdates => _upgrades == null;
+#endif
 
         /// <summary>Marca la fila como instalada (en apps por región, si está instalada alguna región, esa queda elegida).</summary>
         void ApplyInstalled(AppRowVM r)
