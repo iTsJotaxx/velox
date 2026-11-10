@@ -279,20 +279,23 @@ namespace Velox.Core.Apps
         /// onStatus recibe el paso actual ya traducido (descargando 40 %, verificando, instalando...).
         /// La cancelación solo se atiende antes de empezar: un instalador a medias es peor que dejarlo terminar.
         /// </summary>
-        public static AppInstallResult Install(AppEntry app, bool wasInstalled, Action<string> onStatus, CancellationToken ct)
+        public static AppInstallResult Install(AppEntry app, bool wasInstalled, Action<string> onStatus, CancellationToken ct, string variantId = null)
         {
-            if (!AppCatalog.IsValidId(app.Id)) return new AppInstallResult { Outcome = AppInstallOutcome.Failed, Error = Loc.T("apps.err.badId") };
+            string id = variantId ?? app.Id;
+            if (!AppCatalog.IsValidId(id)) return new AppInstallResult { Outcome = AppInstallOutcome.Failed, Error = Loc.T("apps.err.badId") };
+            if (app.Variants != null && (variantId == null || !app.Variants.Any(v => v.Id == variantId)))
+                return new AppInstallResult { Outcome = AppInstallOutcome.Failed, Error = Loc.T("apps.err.noRegion") };
             ct.ThrowIfCancellationRequested();
-            Log.Info("winget: installing " + app.Id + (wasInstalled ? " (already installed: upgrade)" : "") + "...");
-            onStatus?.Invoke(Loc.T("apps.status.preparing"));
+            Log.Info("winget: installing " + id + (app.Interactive ? " (interactive)" : "") + (wasInstalled ? " (already installed: upgrade)" : "") + "...");
+            onStatus?.Invoke(Loc.T(app.Interactive ? "apps.status.interactive" : "apps.status.preparing"));
 
             var sw = Stopwatch.StartNew();
-            string args = "install --id \"" + app.Id + "\" --exact --silent --accept-package-agreements --source " + (app.SourceName == "msstore" ? "msstore" : "winget") + " " + NoSource;
+            string args = "install --id \"" + id + "\" --exact " + (app.Interactive ? "--interactive" : "--silent") + " --accept-package-agreements --source " + (app.SourceName == "msstore" ? "msstore" : "winget") + " " + NoSource;
             var r = Run(args, InstallTimeout, ct, line => Progress(line, onStatus));
             // Algunos instaladores (Spotify...) se niegan a funcionar como administrador: se repite como usuario normal
             if (!r.TimedOut && r.Code == AdminContextNotAllowed && IsElevated())
             {
-                Log.Info("winget: " + app.Id + " refuses to install as administrator; retrying as the signed-in user.");
+                Log.Info("winget: " + id + " refuses to install as administrator; retrying as the signed-in user.");
                 onStatus?.Invoke(Loc.T("apps.status.asUser"));
                 r = RunAsUser(args, InstallTimeout, line => Progress(line, onStatus));
             }
@@ -310,7 +313,7 @@ namespace Velox.Core.Apps
                 else if (r.Code == InstallerFailed) res.Error = Loc.F("apps.err.installer", LastMeaningful(r.Lines));
                 else res.Error = Loc.F("apps.err.code", "0x" + r.Code.ToString("X8"), LastMeaningful(r.Lines));
             }
-            Log.Info("winget: " + app.Id + " -> " + res.Outcome + " (0x" + r.Code.ToString("X8") + ", " + (int)sw.Elapsed.TotalSeconds + " s)"
+            Log.Info("winget: " + id + " -> " + res.Outcome + " (0x" + r.Code.ToString("X8") + ", " + (int)sw.Elapsed.TotalSeconds + " s)"
                      + (res.Error != null ? ": " + res.Error : "") + ".");
             return res;
         }

@@ -38,10 +38,15 @@ namespace Velox.UI.Views
             TileBrush = b;
         }
 
-        public string Name => App.Name;
+        AppVariant _variant;
+        /// <summary>Región elegida (solo apps con Variants, como Riot Client).</summary>
+        public AppVariant Variant { get => _variant; set { if (Set(ref _variant, value)) { Raise(nameof(Name)); Raise(nameof(Tip)); } } }
+        public string InstallId => _variant?.Id ?? App.Id;
+
+        public string Name => App.Name + (_variant != null ? " · " + _variant.Short : "");
         public string Letter => string.IsNullOrEmpty(App.Name) ? "?" : App.Name.TrimStart('.').Substring(0, 1).ToUpperInvariant();
         public Brush TileBrush { get; }
-        public string Tip => App.Id + (IsInstalled ? "  ·  " + Loc.F("apps.tip.installed", _installedVersion) : "");
+        public string Tip => InstallId + (IsInstalled ? "  ·  " + Loc.F("apps.tip.installed", _installedVersion) : "");
 
         public bool IsChecked { get => _checked; set { if (Set(ref _checked, value)) Changed?.Invoke(); } }
         public bool IsVisible { get => _visible; set => Set(ref _visible, value); }
@@ -130,9 +135,10 @@ namespace Velox.UI.Views
                 var vm = new AppCategoryVM { Category = cat };
                 foreach (var a in all.Where(x => x.Category == cat.Id))
                 {
-                    var row = new AppRowVM(a) { IsChecked = keep.Contains(a.Id) };
-                    if (_installed != null && _installed.TryGetValue(a.Id, out var v)) row.InstalledVersion = v;
-                    row.Changed += () => { vm.Refresh(); UpdateButtons(); };
+                    var row = new AppRowVM(a);
+                    ApplyInstalled(row);
+                    row.IsChecked = keep.Contains(a.Id) && (a.Variants == null || row.Variant != null);
+                    row.Changed += () => { vm.Refresh(); UpdateButtons(); AskRegionIfNeeded(row); };
                     vm.Items.Add(row);
                     _rows.Add(row);
                 }
@@ -201,10 +207,67 @@ namespace Velox.UI.Views
             {
                 _loadingInstalled = false;
                 _installed = t.IsFaulted ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) : t.Result;
-                foreach (var r in _rows) r.InstalledVersion = _installed.TryGetValue(r.App.Id, out var v) ? (v ?? "") : null;
+                foreach (var r in _rows) ApplyInstalled(r);
                 UpdateInstalledState();
                 UpdateButtons();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        /// <summary>Marca la fila como instalada (en apps por región, si está instalada alguna región, esa queda elegida).</summary>
+        void ApplyInstalled(AppRowVM r)
+        {
+            if (_installed == null) return;
+            if (r.App.Variants == null)
+            {
+                r.InstalledVersion = _installed.TryGetValue(r.App.Id, out var v) ? (v ?? "") : null;
+                return;
+            }
+            var hit = r.App.Variants.FirstOrDefault(x => _installed.ContainsKey(x.Id));
+            r.InstalledVersion = hit != null ? (_installed[hit.Id] ?? "") : null;
+            if (hit != null && r.Variant == null) r.Variant = hit;
+        }
+
+        // ------------------------------------------------------------ Región (Riot Client)
+
+        sealed class RegionChoice : ObservableObject
+        {
+            bool _sel;
+            public AppVariant Variant { get; set; }
+            public string Name => Variant.Name;
+            public bool IsSelected { get => _sel; set => Set(ref _sel, value); }
+        }
+
+        AppRowVM _regionRow;
+
+        /// <summary>Al marcar una app por región sin región elegida, se pide confirmarla antes.</summary>
+        void AskRegionIfNeeded(AppRowVM row)
+        {
+            if (row.App.Variants == null || !row.IsChecked || row.Variant != null || _regionRow != null) return;
+            _regionRow = row;
+            // Por defecto: la región que encaja con el idioma de Windows (España y resto de Europa occidental: EUW)
+            string def = Loc.Language == "es" ? "EUW" : "NA";
+            RegionList.ItemsSource = row.App.Variants.Select(v => new RegionChoice { Variant = v, IsSelected = v.Code == def }).ToList();
+            TxtRegionTitle.Text = Loc.F("apps.region.title", row.App.Name);
+            RegionLayer.Visibility = Visibility.Visible;
+        }
+
+        void RegionOk_Click(object sender, RoutedEventArgs e)
+        {
+            var row = _regionRow;
+            var choice = (RegionList.ItemsSource as IEnumerable<RegionChoice>)?.FirstOrDefault(c => c.IsSelected);
+            if (row == null || choice == null) return;
+            RegionLayer.Visibility = Visibility.Collapsed;
+            _regionRow = null;
+            row.Variant = choice.Variant;
+            Log.Info("Region chosen for " + row.App.Name + ": " + choice.Variant.Code + ".");
+        }
+
+        void RegionCancel_Click(object sender, RoutedEventArgs e)
+        {
+            var row = _regionRow;
+            RegionLayer.Visibility = Visibility.Collapsed;
+            _regionRow = null;
+            if (row != null && row.Variant == null) row.IsChecked = false; // sin región no se puede instalar
         }
 
         void UpdateInstalledState()
@@ -259,7 +322,8 @@ namespace Velox.UI.Views
                     try
                     {
                         bool was = r.IsInstalled;
-                        res = await Task.Run(() => Winget.Install(r.App, was, status, _cts.Token));
+                        string variant = r.App.Variants != null ? r.Variant?.Id : null;
+                        res = await Task.Run(() => Winget.Install(r.App, was, status, _cts.Token, variant));
                     }
                     catch (OperationCanceledException) { r.SetBadge(Loc.T("apps.badge.skipped"), "queued"); continue; }
                     catch (Exception ex) { res = new AppInstallResult { Outcome = AppInstallOutcome.Failed, Error = ex.Message }; }

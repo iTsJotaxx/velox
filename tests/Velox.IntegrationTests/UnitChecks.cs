@@ -120,6 +120,17 @@ namespace Velox.IntegrationTests
                 Check("apps: id without dot rejected", !Velox.Core.Apps.AppCatalog.IsValidId("notepad"));
                 Check("apps: Microsoft Store id accepted", Velox.Core.Apps.AppCatalog.IsValidId("9NKSQGP7F2NH") && !Velox.Core.Apps.AppCatalog.IsValidId("9nksqgp7f2nh x"));
                 Check("apps: store apps marked msstore", Velox.Core.Apps.AppCatalog.BuiltIn.Where(a => System.Text.RegularExpressions.Regex.IsMatch(a.Id, "^[0-9A-Z]{12}$")).All(a => a.Source == "msstore"));
+                var riot = Velox.Core.Apps.AppCatalog.BuiltIn.FirstOrDefault(a => a.Id == "RiotGames.RiotClient");
+                Check("apps: Riot Client is one entry with regions", riot != null && riot.Interactive && riot.Variants != null && riot.Variants.Count == 14
+                      && riot.Variants.All(v => Velox.Core.Apps.AppCatalog.IsValidId(v.Id)) && riot.Variants.Select(v => v.Id).Distinct().Count() == 14);
+                Check("apps: no separate LoL/VALORANT entries", !Velox.Core.Apps.AppCatalog.BuiltIn.Any(a => a.Id.StartsWith("RiotGames.LeagueOfLegends") || a.Id.StartsWith("RiotGames.Valorant")));
+                if (riot != null)
+                {
+                    var noRegion = Velox.Core.Apps.Winget.Install(riot, false, null, System.Threading.CancellationToken.None);
+                    Check("apps: Riot without region is refused (nothing runs)", noRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed && noRegion.ExitCode == 0);
+                    var badRegion = Velox.Core.Apps.Winget.Install(riot, false, null, System.Threading.CancellationToken.None, "RiotGames.Valorant.EU");
+                    Check("apps: Riot with a region outside the list is refused", badRegion.Outcome == Velox.Core.Apps.AppInstallOutcome.Failed);
+                }
                 var table = new List<string>
                 {
                     "Name                       Id                         Version                 Match",

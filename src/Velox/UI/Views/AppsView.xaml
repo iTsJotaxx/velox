@@ -160,6 +160,53 @@
       </ScrollViewer>
     </Grid>
 
+    <!-- Elegir región (Riot Client) -->
+    <Grid x:Name="RegionLayer" Background="#B8060810" Visibility="Collapsed" Panel.ZIndex="11">
+      <Border Style="{StaticResource Card}" Width="560" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24,22">
+        <StackPanel>
+          <TextBlock x:Name="TxtRegionTitle" Style="{StaticResource H2}" FontSize="18"/>
+          <TextBlock Text="{DynamicResource apps.region.text}" Style="{StaticResource Muted}" FontSize="12.5" Margin="0,8,0,14"/>
+          <ItemsControl x:Name="RegionList">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><UniformGrid Columns="2"/></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <RadioButton GroupName="Region" Margin="0,0,8,6" Cursor="Hand" IsChecked="{Binding IsSelected, Mode=TwoWay}" FocusVisualStyle="{x:Null}">
+                  <RadioButton.Template>
+                    <ControlTemplate TargetType="RadioButton">
+                      <Border x:Name="Bd" Background="{StaticResource CardInner}" BorderBrush="{StaticResource BorderSoft}" BorderThickness="1" CornerRadius="9" Padding="12,9">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" TextTrimming="CharacterEllipsis"/>
+                          <TextBlock x:Name="Mark" Grid.Column="1" Text="&#xE73E;" FontFamily="{StaticResource Icons}" FontSize="12" Foreground="{StaticResource AccentText}" Margin="8,0,0,0" Visibility="Hidden"/>
+                        </Grid>
+                      </Border>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Border}"/></Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                          <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                          <Setter TargetName="Bd" Property="Background" Value="#1A2032"/>
+                          <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </RadioButton.Template>
+                </RadioButton>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
+            <Button Style="{StaticResource BtnBase}" Margin="0,0,10,0" Content="{DynamicResource ui.btn.cancel}" Click="RegionCancel_Click"/>
+            <Button Style="{StaticResource BtnPrimary}" Content="{DynamicResource apps.region.confirm}" Click="RegionOk_Click"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </Grid>
+
     <!-- Añadir aplicación -->
     <Grid x:Name="AddLayer" Background="#B8060810" Visibility="Collapsed" Panel.ZIndex="10">
       <Border Style="{StaticResource Card}" Width="620" MaxHeight="620" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="24,22">

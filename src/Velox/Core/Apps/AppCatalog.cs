@@ -18,8 +18,40 @@ namespace Velox.Core.Apps
         /// <summary>Origen en winget: null = repositorio «winget»; "msstore" = Microsoft Store (WhatsApp, Instagram...).</summary>
         [DataMember(Order = 4, EmitDefaultValue = false)] public string Source { get; set; }
         public string SourceName => string.IsNullOrEmpty(Source) ? "winget" : Source;
+        /// <summary>
+        /// Versiones por región (Riot): al marcarla hay que elegir una, y se instala el paquete de esa región.
+        /// null = una sola versión (Id).
+        /// </summary>
+        public List<AppVariant> Variants { get; set; }
+        /// <summary>Se instala con la ventana del propio instalador (para elegir carpeta, juego...), no en silencio.</summary>
+        public bool Interactive { get; set; }
         /// <summary>Añadida por el usuario (se guarda en %AppData%\Velox\apps.json y se puede quitar).</summary>
         public bool IsCustom { get; set; }
+    }
+
+    public sealed class AppVariant
+    {
+        public string Id { get; set; }
+        /// <summary>Código corto (EUW, NA...). El nombre visible es Loc "apps.region.{Code}".</summary>
+        public string Code { get; set; }
+        public string Name => Loc.T("apps.region." + Code);
+        /// <summary>Código que usa Riot en el juego (LAN, LAS, OCE...).</summary>
+        public string Short
+        {
+            get
+            {
+                switch (Code)
+                {
+                    case "LA1": return "LAN";
+                    case "LA2": return "LAS";
+                    case "OC1": return "OCE";
+                    case "SG2": return "SG";
+                    case "TW2": return "TW";
+                    case "VN2": return "VN";
+                    default: return Code;
+                }
+            }
+        }
     }
 
     public sealed class AppCategory
@@ -141,8 +173,15 @@ namespace Velox.Core.Apps
             A("games", "Ubisoft.Connect", "Ubisoft Connect");
             A("games", "GOG.Galaxy", "GOG Galaxy");
             A("games", "Blizzard.BattleNet", "Battle.net");
-            A("games", "RiotGames.LeagueOfLegends.EUW", "League of Legends (Riot)");
-            A("games", "RiotGames.Valorant.EU", "VALORANT (Riot)");
+            // Riot no publica un instalador solo del cliente: cada instalador es el Riot Client preparado para un juego
+            // y una región. Se usa el de League of Legends de la región elegida, con su ventana, y desde el cliente se
+            // instala el juego que se quiera (LoL, VALORANT, TFT...).
+            l.Add(new AppEntry
+            {
+                Id = "RiotGames.RiotClient", Name = "Riot Client", Category = "games", Interactive = true,
+                Variants = new[] { "EUW", "EUNE", "NA", "LA1", "LA2", "BR", "TR", "RU", "OC1", "JP", "KR", "SG2", "TW2", "VN2" }
+                    .Select(c => new AppVariant { Code = c, Id = "RiotGames.LeagueOfLegends." + c }).ToList(),
+            });
             A("games", "Guru3D.Afterburner", "MSI Afterburner");
 
             A("utils", "7zip.7zip", "7-Zip");
